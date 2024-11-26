@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FiBell, FiAlertCircle, FiHome, FiUserPlus, FiSettings, FiHelpCircle, FiPieChart, FiUser } from "react-icons/fi";
+import { AdminContext } from "../store/admin-context";
 
 const Navbar = () => {
+  const {sidebarOpen,handleSideClick} = useContext(AdminContext);
+  const [loginOpen, setLoginOpen] = useState(false)
+  const [notificationOpen, setNotificationOpen] = useState(false)
+
+  const handleLoginClick = () =>{
+    setLoginOpen(loginOpen => !loginOpen)
+  }
+
+  const handleNotificationClick = () => {
+    setNotificationOpen(notificationOpen => !notificationOpen)
+  }
+  
   return (
-    <nav className="navbar navbar-expand navbar-light navbar-bg">
-      <a className="sidebar-toggle js-sidebar-toggle">
+    <nav className="navbar navbar-expand navbar-light navbar-bg px-4 py-3">
+      <a className="sidebar-toggle js-sidebar-toggle" id="toggel" onClick={handleSideClick}>
         <i className="hamburger align-self-center"></i>
       </a>
 
@@ -12,13 +25,13 @@ const Navbar = () => {
         <ul className="navbar-nav navbar-align">
           {/* Notifications Dropdown */}
           <li className="nav-item dropdown">
-            <a className="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+            <a className='nav-icon dropdown-toggle'  href="#" id="alertsDropdown" data-bs-toggle="dropdown" onClick={handleNotificationClick}>
               <div className="position-relative">
                 <FiBell className="align-middle" />
                 <span className="indicator">4</span>
               </div>
             </a>
-            <div className="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+            <div className={`dropdown-menu notification dropdown-menu-lg dropdown-menu-end py-0 ${notificationOpen ? 'show' : ''} `} aria-labelledby="alertsDropdown">
               <div className="dropdown-menu-header">4 New Notifications</div>
               <div className="list-group">
                 <a href="#" className="list-group-item">
@@ -77,11 +90,11 @@ const Navbar = () => {
 
           {/* User Dropdown */}
           <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+            <a className="nav-link dropdown-toggle d-none d-sm-inline-block show" href="#" onClick={handleLoginClick} data-bs-toggle="dropdown">
               <img src="img/avatars/avatar.jpg" className="avatar img-fluid rounded me-1" alt="Charles Hall" />
               <span className="text-dark">Charles Hall</span>
             </a>
-            <div className="dropdown-menu dropdown-menu-end">
+            <div className={`dropdown-menu dropdown-menu-end login ${loginOpen ? 'show' : ''}`} >
               <a className="dropdown-item" href="#">
                 <FiUser className="align-middle me-1" /> Profile
               </a>

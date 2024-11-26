@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaCar, FaTaxi, FaKey, FaUserTie, FaGift } from "react-icons/fa";
 import { 
   FiSliders, FiSunrise, FiPlusCircle, FiList, FiXCircle, 
@@ -6,10 +6,13 @@ import {
   FiInbox, FiMessageSquare, FiMail, FiBriefcase, FiShare2, 
   FiFile, FiFileText, FiInfo, FiShield, FiUser 
 } from "react-icons/fi";
+import SidebarName from "./sidebar-name/SidebarName";
+import { AdminContext } from "../store/admin-context";
 
 const Sidebar = () => {
+  const {sidebarOpen} = useContext(AdminContext)
   return (
-    <nav id="sidebar" className="sidebar js-sidebar">
+    <nav id="sidebar" className={`sidebar js-sidebar ${sidebarOpen ? 'collapsed' : ''}`}>
       <div className="sidebar-content js-simplebar">
         <a className="sidebar-brand">
           <span className="align-middle">Cabkro Admin</span>
@@ -40,25 +43,26 @@ const Sidebar = () => {
           <li className="sidebar-item">
             <a className="sidebar-link" href="popularDestination.html">
               <FiSunrise className="align-middle" />
-              <span className="align-middle">Popular Destinations</span>
+              <SidebarName name={'Popular Destinations'}/>
             </a>
           </li>
           <li className="sidebar-item">
             <a className="sidebar-link" href="AddVehicleList.html">
               <FaCar className="align-middle me-2" />
-              <span className="align-middle">Add Vehicle List</span>
+              <SidebarName name={'Add Vehicle List'}/>
             </a>
           </li>
           <li className="sidebar-item">
             <a className="sidebar-link" href="AddBookingPackage.html">
               <FiPlusCircle className="align-middle" />
-              <span className="align-middle">Add Booking Packages</span>
+              <SidebarName name={'Add Booking Packages'}/>
+              
             </a>
           </li>
           <li className="sidebar-item">
             <a className="sidebar-link" href="BookingPackageList.html">
               <FiList className="align-middle" />
-              <span className="align-middle">Booking Packages List</span>
+              <SidebarName name={'Booking Packages List'}/>
             </a>
           </li>
 
