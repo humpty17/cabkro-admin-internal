@@ -7,9 +7,9 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser 
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { AdminContext } from "../store/admin-context";
-import { CurrentPageContext } from "../store/pages-context";
-import { POPULARDESTINATIONPAGE } from "../General/ConstStates";
+import { POPULARDESTINATIONPAGE } from "../../General/ConstStates";
+import { AdminContext } from '../../store/admin-context';
+import { CurrentPageContext } from "../../store/pages-context";
 
 const Sidebar = () => {
   const {sidebarOpen} = useContext(AdminContext)

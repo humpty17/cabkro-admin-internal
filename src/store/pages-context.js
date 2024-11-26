@@ -11,24 +11,20 @@ export const CurrentPageContext = createContext({
 const CurrentPageContextProvider = ({children}) =>{
   const [currentPage, setCurrentPage] = useState(DASHBOARDPAGE);
   
-
   const handlePageClick = (pageName) => {
     setCurrentPage(pageName);
   };
 
-
-  
-
-  return(
-    <CurrentPageContext.Provider value={{
+  return (
+    <CurrentPageContext.Provider
+      value={{
         currentPage,
-     
-      handlePageClick,
-
-    }}>
+        handlePageClick,
+      }}
+    >
       {children}
     </CurrentPageContext.Provider>
-  )
+  );
 }
 
 export default CurrentPageContextProvider
