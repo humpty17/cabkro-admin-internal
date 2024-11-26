@@ -6,11 +6,20 @@ import {
   FiInbox, FiMessageSquare, FiMail, FiBriefcase, FiShare2, 
   FiFile, FiFileText, FiInfo, FiShield, FiUser 
 } from "react-icons/fi";
-import SidebarName from "./sidebar-name/SidebarName";
+import SidebarName from "./SidebarName";
 import { AdminContext } from "../store/admin-context";
+import { CurrentPageContext } from "../store/pages-context";
+import { POPULARDESTINATIONPAGE } from "../General/ConstStates";
 
 const Sidebar = () => {
   const {sidebarOpen} = useContext(AdminContext)
+  const {currentPage,    
+  handlePageClick} =useContext(CurrentPageContext)
+
+  const handleItemClick = (pageName)=>{
+    handlePageClick(pageName)
+  }
+
   return (
     <nav id="sidebar" className={`sidebar js-sidebar ${sidebarOpen ? 'collapsed' : ''}`}>
       <div className="sidebar-content js-simplebar">
@@ -41,7 +50,7 @@ const Sidebar = () => {
 
           <li className="sidebar-header">Data</li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="popularDestination.html">
+            <a className="sidebar-link" onClick={()=>handleItemClick(POPULARDESTINATIONPAGE)}>
               <FiSunrise className="align-middle" />
               <SidebarName name={'Popular Destinations'}/>
             </a>
