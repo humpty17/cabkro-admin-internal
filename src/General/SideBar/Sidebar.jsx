@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FaCar, FaTaxi, FaKey, FaUserTie, FaGift } from "react-icons/fa";
 import { 
   FiSliders, FiSunrise, FiPlusCircle, FiList, FiXCircle, 
@@ -15,9 +15,14 @@ const Sidebar = () => {
   const {sidebarOpen} = useContext(AdminContext)
   const {currentPage,    
   handlePageClick} =useContext(CurrentPageContext)
+  const [show, setShow] = useState(false)
 
   const handleItemClick = (pageName)=>{
     handlePageClick(pageName)
+  }
+
+  const handleClick = () =>{
+    setShow(show => !show)
   }
 
   return (
@@ -31,11 +36,11 @@ const Sidebar = () => {
           <li className="sidebar-header">Admin</li>
 
           <li className="sidebar-item active">
-            <a data-bs-target="#dashboards" aria-expanded="true" data-bs-toggle="collapse" className="sidebar-link">
+            <a data-bs-target="#dashboards" aria-expanded='true' data-bs-toggle="collapse" className="sidebar-link" onClick={handleClick}>
               <FiSliders className="align-middle" />
               <span className="align-middle">Dashboards</span>
             </a>
-            <ul id="dashboards" className="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
+            <ul id="dashboards" className={`sidebar-dropdown list-unstyled collapse ${show ? 'show' : 'collapsed'} `} data-bs-parent="#sidebar">
               <li className="sidebar-item active">
                 <a className="sidebar-link" href="index.html">Booking</a>
               </li>

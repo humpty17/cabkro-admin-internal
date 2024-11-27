@@ -18021,11 +18021,11 @@
    transition: all .2s ease-out
  }
  
- .sidebar [aria-expanded=true]:after,
+ /* .sidebar [aria-expanded=true]:after,
  .sidebar [data-bs-toggle=collapse]:not(.collapsed):after {
    top: 1.4rem;
    transform: rotate(-135deg)
- }
+ } */
  
  .sidebar-dropdown [data-bs-toggle=collapse]:after {
    top: 1rem
