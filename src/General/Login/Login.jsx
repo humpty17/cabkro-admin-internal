@@ -12,7 +12,6 @@ const Login = () => {
                 <h1 className="h2">Welcome back!</h1>
                 <p className="lead">Sign in to your account to continue</p>
               </div>
-
               <div className="card">
                 <div className="card-body">
                   <div className="m-sm-3">
