@@ -4,12 +4,21 @@ import Dashboard from './pages/Dashboard'
 import Navbar from './General/Navbar'
 import PopularDestinations from './pages/PopularDestinations'
 import { CurrentPageContext } from './store/pages-context'
-import { DASHBOARDPAGE, POPULARDESTINATIONPAGE } from './General/ConstStates'
+import { DASHBOARDPAGE, LOGINPAGE, POPULARDESTINATIONPAGE, REGISTERPAGE } from './General/ConstStates'
+import Login from './General/Login/Login'
+import Register from './General/Register/Register'
 
 const Home = () => {
   const {currentPage,handlePageClick} =useContext(CurrentPageContext)
   return (
-    <div className="wrapper">
+    <>
+    {
+      // currentPage === LOGINPAGE && <Login/>  &&
+      currentPage === REGISTERPAGE && <Register/>
+    }
+    {
+      currentPage !== LOGINPAGE && currentPage !== REGISTERPAGE &&
+     <div className="wrapper">
       <Sidebar />
       <div className="main">
         <Navbar />
@@ -17,9 +26,11 @@ const Home = () => {
            currentPage === DASHBOARDPAGE && <Dashboard/>
         }
         {currentPage === POPULARDESTINATIONPAGE && <PopularDestinations></PopularDestinations>}
-        
       </div>
     </div>
+    }
+    
+    </>
   )
 }
 
