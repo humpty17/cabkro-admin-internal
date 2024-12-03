@@ -35662,3 +35662,34 @@
    top: 0;
    width: 264px
  }
+
+ /* Loader */
+ /* Loader */
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000a8;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader .loader_icon {
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #ff6600; /* Orange */
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

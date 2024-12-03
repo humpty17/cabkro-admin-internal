@@ -1,5 +1,7 @@
-import React, { createContext, useState } from 'react'
-import { DASHBOARDPAGE, LOGINPAGE, REGISTERPAGE } from '../General/ConstStates';
+import React, { createContext, useState } from 'react';
+import { DASHBOARDPAGE, LOGINPAGE } from '../General/ConstStates';
+
+
 
 export const CurrentPageContext = createContext({
   sidebarOpen:false,
@@ -9,7 +11,7 @@ export const CurrentPageContext = createContext({
 })
 
 const CurrentPageContextProvider = ({children}) =>{
-  const [currentPage, setCurrentPage] = useState(REGISTERPAGE);
+  const [currentPage, setCurrentPage] = useState(LOGINPAGE);
   
   const handlePageClick = (pageName) => {
     setCurrentPage(pageName);

@@ -1,7 +1,32 @@
-import React from "react";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import React, { useContext, useState } from "react";
+import { FaLock, FaPhone } from "react-icons/fa";
+import { CurrentPageContext } from "../store/pages-context";
+import { callApi } from "../General/GeneralMethod";
+import LoadingContextProvider, { LoadingContext } from "../store/loading-context";
 
 const Login = () => {
+  const {currentPage,handlePageClick} =useContext(CurrentPageContext)
+  const {startLoading, stopLoading} = useContext(LoadingContext)
+  const [enteredUserDetail, setEnteredUserDetail] = useState({
+    'phoneNo':'',
+    'password': '',
+    'rememberMe': false
+  })
+
+  const handleInputChange = (e)=>{
+    setEnteredUserDetail({...enteredUserDetail, [e.target.name]: e.target.value})
+  }
+
+  const handleLoginClick = async (e) =>{
+    e.preventDefault()
+    console.log(enteredUserDetail)
+    startLoading()
+    const response = await callApi("get", `Auth/LoginAdmin?Phone=${enteredUserDetail.phoneNo}&Password=${enteredUserDetail.password}`, {}, {})
+    stopLoading()
+    if(response!==null && response !==undefined){
+      console.log(response)
+    }
+  }
   return (
     <main className="d-flex w-100">
       <div className="container d-flex flex-column">
@@ -17,16 +42,19 @@ const Login = () => {
                   <div className="m-sm-3">
                     <form>
                       <div className="mb-3">
-                        <label className="form-label">Email</label>
+                        <label className="form-label">Phone No</label>
                         <div className="input-group">
                           <span className="input-group-text">
-                            <FaEnvelope />
+                            <FaPhone />
                           </span>
                           <input
                             className="form-control form-control-lg"
-                            type="email"
-                            name="email"
-                            placeholder="Enter your email"
+                            type="number"
+                            name="phoneNo"
+                            id="phoneNo"
+                            placeholder="Enter your phone no"
+                            value={enteredUserDetail.phoneNo}
+                            onChange={handleInputChange}
                           />
                         </div>
                       </div>
@@ -40,7 +68,10 @@ const Login = () => {
                             className="form-control form-control-lg"
                             type="password"
                             name="password"
+                            id="password"
                             placeholder="Enter your password"
+                            value={enteredUserDetail.password}
+                            onChange={handleInputChange}
                           />
                         </div>
                       </div>
@@ -50,9 +81,9 @@ const Login = () => {
                             id="customControlInline"
                             type="checkbox"
                             className="form-check-input"
-                            value="remember-me"
-                            name="remember-me"
-                            defaultChecked
+                            checked={enteredUserDetail.rememberMe}                           
+                            name="rememberMe"                            
+                            onChange={handleInputChange}
                           />
                           <label
                             className="form-check-label text-small"
@@ -66,6 +97,7 @@ const Login = () => {
                         <button
                           type="submit"
                           className="btn btn-lg btn-primary"
+                          onClick={handleLoginClick}
                         >
                           Sign in
                         </button>
@@ -74,10 +106,10 @@ const Login = () => {
                   </div>
                 </div>
               </div>
-              <div className="text-center mb-3">
+              {/* <div className="text-center mb-3">
                 Don't have an account?{" "}
-                <a href="pages-sign-up.html">Sign up</a>
-              </div>
+                <a onClick={handleSignUpClick}>Sign up</a>
+              </div> */}
             </div>
           </div>
         </div>
