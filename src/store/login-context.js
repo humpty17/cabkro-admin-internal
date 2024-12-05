@@ -10,8 +10,10 @@ export const LoginContext = createContext({
 const LoginContextProvider = ({children})=>{
     const [user, setUser] = useLocalStorage("user", null)
 
+    console.log(user);
     const login = async (data) => {
         setUser(data);
+        
     };
 
     const logout = () => { 
@@ -31,4 +33,4 @@ const LoginContextProvider = ({children})=>{
       );
 }
 
-export default CurrentPageContextProvider
+export default LoginContextProvider

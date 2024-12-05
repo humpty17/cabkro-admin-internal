@@ -5,21 +5,30 @@ import { callApi } from "../General/GeneralMethod";
 import LoadingContextProvider, { LoadingContext } from "../store/loading-context";
 
 const Login = () => {
-  const {currentPage,handlePageClick} =useContext(CurrentPageContext)
+ // const {currentPage,handlePageClick} =useContext(CurrentPageContext)
+ const initialState ={
+    phoneNo:'',
+    password: '',
+    rememberMe: false
+ }
   const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [enteredUserDetail, setEnteredUserDetail] = useState({
-    'phoneNo':'',
-    'password': '',
-    'rememberMe': false
-  })
+  const [enteredUserDetail, setEnteredUserDetail] = useState(initialState)
+  const Swal = require('sweetalert2')
+  const [message, setMessage] = useState('')
 
   const handleInputChange = (e)=>{
     setEnteredUserDetail({...enteredUserDetail, [e.target.name]: e.target.value})
+
+    // Regular expression to match exactly 10 digits
+    const regex = /^\d{10}$/;
+    if (regex.test(enteredUserDetail.phoneNo)) {
+      setMessage(Swal.fire("Your phone number is not valid!"))
+    }
   }
 
   const handleLoginClick = async (e) =>{
     e.preventDefault()
-    console.log(enteredUserDetail)
+    //console.log(enteredUserDetail)
     startLoading()
     const response = await callApi("get", `Auth/LoginAdmin?Phone=${enteredUserDetail.phoneNo}&Password=${enteredUserDetail.password}`, {}, {})
     stopLoading()
@@ -53,7 +62,7 @@ const Login = () => {
                             name="phoneNo"
                             id="phoneNo"
                             placeholder="Enter your phone no"
-                            value={enteredUserDetail.phoneNo}
+                            value={enteredUserDetail.length > 10 ? message :  enteredUserDetail.phoneNo}
                             onChange={handleInputChange}
                           />
                         </div>
