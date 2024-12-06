@@ -3,6 +3,8 @@ import { FaLock, FaPhone } from "react-icons/fa";
 import { CurrentPageContext } from "../store/pages-context";
 import { callApi } from "../General/GeneralMethod";
 import LoadingContextProvider, { LoadingContext } from "../store/loading-context";
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa6";
 
 const Login = () => {
  // const {currentPage,handlePageClick} =useContext(CurrentPageContext)
@@ -13,17 +15,16 @@ const Login = () => {
  }
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [enteredUserDetail, setEnteredUserDetail] = useState(initialState)
-  const Swal = require('sweetalert2')
   const [message, setMessage] = useState('')
+  const [type, setType] = useState('password');
+  const [icon, setIcon] = useState(<FaEyeSlash/>);
+
+  const Swal = require('sweetalert2')
 
   const handleInputChange = (e)=>{
     setEnteredUserDetail({...enteredUserDetail, [e.target.name]: e.target.value})
 
-    // Regular expression to match exactly 10 digits
-    const regex = /^\d{10}$/;
-    if (regex.test(enteredUserDetail.phoneNo)) {
-      setMessage(Swal.fire("Your phone number is not valid!"))
-    }
+    
   }
 
   const handleLoginClick = async (e) =>{
@@ -34,8 +35,23 @@ const Login = () => {
     stopLoading()
     if(response!==null && response !==undefined){
       console.log(response)
+      // Regular expression to match exactly 10 digits
+    const regex = /^\d{10}$/;
+    if (regex.test(enteredUserDetail.phoneNo)) {
+      setMessage(Swal.fire("Your phone number is not valid!"))
+    }
     }
   }
+
+  const handleToggle = () => {
+    if (type==='password'){
+       setIcon(<FaEye/>);
+       setType('text')
+    } else {
+       setIcon(<FaEyeSlash/>)
+       setType('password')
+    }
+ }
   return (
     <main className="d-flex w-100">
       <div className="container d-flex flex-column">
@@ -82,6 +98,9 @@ const Login = () => {
                             value={enteredUserDetail.password}
                             onChange={handleInputChange}
                           />
+                          <span className="input-group-text" >
+                          {icon  }
+                          </span>
                         </div>
                       </div>
                       <div>
