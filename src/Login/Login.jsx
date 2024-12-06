@@ -1,10 +1,14 @@
 import React, { useContext, useState } from "react";
 import { FaLock, FaPhone } from "react-icons/fa";
-import { CurrentPageContext } from "../store/pages-context";
+import { NotificationManager } from "react-notifications";
 import { callApi } from "../General/GeneralMethod";
+
 import LoadingContextProvider, { LoadingContext } from "../store/loading-context";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
+
+import { LoadingContext } from "../store/loading-context";
+
 
 const Login = () => {
  // const {currentPage,handlePageClick} =useContext(CurrentPageContext)
@@ -15,31 +19,65 @@ const Login = () => {
  }
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [enteredUserDetail, setEnteredUserDetail] = useState(initialState)
+
   const [message, setMessage] = useState('')
   const [type, setType] = useState('password');
   const [icon, setIcon] = useState(<FaEyeSlash/>);
 
   const Swal = require('sweetalert2')
 
+
+
+
   const handleInputChange = (e)=>{
     setEnteredUserDetail({...enteredUserDetail, [e.target.name]: e.target.value})
 
     
+
+  }
+
+  const validate = () =>{
+    console.log(enteredUserDetail)
+    if(enteredUserDetail.phoneNo==="" || enteredUserDetail.password===""){
+      NotificationManager.warning("Enter required fields")
+      return false
+    } 
+   
+    // Regular expression to match exactly 10 digits
+    // const regex = /^\d{10}$/;
+    // if (regex.test(enteredUserDetail.phoneNo)) {
+    //   NotificationManager.warning("Your phone number is not valid!")
+    //   return false
+    //   //setMessage(Swal.fire(""))
+    // }
+
+    return true
+
   }
 
   const handleLoginClick = async (e) =>{
     e.preventDefault()
     //console.log(enteredUserDetail)
+    if(!validate()) return
     startLoading()
     const response = await callApi("get", `Auth/LoginAdmin?Phone=${enteredUserDetail.phoneNo}&Password=${enteredUserDetail.password}`, {}, {})
     stopLoading()
     if(response!==null && response !==undefined){
       console.log(response)
-      // Regular expression to match exactly 10 digits
-    const regex = /^\d{10}$/;
-    if (regex.test(enteredUserDetail.phoneNo)) {
-      setMessage(Swal.fire("Your phone number is not valid!"))
+
+   
+      if(response.data.code === 200){
+        //success
+        // login(response.data.data)
+        // setCurrentPage(DASHBOARDPAGE)
+      }
+      else{
+        NotificationManager.error(response.data.message)
+      }
     }
+    else{
+      //notification manager error
+
     }
   }
 
@@ -78,7 +116,7 @@ const Login = () => {
                             name="phoneNo"
                             id="phoneNo"
                             placeholder="Enter your phone no"
-                            value={enteredUserDetail.length > 10 ? message :  enteredUserDetail.phoneNo}
+                            value={  enteredUserDetail.phoneNo}
                             onChange={handleInputChange}
                           />
                         </div>
