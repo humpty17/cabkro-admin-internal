@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { FiBell, FiAlertCircle, FiHome, FiUserPlus, FiSettings, FiHelpCircle, FiPieChart, FiUser } from "react-icons/fi";
-import { AdminContext } from "../store/admin-context";
+import { AdminContext } from "../../store/admin-context";
 
 
 const Navbar = () => {

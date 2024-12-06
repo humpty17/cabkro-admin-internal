@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import { FaLock, FaPhone } from "react-icons/fa";
 import { NotificationManager } from "react-notifications";
 import { callApi } from "../General/GeneralMethod";
-
 import LoadingContextProvider, { LoadingContext } from "../store/loading-context";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
-
-import { LoadingContext } from "../store/loading-context";
+import { CurrentPageContext } from "../store/pages-context";
+import { DASHBOARDPAGE, LOGINPAGE } from '../General/ConstStates';
+import { LoginContext } from "../store/login-context";
 
 
 const Login = () => {
@@ -18,41 +18,28 @@ const Login = () => {
     rememberMe: false
  }
   const {startLoading, stopLoading} = useContext(LoadingContext)
+  const {setCurrentPage} = useContext(CurrentPageContext)
+  const {login} = useContext(LoginContext)
   const [enteredUserDetail, setEnteredUserDetail] = useState(initialState)
-
-  const [message, setMessage] = useState('')
   const [type, setType] = useState('password');
   const [icon, setIcon] = useState(<FaEyeSlash/>);
 
-  const Swal = require('sweetalert2')
-
-
-
-
   const handleInputChange = (e)=>{
     setEnteredUserDetail({...enteredUserDetail, [e.target.name]: e.target.value})
-
-    
-
   }
 
   const validate = () =>{
-    console.log(enteredUserDetail)
+    //Regular expression to match exactly 10 digits
+    const regex = /^\d{10}$/;
     if(enteredUserDetail.phoneNo==="" || enteredUserDetail.password===""){
       NotificationManager.warning("Enter required fields")
       return false
     } 
-   
-    // Regular expression to match exactly 10 digits
-    // const regex = /^\d{10}$/;
-    // if (regex.test(enteredUserDetail.phoneNo)) {
-    //   NotificationManager.warning("Your phone number is not valid!")
-    //   return false
-    //   //setMessage(Swal.fire(""))
-    // }
-
+    if (!regex.test(enteredUserDetail.phoneNo)) {
+      NotificationManager.warning("Your phone number is not valid!")
+      return false
+    }
     return true
-
   }
 
   const handleLoginClick = async (e) =>{
@@ -63,13 +50,11 @@ const Login = () => {
     const response = await callApi("get", `Auth/LoginAdmin?Phone=${enteredUserDetail.phoneNo}&Password=${enteredUserDetail.password}`, {}, {})
     stopLoading()
     if(response!==null && response !==undefined){
-      console.log(response)
-
-   
+      //console.log(response)
       if(response.data.code === 200){
         //success
-        // login(response.data.data)
-        // setCurrentPage(DASHBOARDPAGE)
+        login(response.data.data)
+        setCurrentPage(DASHBOARDPAGE)
       }
       else{
         NotificationManager.error(response.data.message)
@@ -77,7 +62,7 @@ const Login = () => {
     }
     else{
       //notification manager error
-
+      NotificationManager.error(response.data.message)
     }
   }
 
@@ -116,7 +101,7 @@ const Login = () => {
                             name="phoneNo"
                             id="phoneNo"
                             placeholder="Enter your phone no"
-                            value={  enteredUserDetail.phoneNo}
+                            value={enteredUserDetail.length > 10 ? validate() : enteredUserDetail.phoneNo}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -129,15 +114,15 @@ const Login = () => {
                           </span>
                           <input
                             className="form-control form-control-lg"
-                            type="password"
+                            type={type}
                             name="password"
                             id="password"
                             placeholder="Enter your password"
                             value={enteredUserDetail.password}
                             onChange={handleInputChange}
                           />
-                          <span className="input-group-text" >
-                          {icon  }
+                          <span className="input-group-text" onClick={handleToggle}>
+                          {icon }
                           </span>
                         </div>
                       </div>

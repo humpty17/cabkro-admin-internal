@@ -1,11 +1,9 @@
 import React, { createContext, useState } from 'react';
 import { DASHBOARDPAGE, LOGINPAGE } from '../General/ConstStates';
 
-
-
 export const CurrentPageContext = createContext({
   sidebarOpen:false,
- 
+  setCurrentPage:() => {},
   handleSideClick: () =>{},
   // handleNotificationClick: () =>{}
 })
@@ -22,6 +20,7 @@ const CurrentPageContextProvider = ({children}) =>{
       value={{
         currentPage,
         handlePageClick,
+        setCurrentPage
       }}
     >
       {children}
@@ -29,4 +28,4 @@ const CurrentPageContextProvider = ({children}) =>{
   );
 }
 
-export default CurrentPageContextProvider
+export default CurrentPageContextProvider 

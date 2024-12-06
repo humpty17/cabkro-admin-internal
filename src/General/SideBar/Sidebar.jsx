@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { FaCar, FaTaxi, FaKey, FaUserTie, FaGift } from "react-icons/fa";
+import { FaCar, FaTaxi, FaKey, FaUserTie, FaList, FaShieldAlt, FaGift } from "react-icons/fa";
 import { 
   FiSliders, FiSunrise, FiPlusCircle, FiList, FiXCircle, 
   FiCreditCard, FiBell, FiRotateCcw, FiUserPlus, FiCheckCircle, 
@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser 
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { POPULARDESTINATIONPAGE } from "../../General/ConstStates";
+import { ADDUSERFORM, POPULARDESTINATIONPAGE } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 
@@ -235,6 +235,21 @@ const Sidebar = () => {
               <span className="align-middle">Security</span>
             </a>
           </li>
+          <li className="sidebar-item">
+        <a className="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
+          <FaList className="align-middle" /> <span className="align-middle">User List</span>
+        </a>
+      </li>
+      <li className="sidebar-item">
+        <a className="sidebar-link" href="#">
+          <FaShieldAlt className="align-middle" /> <span className="align-middle">User Auth</span>
+        </a>
+      </li>
+      <li className="sidebar-item">
+        <a className="sidebar-link" href="ChangePassword.html">
+          <FaKey className="align-middle me-2" /> <span className="align-middle">Change Password</span>
+        </a>
+      </li>
         </ul>
       </div>
     </nav>
