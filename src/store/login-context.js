@@ -10,8 +10,9 @@ export const LoginContext = createContext({
 const LoginContextProvider = ({children})=>{
     const [user, setUser] = useLocalStorage("user", null)
 
-    console.log(user);
+    //console.log(user);
     const login = async (data) => {
+        console.log("inside here",data)
         setUser(data);
         
     };

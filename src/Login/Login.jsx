@@ -19,7 +19,7 @@ const Login = () => {
  }
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const {setCurrentPage} = useContext(CurrentPageContext)
-  const {login} = useContext(LoginContext)
+  const {user,login, logout} = useContext(LoginContext)
   const [enteredUserDetail, setEnteredUserDetail] = useState(initialState)
   const [type, setType] = useState('password');
   const [icon, setIcon] = useState(<FaEyeSlash/>);
@@ -53,6 +53,7 @@ const Login = () => {
       //console.log(response)
       if(response.data.code === 200){
         //success
+        console.log(response.data.data)
         login(response.data.data)
         setCurrentPage(DASHBOARDPAGE)
       }

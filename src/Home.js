@@ -15,14 +15,17 @@ import {
 import Register from "./General/Register/Register";
 import Login from "./Login/Login";
 import AddUserForm from "./pages/AddUserForm";
+import LoginContextProvider, { LoginContext } from "./store/login-context";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
+  const {user} = useContext(LoginContext)
+  console.log("user in home", user, currentPage)
   return (
     <>
-      {currentPage === LOGINPAGE && <Login />}
-      {currentPage === REGISTERPAGE && <Register />}
-      {currentPage !== LOGINPAGE && currentPage !== REGISTERPAGE && (
+      {currentPage === LOGINPAGE && user === null && <Login />}
+      {currentPage === REGISTERPAGE && user === null && <Register />}
+      {currentPage !== LOGINPAGE && currentPage !== REGISTERPAGE && user !== null && (
         <div className="wrapper">
           <Sidebar />
           <div className="main">
