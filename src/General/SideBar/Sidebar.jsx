@@ -236,12 +236,12 @@ const Sidebar = () => {
             </a>
           </li>
           <li className="sidebar-item">
-        <a className="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
+        <a className="sidebar-link" href="#">
           <FaList className="align-middle" /> <span className="align-middle">User List</span>
         </a>
       </li>
       <li className="sidebar-item">
-        <a className="sidebar-link" href="#">
+        <a className="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
           <FaShieldAlt className="align-middle" /> <span className="align-middle">User Auth</span>
         </a>
       </li>

@@ -1,7 +1,57 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaUser, FaPhoneAlt, FaEnvelope, FaKey, FaCalendarAlt } from "react-icons/fa";
+import { LoadingContext } from "../store/loading-context";
+import { callApi } from "../General/GeneralMethod";
 
 const AddUserForm = () => {
+
+  const InitialState = {
+    firstName :'',
+    lastName : '',
+    email: '',
+    password: '',
+    phoneNo : '',
+    gender: ''
+  };
+  const {startLoading, stopLoading} = useContext(LoadingContext)
+  const [addData, setAddData] = useState(InitialState);
+  const [date, setDate] = useState(null);
+  
+  const handleChange = (e) =>{
+    setAddData({
+      ...addData,
+      [e.target.name] : e.target.value
+    })
+     console.log(e.target.value);
+  }
+
+  const handleDateChange = (e) =>{
+    const date = new Date(e.target.value); 
+    const formattedDate = date.toISOString().slice(0, 10);
+    setDate(formattedDate)
+  }
+
+  const handleUserForm = (event) =>{
+    event.preventDefault();
+
+    startLoading();
+    const response = callApi("post", `Auth/RegisterAdminUser`, {
+      userFirstName : addData.firstName,
+      userLastName : addData.lastName,
+      phoneNo : addData.phoneNo,
+      userEmail : addData.email,
+      password : addData.password,
+      gender : addData.gender,
+      dob : date
+    }, { })
+    stopLoading();
+
+    if(response!==null && response !==undefined){
+      if(response.data.code === 200){
+        console.log(response.data.data)
+      }
+    }
+  }
   return (
     <div className="wrapper">
       <div className="main">
@@ -14,7 +64,7 @@ const AddUserForm = () => {
                   <div className="col-12 col-xl-6">
                     <div className="card">
                       <div className="card-body">
-                        <form>
+                        <form onSubmit={handleUserForm}>
                           <div className="mb-3 row">
                             <label className="col-form-label col-sm-3 text-sm-end">
                               <FaUser className="me-2" /> First Name
@@ -22,8 +72,11 @@ const AddUserForm = () => {
                             <div className="col-sm-8">
                               <input
                                 type="text"
+                                name="firstName"
                                 className="form-control"
                                 placeholder="Your first name"
+                                value={addData.firstName}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -35,8 +88,11 @@ const AddUserForm = () => {
                             <div className="col-sm-8">
                               <input
                                 type="text"
+                                name="lastName"
                                 className="form-control"
                                 placeholder="Your last name"
+                                value={addData.lastName}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -48,8 +104,11 @@ const AddUserForm = () => {
                             <div className="col-sm-8">
                               <input
                                 type="number"
+                                name="phoneNo"
                                 className="form-control"
                                 placeholder="8957465342"
+                                value={addData.phoneNo}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -61,8 +120,11 @@ const AddUserForm = () => {
                             <div className="col-sm-8">
                               <input
                                 type="email"
+                                name="email"
                                 className="form-control"
                                 placeholder="Email"
+                                value={addData.email}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -74,8 +136,11 @@ const AddUserForm = () => {
                             <div className="col-sm-8">
                               <input
                                 type="password"
+                                name="password"
                                 className="form-control"
                                 placeholder="Password"
+                                value={addData.password}
+                                onChange={handleChange}
                               />
                             </div>
                           </div>
@@ -85,7 +150,7 @@ const AddUserForm = () => {
                               <FaCalendarAlt className="me-2" /> DOB
                             </label>
                             <div className="col-sm-8">
-                              <input type="date" className="form-control" />
+                              <input type="date" name="dob" className="form-control" value={date} onChange={handleDateChange}/>
                             </div>
                           </div>
 
@@ -99,8 +164,10 @@ const AddUserForm = () => {
                                   <input
                                     name="radio-3"
                                     type="radio"
+                                    value='male'
                                     className="form-check-input"
-                                    defaultChecked
+                                    defaultChecked={addData.gender}
+                                    onChange={handleChange} 
                                   />
                                   <span className="form-check-label">Male</span>
                                 </label>
@@ -108,19 +175,23 @@ const AddUserForm = () => {
                                   <input
                                     name="radio-3"
                                     type="radio"
+                                    value='female'
+                                    checked={addData.gender} 
                                     className="form-check-input"
+                                    onChange={handleChange} 
                                   />
                                   <span className="form-check-label">Female</span>
                                 </label>
-                                <label className="form-check">
+                                {/* <label className="form-check">
                                   <input
                                     name="radio-3"
                                     type="radio"
+                                    value='option3'
                                     className="form-check-input"
                                     disabled
                                   />
                                   <span className="form-check-label">Other</span>
-                                </label>
+                                </label> */}
                               </div>
                             </div>
                           </fieldset>

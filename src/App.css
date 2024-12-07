@@ -4855,7 +4855,21 @@
  .notification{
   left: auto;
   right: 0;
- }
+  box-sizing: border-box !important;
+  padding:0 !important;
+  border-radius: 2px;
+  color: #1e1c1c !important;
+   background-color: white !important;
+  box-shadow: 0 0 12px #999;
+  cursor: pointer;
+  font-size: 18px !important;
+  /* line-height: 1.2em; */
+  position: relative;
+  opacity: 0.9 !important;
+  margin-top: 0px !important;
+  width: 410px !important;
+}
+
  .login{
   left: auto;
   right: 0;
@@ -4863,6 +4877,7 @@
  
  .navbar-expand .navbar-nav .dropdown-menu {
    position: absolute;
+   
  }
  
  .navbar-expand .navbar-nav .nav-link {

@@ -12,7 +12,7 @@ const LoginContextProvider = ({children})=>{
 
     //console.log(user);
     const login = async (data) => {
-        console.log("inside here",data)
+        //console.log("inside here",data)
         setUser(data);
         
     };

@@ -20,7 +20,7 @@ import LoginContextProvider, { LoginContext } from "./store/login-context";
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
   const {user} = useContext(LoginContext)
-  console.log("user in home", user, currentPage)
+  //console.log("user in home", user, currentPage)
   return (
     <>
       {currentPage === LOGINPAGE && user === null && <Login />}

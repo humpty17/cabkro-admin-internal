@@ -11,20 +11,16 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <LoginContextProvider>
-    <CurrentPageContextProvider>
-      <LoadingContextProvider>
-        
+      <CurrentPageContextProvider>
+        <LoadingContextProvider>
           <AdminContextProvider>
             <>
               <Loader></Loader>
               <App />
             </>
-            
           </AdminContextProvider>
-        
-
-      </LoadingContextProvider>
-    </CurrentPageContextProvider>
+        </LoadingContextProvider>
+      </CurrentPageContextProvider>
     </LoginContextProvider>
   </React.StrictMode>
 );
