@@ -3073,6 +3073,11 @@
    position: relative;
    width: 100%
  }
+ .input-group_1 {
+   align-items: stretch;
+   display: flex;
+   position: relative;
+ }
  
  .input-group>.form-control,
  .input-group>.form-floating,

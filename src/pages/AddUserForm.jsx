@@ -1,8 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaUser, FaPhoneAlt, FaEnvelope, FaKey, FaCalendarAlt } from "react-icons/fa";
+import { FaUser, FaPhoneAlt, FaEnvelope, FaKey, FaCalendarAlt, FaEye, FaEyeSlash } from "react-icons/fa";
 import { LoadingContext } from "../store/loading-context";
 import { callApi } from "../General/GeneralMethod";
+import "react-notifications/lib/notifications.css";
 import { NotificationManager } from "react-notifications";
+import FormLabel from "../General/Label/FormLabel";
+import TypeInput from "../General/Input/TypeInput";
+import NumberInput from "../General/Input/NumberInput";
+import EmailInput from "../General/Input/EmailInput";
+import PasswordInput from "../General/Input/PasswordInput";
+import DateInput from "../General/Input/DateInput";
 
 const AddUserForm = () => {
 
@@ -12,11 +19,13 @@ const AddUserForm = () => {
     email: '',
     password: '',
     phoneNo : '',
+    dob : '',
     gender: 0
   };
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [addData, setAddData] = useState(InitialState);
-  const [date, setDate] = useState(null);
+  const [type, setType] = useState('password');
+  const [icon, setIcon] = useState(<FaEyeSlash/>); 
   
   const handleChange = (e) =>{
     setAddData({
@@ -25,17 +34,24 @@ const AddUserForm = () => {
     })
      console.log(e.target.value);
   }
-
-  const handleDateChange = (e) =>{
-    const date = new Date(e.target.value); 
-    const formattedDate = date.toISOString().slice(0, 10);
-    setDate(formattedDate)
+  const validation = () => {
+    const regex = /^\d{10}$/;
+    if(addData.firstName === '' || addData.lastName === '' || addData.dob === '' || addData.gender === '' || addData.email === '' || addData.password === '' || addData.phoneNo === ''){
+      NotificationManager.warning("Enter required fields")
+      return false
+    }
+    if (!regex.test(addData.phoneNo)) {
+      NotificationManager.warning("Your phone number is not valid!")
+      return false
+    }
+    return true
   }
 
   const handleUserForm = async (event) => {
     event.preventDefault();
+    if(!validation()) return
     startLoading();
-  
+    
     try {
       const response = await callApi("post", `Auth/RegisterAdminUser`, {
         userFirstName: addData.firstName,
@@ -44,14 +60,14 @@ const AddUserForm = () => {
         userEmail: addData.email,
         password: addData.password,
         gender: addData.gender,
-        dob: date
+        dob: addData.dob
       }, {});
-  
+
+      stopLoading();
+
       if (response && response.data) {  // Check for response and response.data
         if (response.data.code === 200) {
           console.log(response.data.data);
-          setAddData(InitialState);
-          setDate(null)
           NotificationManager.succes(response.data.message)
         } else {
           console.error("API Error:", response.data.code, response.data);
@@ -63,10 +79,18 @@ const AddUserForm = () => {
       }
     } catch (error) {
       console.error("API call failed:", error);
-    } finally {
-      stopLoading(); // Ensure stopLoading always happens
     }
   };
+  
+  const handleToggleData = () => {
+    if (type==='password'){
+       setIcon(<FaEye/>);
+       setType('text')
+    } else {
+       setIcon(<FaEyeSlash/>)
+       setType('password')
+    }
+  }
   return (
     <div className="wrapper">
       <div className="main">
@@ -81,108 +105,101 @@ const AddUserForm = () => {
                       <div className="card-body">
                         <form onSubmit={handleUserForm}>
                           <div className="mb-3 row">
-                            <label className="col-form-label col-sm-3 text-sm-end">
-                              <FaUser className="me-2" /> First Name
-                            </label>
+                            <FormLabel label={"First Name"} />
                             <div className="col-sm-8">
-                              <input
-                                type="text"
-                                name="firstName"
-                                className="form-control"
-                                placeholder="Your first name"
-                                value={addData.firstName}
-                                onChange={handleChange}
+                              <TypeInput
+                                inputName={"firstName"}
+                                placeholderName={"Your first name"}
+                                valueName={addData.firstName}
+                                onChangeName={handleChange}
                               />
                             </div>
                           </div>
 
                           <div className="mb-3 row">
-                            <label className="col-form-label col-sm-3 text-sm-end">
-                              <FaUser className="me-2" /> Last Name
-                            </label>
+                            <FormLabel label={"Last Name"} />
                             <div className="col-sm-8">
-                              <input
-                                type="text"
-                                name="lastName"
-                                className="form-control"
-                                placeholder="Your last name"
-                                value={addData.lastName}
-                                onChange={handleChange}
+                              <TypeInput
+                                inputName={"lastName"}
+                                placeholderName={"Your last name"}
+                                valueName={addData.lastName}
+                                onChangeName={handleChange}
                               />
                             </div>
                           </div>
 
                           <div className="mb-3 row">
-                            <label className="col-form-label col-sm-3 text-sm-end">
-                              <FaPhoneAlt className="me-2" /> Phone No.
-                            </label>
+                            <FormLabel label={"Phone No."} />
                             <div className="col-sm-8">
-                              <input
-                                type="number"
-                                name="phoneNo"
-                                className="form-control"
-                                placeholder="8957465342"
-                                value={addData.phoneNo}
-                                onChange={handleChange}
+                              <NumberInput
+                                inputName={"phoneNo"}
+                                placeholderName={"8957465342"}
+                                valueName={
+                                  addData.length > 10
+                                    ? validation()
+                                    : addData.phoneNo
+                                }
+                                onChangeName={handleChange}
                               />
                             </div>
                           </div>
 
                           <div className="mb-3 row">
-                            <label className="col-form-label col-sm-3 text-sm-end">
-                              <FaEnvelope className="me-2" /> Email
-                            </label>
+                            <FormLabel label={"Email"} />
                             <div className="col-sm-8">
-                              <input
-                                type="email"
-                                name="email"
-                                className="form-control"
-                                placeholder="Email"
-                                value={addData.email}
-                                onChange={handleChange}
+                              <EmailInput
+                                inputName={"email"}
+                                placeholderName={"Email"}
+                                valueName={addData.email}
+                                onChangeName={handleChange}
                               />
                             </div>
                           </div>
 
                           <div className="mb-3 row">
-                            <label className="col-form-label col-sm-3 text-sm-end">
-                              <FaKey className="me-2" /> Password
-                            </label>
-                            <div className="col-sm-8">
-                              <input
-                                type="password"
-                                name="password"
-                                className="form-control"
-                                placeholder="Password"
-                                value={addData.password}
-                                onChange={handleChange}
+                            <FormLabel label={"Password"} />
+                            <div className="col-sm-8 input-group_1">
+                              <PasswordInput
+                                type={type}
+                                inputName={"password"}
+                                placeholderName={"Password"}
+                                valueName={addData.password}
+                                onChangeName={handleChange}
                               />
+                              <span
+                              className="input-group-text"
+                              onClick={handleToggleData}
+                            >
+                              {icon}
+                            </span>
                             </div>
+                            
                           </div>
 
                           <div className="mb-3 row">
-                            <label className="col-form-label col-sm-3 text-sm-end">
-                              <FaCalendarAlt className="me-2" /> DOB
-                            </label>
+                            <FormLabel label={"DOB"} />
                             <div className="col-sm-8">
-                              <input type="date" name="dob" className="form-control" value={date} onChange={handleDateChange}/>
+                              <DateInput
+                                inputName={"dob"}
+                                maxName={"2024-12-31"}
+                                valueName={addData.dob}
+                                onChangeName={handleChange}
+                              />
                             </div>
                           </div>
 
                           <fieldset className="mb-3">
                             <div className="row">
-                              <label className="col-form-label col-sm-3 text-sm-end pt-sm-0">
-                                Gender
-                              </label>
+                              <FormLabel label={"Gender"} />
                               <div className="col-sm-9">
                                 <label className="form-check">
                                   <input
                                     name="radio-3"
                                     type="radio"
-                                    value='0'
+                                    value="0"
                                     className="form-check-input"
                                     defaultChecked={addData.gender}
-                                    onChange={handleChange} 
+                                    onChange={handleChange}
                                   />
                                   <span className="form-check-label">Male</span>
                                 </label>
@@ -190,12 +207,14 @@ const AddUserForm = () => {
                                   <input
                                     name="radio-3"
                                     type="radio"
-                                    value='0'
-                                    defaultChecked={addData.gender} 
+                                    value="0"
+                                    defaultChecked={addData.gender}
                                     className="form-check-input"
-                                    onChange={handleChange} 
+                                    onChange={handleChange}
                                   />
-                                  <span className="form-check-label">Female</span>
+                                  <span className="form-check-label">
+                                    Female
+                                  </span>
                                 </label>
                                 {/* <label className="form-check">
                                   <input
