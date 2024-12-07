@@ -235,8 +235,8 @@ const Sidebar = () => {
               <span className="align-middle">Security</span>
             </a>
           </li>
-          <li class="sidebar-item">
-						<a class="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
+          <li className="sidebar-item">
+						<a className="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
             <FiUserPlus className="align-middle"/> 
             <span className="align-middle">Add user</span>
             </a>

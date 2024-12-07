@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaUser, FaPhoneAlt, FaEnvelope, FaKey, FaCalendarAlt } from "react-icons/fa";
 import { LoadingContext } from "../store/loading-context";
 import { callApi } from "../General/GeneralMethod";
+import { NotificationManager } from "react-notifications";
 
 const AddUserForm = () => {
 
@@ -11,7 +12,7 @@ const AddUserForm = () => {
     email: '',
     password: '',
     phoneNo : '',
-    gender: ''
+    gender: 0
   };
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [addData, setAddData] = useState(InitialState);
@@ -31,27 +32,41 @@ const AddUserForm = () => {
     setDate(formattedDate)
   }
 
-  const handleUserForm = (event) =>{
+  const handleUserForm = async (event) => {
     event.preventDefault();
-
     startLoading();
-    const response = callApi("post", `Auth/RegisterAdminUser`, {
-      userFirstName : addData.firstName,
-      userLastName : addData.lastName,
-      phoneNo : addData.phoneNo,
-      userEmail : addData.email,
-      password : addData.password,
-      gender : addData.gender,
-      dob : date
-    }, { })
-    stopLoading();
-
-    if(response!==null && response !==undefined){
-      if(response.data.code === 200){
-        console.log(response.data.data)
+  
+    try {
+      const response = await callApi("post", `Auth/RegisterAdminUser`, {
+        userFirstName: addData.firstName,
+        userLastName: addData.lastName,
+        phoneNo: addData.phoneNo,
+        userEmail: addData.email,
+        password: addData.password,
+        gender: addData.gender,
+        dob: date
+      }, {});
+  
+      if (response && response.data) {  // Check for response and response.data
+        if (response.data.code === 200) {
+          console.log(response.data.data);
+          setAddData(InitialState);
+          setDate(null)
+          NotificationManager.succes(response.data.message)
+        } else {
+          console.error("API Error:", response.data.code, response.data);
+          NotificationManager.error(response.data.message)
+        }
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.warning(response.data.message)
       }
+    } catch (error) {
+      console.error("API call failed:", error);
+    } finally {
+      stopLoading(); // Ensure stopLoading always happens
     }
-  }
+  };
   return (
     <div className="wrapper">
       <div className="main">
@@ -164,7 +179,7 @@ const AddUserForm = () => {
                                   <input
                                     name="radio-3"
                                     type="radio"
-                                    value='male'
+                                    value='0'
                                     className="form-check-input"
                                     defaultChecked={addData.gender}
                                     onChange={handleChange} 
@@ -175,7 +190,7 @@ const AddUserForm = () => {
                                   <input
                                     name="radio-3"
                                     type="radio"
-                                    value='female'
+                                    value='0'
                                     defaultChecked={addData.gender} 
                                     className="form-check-input"
                                     onChange={handleChange} 

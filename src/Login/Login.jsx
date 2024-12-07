@@ -52,7 +52,6 @@ const Login = () => {
     if(response!==null && response !==undefined){
       //console.log(response)
       if(response.data.code === 200){
-        //success
         // console.log(response.data.data)
         login(response.data.data)
         setCurrentPage(DASHBOARDPAGE)
