@@ -4,7 +4,7 @@ import {
   FiSliders, FiSunrise, FiPlusCircle, FiList, FiXCircle, 
   FiCreditCard, FiBell, FiRotateCcw, FiUserPlus, FiCheckCircle, 
   FiInbox, FiMessageSquare, FiMail, FiBriefcase, FiShare2, 
-  FiFile, FiFileText, FiInfo, FiShield, FiUser 
+  FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
 import { ADDUSERFORM, POPULARDESTINATIONPAGE } from "../../General/ConstStates";
@@ -235,13 +235,19 @@ const Sidebar = () => {
               <span className="align-middle">Security</span>
             </a>
           </li>
+          <li class="sidebar-item">
+						<a class="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
+            <FiUserPlus className="align-middle"/> 
+            <span className="align-middle">Add user</span>
+            </a>
+					</li>
           <li className="sidebar-item">
         <a className="sidebar-link" href="#">
           <FaList className="align-middle" /> <span className="align-middle">User List</span>
         </a>
       </li>
       <li className="sidebar-item">
-        <a className="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
+        <a className="sidebar-link" href="#">
           <FaShieldAlt className="align-middle" /> <span className="align-middle">User Auth</span>
         </a>
       </li>

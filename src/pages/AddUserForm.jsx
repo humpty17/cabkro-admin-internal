@@ -176,7 +176,7 @@ const AddUserForm = () => {
                                     name="radio-3"
                                     type="radio"
                                     value='female'
-                                    checked={addData.gender} 
+                                    defaultChecked={addData.gender} 
                                     className="form-check-input"
                                     onChange={handleChange} 
                                   />
