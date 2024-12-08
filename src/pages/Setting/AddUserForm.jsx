@@ -2,15 +2,15 @@ import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import "react-notifications/lib/notifications.css";
-import { EMAILREGEX, PHONENOREGEX } from "../General/ConstStates";
-import { callApi } from "../General/GeneralMethod";
-import DateInput from "../General/Input/DateInput";
-import EmailInput from "../General/Input/EmailInput";
-import NumberInput from "../General/Input/NumberInput";
-import PasswordInput from "../General/Input/PasswordInput";
-import TypeInput from "../General/Input/TypeInput";
-import FormLabel from "../General/Label/FormLabel";
-import { LoadingContext } from "../store/loading-context";
+import { EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
+import { callApi } from "../../General/GeneralMethod";
+import DateInput from "../../General/Input/DateInput";
+import EmailInput from "../../General/Input/EmailInput";
+import NumberInput from "../../General/Input/NumberInput";
+import PasswordInput from "../../General/Input/PasswordInput";
+import TypeInput from "../../General/Input/TypeInput";
+import FormLabel from "../../General/Label/FormLabel";
+import { LoadingContext } from "../../store/loading-context";
 
 const AddUserForm = () => {
 
@@ -64,7 +64,6 @@ const AddUserForm = () => {
     
     try {
       const response = await callApi("post", `Auth/RegisterAdminUser`, {...addData}, {});
-
       stopLoading();
 
       if (response && response.data) {  // Check for response and response.data

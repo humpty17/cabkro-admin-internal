@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaFileExport, FaTrash } from "react-icons/fa";
 import { FiPlus, FiDownload } from "react-icons/fi";
 import { Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css";
+import { LoadingContext } from "../../store/loading-context";
+import { callApi } from "../../General/GeneralMethod";
+import { NotificationManager } from "react-notifications";
 
 const data =[
   { "id": 1, "name": "John Doe", "age": 25, "email": "john.doe1@example.com" },
@@ -56,8 +59,37 @@ const data =[
   { "id": 49, "name": "Owen Green", "age": 26, "email": "owen.green49@example.com" },
   { "id": 50, "name": "Chloe Blue", "age": 34, "email": "chloe.blue50@example.com" }
 ];
+
 const PopularDestinations = () => {
   const rowGetter = ({ index }) => data[index];
+  const {startLoading, stopLoading} = useContext(LoadingContext)
+  const [getDestination, setGetDestination] = useState(null)
+  console.log(getDestination);
+  
+  const getPopularDestination = async () => {
+    startLoading();
+    try {
+      const response = await callApi("get",`Data/GetAllPopularDestinations`,{},{});
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response.data.code === 200) {
+          setGetDestination(response.data.data)
+        } else {
+          NotificationManager.error(response.data.message);
+        }
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.warning(response.data.message);
+      }
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
+  };
+
+  useEffect(() =>{
+    getPopularDestination()
+  },[])
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -169,34 +201,23 @@ const PopularDestinations = () => {
                             </tbody>
                           </table> */}
                           <Table
-      width={800} // Total width of the table
-      height={300} // Total height of the table
-      headerHeight={40} // Height of the header row
-      rowHeight={50} // Height of each row
-      rowCount={data.length} // Total number of rows
-      rowGetter={rowGetter} // Function to retrieve data for a row
-    >
-      <Column
-        label="ID"
-        dataKey="id"
-        width={100} // Width of the column
-      />
-      <Column
-        label="Name"
-        dataKey="name"
-        width={300}
-      />
-      <Column
-        label="Age"
-        dataKey="age"
-        width={150}
-      />
-      <Column
-        label="Email"
-        dataKey="email"
-        width={250}
-      />
-    </Table>
+                            width={800} // Total width of the table
+                            height={300} // Total height of the table
+                            headerHeight={40} // Height of the header row
+                            rowHeight={50} // Height of each row
+                            rowCount={data.length} // Total number of rows
+                            rowGetter={rowGetter} // Function to retrieve data for a row
+                            className="table table-striped dataTable no-footer dtr-inline"
+                          >
+                            <Column
+                              label="ID"
+                              dataKey="id"
+                              width={100} // Width of the column
+                            />
+                            <Column label="Name" dataKey="name" width={300} />
+                            <Column label="Age" dataKey="age" width={150} />
+                            <Column label="Email" dataKey="email" width={250} />
+                          </Table>
                         </div>
                       </div>
                     </div>

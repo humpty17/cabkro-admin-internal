@@ -6,6 +6,7 @@ export const POPULARDESTINATIONPAGE="PopularDestinations"
 
 // Setting Section
 export const ADDUSERFORM = "AddUserForm"
+export const USERADMINLIST = "UserAdminList"
 
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Sidebar from "./General/SideBar/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./General/Components/Navbar";
-import PopularDestinations from "./pages/PopularDestinations";
+import PopularDestinations from "./pages/Data/PopularDestinations";
 import { CurrentPageContext } from "./store/pages-context";
 import {
   ADDUSERFORM,
@@ -10,12 +10,14 @@ import {
   LOGINPAGE,
   POPULARDESTINATIONPAGE,
   REGISTERPAGE,
+  USERADMINLIST,
 } from "./General/ConstStates";
 
 import Register from "./General/Register/Register";
 import Login from "./Login/Login";
-import AddUserForm from "./pages/AddUserForm";
+import AddUserForm from "./pages/Setting/AddUserForm";
 import LoginContextProvider, { LoginContext } from "./store/login-context";
+import UserAdminList from "./pages/Setting/UserAdminList";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -33,6 +35,7 @@ const Home = () => {
             {currentPage === DASHBOARDPAGE && <Dashboard />}
             {currentPage === POPULARDESTINATIONPAGE && <PopularDestinations/>}
             {currentPage === ADDUSERFORM && <AddUserForm/>}
+            {currentPage === USERADMINLIST && <UserAdminList/>}
           </div>
         </div>
       )}
