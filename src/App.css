@@ -3377,6 +3377,10 @@
      transition: none
    }
  }
+ .required:after {
+  content:" *";
+  color: red;
+}
  
  .btn:hover {
    background-color: var(--bs-btn-hover-bg);
