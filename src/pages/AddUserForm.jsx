@@ -3,7 +3,7 @@ import { FaUser, FaPhoneAlt, FaEnvelope, FaKey, FaCalendarAlt, FaEye, FaEyeSlash
 import { LoadingContext } from "../store/loading-context";
 import { callApi } from "../General/GeneralMethod";
 import "react-notifications/lib/notifications.css";
-import { NotificationManager } from "react-notifications";
+import { NotificationManager } from 'react-notifications';
 import FormLabel from "../General/Label/FormLabel";
 import TypeInput from "../General/Input/TypeInput";
 import NumberInput from "../General/Input/NumberInput";
@@ -36,12 +36,17 @@ const AddUserForm = () => {
   }
   const validation = () => {
     const regex = /^\d{10}$/;
+    const mailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
     if(addData.firstName === '' || addData.lastName === '' || addData.dob === '' || addData.gender === '' || addData.email === '' || addData.password === '' || addData.phoneNo === ''){
       NotificationManager.warning("Enter required fields")
       return false
     }
     if (!regex.test(addData.phoneNo)) {
       NotificationManager.warning("Your phone number is not valid!")
+      return false
+    }
+    if(!mailRegex.test(addData.email)){
+      NotificationManager.warning("Your email is not valid!")
       return false
     }
     return true

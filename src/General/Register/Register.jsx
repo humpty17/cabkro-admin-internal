@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import Swal from 'sweetalert2/src/sweetalert2.js'
 
 const Register = () => {
   const InitialState = {
@@ -46,12 +45,7 @@ const Register = () => {
             setAddData({});
           }
         } catch (err) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-            footer: '<a href="#">Why do I have this issue?</a>'
-          });
+          
         }
       };
       fetchRegiterData();
