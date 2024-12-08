@@ -32,7 +32,7 @@ const Navbar = () => {
                 <span className="indicator">4</span>
               </div>
             </a>
-            <div className={`dropdown-menu notification dropdown-menu-lg dropdown-menu-end py-0 ${notificationOpen ? 'show' : ''} `} aria-labelledby="alertsDropdown">
+            <div className={`dropdown-menu notification-icon dropdown-menu-lg dropdown-menu-end py-0 ${notificationOpen ? 'show' : ''} `} aria-labelledby="alertsDropdown">
               <div className="dropdown-menu-header">4 New Notifications</div>
               <div className="list-group">
                 <a href="#" className="list-group-item">

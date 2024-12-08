@@ -3065,7 +3065,11 @@
  .form-floating>:disabled~label:after {
    background-color: #e9ecef
  }
- 
+ input::-webkit-outer-spin-button,
+ input::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
+ }
  .input-group {
    align-items: stretch;
    display: flex;
@@ -4857,7 +4861,7 @@
    flex-direction: row;
  }
 
- .notification{
+ .notification-icon{
   left: auto;
   right: 0;
   box-sizing: border-box !important;
