@@ -1,22 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FaUser, FaPhoneAlt, FaEnvelope, FaKey, FaCalendarAlt, FaEye, FaEyeSlash } from "react-icons/fa";
-import { LoadingContext } from "../store/loading-context";
-import { callApi } from "../General/GeneralMethod";
-import "react-notifications/lib/notifications.css";
+import React, { useContext, useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
-import FormLabel from "../General/Label/FormLabel";
-import TypeInput from "../General/Input/TypeInput";
-import NumberInput from "../General/Input/NumberInput";
-import EmailInput from "../General/Input/EmailInput";
-import PasswordInput from "../General/Input/PasswordInput";
+import "react-notifications/lib/notifications.css";
+import { EMAILREGEX, PHONENOREGEX } from "../General/ConstStates";
+import { callApi } from "../General/GeneralMethod";
 import DateInput from "../General/Input/DateInput";
+import EmailInput from "../General/Input/EmailInput";
+import NumberInput from "../General/Input/NumberInput";
+import PasswordInput from "../General/Input/PasswordInput";
+import TypeInput from "../General/Input/TypeInput";
+import FormLabel from "../General/Label/FormLabel";
+import { LoadingContext } from "../store/loading-context";
 
 const AddUserForm = () => {
 
   const InitialState = {
-    firstName :'',
-    lastName : '',
-    email: '',
+    userFirstName :'',
+    userLastName : '',
+    userEmail: '',
     password: '',
     phoneNo : '',
     dob : '',
@@ -28,24 +29,28 @@ const AddUserForm = () => {
   const [icon, setIcon] = useState(<FaEyeSlash/>); 
   
   const handleChange = (e) =>{
+    if(e.target.name === "phoneNo"){
+      if(e.target.value.length > 10){
+        return
+      }
+    }
     setAddData({
       ...addData,
       [e.target.name] : e.target.value
     })
-     console.log(e.target.value);
+     console.log(typeof e.target.value);
   }
   const validation = () => {
-    const regex = /^\d{10}$/;
-    const mailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
-    if(addData.firstName === '' || addData.lastName === '' || addData.dob === '' || addData.gender === '' || addData.email === '' || addData.password === '' || addData.phoneNo === ''){
+    
+    if(addData.userFirstName === '' || addData.userLastName === '' || addData.dob === '' || addData.gender === '' || addData.userEmail === '' || addData.password === '' || addData.phoneNo === ''){
       NotificationManager.warning("Enter required fields")
       return false
     }
-    if (!regex.test(addData.phoneNo)) {
+    if (!PHONENOREGEX.test(addData.phoneNo)) {
       NotificationManager.warning("Your phone number is not valid!")
       return false
     }
-    if(!mailRegex.test(addData.email)){
+    if(!EMAILREGEX.test(addData.userEmail)){
       NotificationManager.warning("Your email is not valid!")
       return false
     }
@@ -58,22 +63,14 @@ const AddUserForm = () => {
     startLoading();
     
     try {
-      const response = await callApi("post", `Auth/RegisterAdminUser`, {
-        userFirstName: addData.firstName,
-        userLastName: addData.lastName,
-        phoneNo: addData.phoneNo,
-        userEmail: addData.email,
-        password: addData.password,
-        gender: addData.gender,
-        dob: addData.dob
-      }, {});
+      const response = await callApi("post", `Auth/RegisterAdminUser`, {...addData}, {});
 
       stopLoading();
 
       if (response && response.data) {  // Check for response and response.data
         if (response.data.code === 200) {
           console.log(response.data.data);
-          NotificationManager.succes(response.data.message)
+          NotificationManager.success(response.data.message)
         } else {
           console.error("API Error:", response.data.code, response.data);
           NotificationManager.error(response.data.message)
@@ -96,6 +93,10 @@ const AddUserForm = () => {
        setType('password')
     }
   }
+
+  const handleReset = () =>{
+    setAddData({...InitialState})
+  }
   return (
     <div className="wrapper">
       <div className="main">
@@ -113,9 +114,9 @@ const AddUserForm = () => {
                             <FormLabel label={"First Name"} />
                             <div className="col-sm-8">
                               <TypeInput
-                                inputName={"firstName"}
+                                inputName={"userFirstName"}
                                 placeholderName={"Your first name"}
-                                valueName={addData.firstName}
+                                valueName={addData.userFirstName}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -125,9 +126,9 @@ const AddUserForm = () => {
                             <FormLabel label={"Last Name"} />
                             <div className="col-sm-8">
                               <TypeInput
-                                inputName={"lastName"}
+                                inputName={"userLastName"}
                                 placeholderName={"Your last name"}
-                                valueName={addData.lastName}
+                                valueName={addData.userLastName}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -139,11 +140,7 @@ const AddUserForm = () => {
                               <NumberInput
                                 inputName={"phoneNo"}
                                 placeholderName={"8957465342"}
-                                valueName={
-                                  addData.length > 10
-                                    ? validation()
-                                    : addData.phoneNo
-                                }
+                                valueName={addData.phoneNo}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -153,9 +150,9 @@ const AddUserForm = () => {
                             <FormLabel label={"Email"} />
                             <div className="col-sm-8">
                               <EmailInput
-                                inputName={"email"}
+                                inputName={"userEmail"}
                                 placeholderName={"Email"}
-                                valueName={addData.email}
+                                valueName={addData.userEmail}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -199,21 +196,23 @@ const AddUserForm = () => {
                               <div className="col-sm-9">
                                 <label className="form-check">
                                   <input
-                                    name="radio-3"
+                                    name="gender"
                                     type="radio"
-                                    value="0"
+                                    value={"1"}
                                     className="form-check-input"
-                                    defaultChecked={addData.gender}
+                                   // defaultChecked={addData.gender}
+                                    checked={addData.gender === "1" ? true : false}
                                     onChange={handleChange}
                                   />
                                   <span className="form-check-label">Male</span>
                                 </label>
                                 <label className="form-check">
                                   <input
-                                    name="radio-3"
+                                    name="gender"
                                     type="radio"
-                                    value="0"
-                                    defaultChecked={addData.gender}
+                                    value={"2"}
+                                   // defaultChecked={addData.gender}
+                                    checked={addData.gender === "2" ? true : false}
                                     className="form-check-input"
                                     onChange={handleChange}
                                   />
@@ -237,6 +236,9 @@ const AddUserForm = () => {
 
                           <div className="mb-3 row">
                             <div className="col-sm-9 ms-sm-auto">
+                            <button type="button" className="btn btn-primary" onClick={handleReset}>
+                                Reset
+                              </button>
                               <button type="submit" className="btn btn-primary">
                                 Submit
                               </button>

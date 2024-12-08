@@ -6,7 +6,7 @@ import LoadingContextProvider, { LoadingContext } from "../store/loading-context
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
 import { CurrentPageContext } from "../store/pages-context";
-import { DASHBOARDPAGE, LOGINPAGE } from '../General/ConstStates';
+import { DASHBOARDPAGE, LOGINPAGE, PHONENOREGEX } from '../General/ConstStates';
 import { LoginContext } from "../store/login-context";
 
 
@@ -30,12 +30,12 @@ const Login = () => {
 
   const validate = () =>{
     //Regular expression to match exactly 10 digits
-    const regex = /^\d{10}$/;
+   
     if(enteredUserDetail.phoneNo==="" || enteredUserDetail.password===""){
       NotificationManager.warning("Enter required fields")
       return false
     } 
-    if (!regex.test(enteredUserDetail.phoneNo)) {
+    if (!PHONENOREGEX.test(enteredUserDetail.phoneNo)) {
       NotificationManager.warning("Your phone number is not valid!")
       return false
     }
