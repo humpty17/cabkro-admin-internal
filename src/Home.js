@@ -5,6 +5,7 @@ import Navbar from "./General/Components/Navbar";
 import PopularDestinations from "./pages/Data/PopularDestinations";
 import { CurrentPageContext } from "./store/pages-context";
 import {
+  ADDBOOKINGPACKAGE,
   ADDUSERFORM,
   DASHBOARDPAGE,
   LOGINPAGE,
@@ -18,6 +19,7 @@ import Login from "./Login/Login";
 import AddUserForm from "./pages/Setting/AddUserForm";
 import LoginContextProvider, { LoginContext } from "./store/login-context";
 import UserAdminList from "./pages/Setting/UserAdminList";
+import AddBookingPackage from "./pages/Data/AddBookingPackage";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -33,7 +35,12 @@ const Home = () => {
           <div className="main">
             <Navbar />
             {currentPage === DASHBOARDPAGE && <Dashboard />}
+
+            {/* data section */}
             {currentPage === POPULARDESTINATIONPAGE && <PopularDestinations/>}
+            {currentPage === ADDBOOKINGPACKAGE && <AddBookingPackage/>}
+
+            {/* setting section */}
             {currentPage === ADDUSERFORM && <AddUserForm/>}
             {currentPage === USERADMINLIST && <UserAdminList/>}
           </div>

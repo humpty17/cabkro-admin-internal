@@ -3,6 +3,7 @@ export const REGISTERPAGE = "Register"
 export const DASHBOARDPAGE="Dashboard"
 // Data Section
 export const POPULARDESTINATIONPAGE="PopularDestinations"
+export const ADDBOOKINGPACKAGE = "AddBookingPackage"
 
 // Setting Section
 export const ADDUSERFORM = "AddUserForm"

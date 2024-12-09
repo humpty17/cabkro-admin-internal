@@ -66,8 +66,7 @@ const UserAdminList = () => {
       }
     } catch (error) {
       console.error("API call failed:", error);
-    }
-    
+    } 
   }
 
   useEffect(() =>{

@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDUSERFORM, POPULARDESTINATIONPAGE, USERADMINLIST } from "../../General/ConstStates";
+import { ADDBOOKINGPACKAGE, ADDUSERFORM, POPULARDESTINATIONPAGE, USERADMINLIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 
@@ -67,7 +67,7 @@ const Sidebar = () => {
             </a>
           </li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="AddBookingPackage.html">
+            <a className="sidebar-link" onClick={() =>handleItemClick(ADDBOOKINGPACKAGE)}>
               <FiPlusCircle className="align-middle" />
               <SidebarName name={'Add Booking Packages'}/>
               
