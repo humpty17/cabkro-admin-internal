@@ -3,97 +3,51 @@ import { FaFileExport, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { LoadingContext } from '../../store/loading-context';
 import { callApi } from '../../General/GeneralMethod';
 import { NotificationManager } from 'react-notifications';
-import { Column, Table } from "react-virtualized";
+import { Column, Table, AutoSizer} from "react-virtualized";
 
 const UserAdminList = () => {
-  const customers = [
-    {
-      name: "Airi Satou",
-      position: "Accountant",
-      office: "Tokyo",
-      age: 33,
-      startDate: "2018/11/28",
-      salary: "$162,700",
-    },
-    {
-      name: "Angelica Ramos",
-      position: "Chief Executive Officer (CEO)",
-      office: "London",
-      age: 47,
-      startDate: "2019/10/09",
-      salary: "$1,200,000",
-    },
-    {
-      name: "Ashton Cox",
-      position: "Junior Technical Author",
-      office: "San Francisco",
-      age: 66,
-      startDate: "2019/01/12",
-      salary: "$86,000",
-    },
-    {
-      name: "Bradley Greer",
-      position: "Software Engineer",
-      office: "London",
-      age: 41,
-      startDate: "2022/10/13",
-      salary: "$132,000",
-    },
-    {
-      name: "Brenden Wagner",
-      position: "Software Engineer",
-      office: "San Francisco",
-      age: 28,
-      startDate: "2023/06/07",
-      salary: "$206,850",
-    },
-    {
-      name: "Brielle Williamson",
-      position: "Integration Specialist",
-      office: "New York",
-      age: 61,
-      startDate: "2022/12/02",
-      salary: "$372,000",
-    },
-    {
-      name: "Bruno Nash",
-      position: "Software Engineer",
-      office: "London",
-      age: 38,
-      startDate: "2023/05/03",
-      salary: "$163,500",
-    },
-    {
-      name: "Caesar Vance",
-      position: "Pre-Sales Support",
-      office: "New York",
-      age: 21,
-      startDate: "2023/12/12",
-      salary: "$106,450",
-    },
-    {
-      name: "Cara Stevens",
-      position: "Sales Assistant",
-      office: "New York",
-      age: 46,
-      startDate: "2023/12/06",
-      salary: "$145,600",
-    },
-    {
-      name: "Cedric Kelly",
-      position: "Senior Javascript Developer",
-      office: "Edinburgh",
-      age: 22,
-      startDate: "2022/03/29",
-      salary: "$433,060",
-    },
-  ];
+ const filterState = {
+  userFirstName : '',
+  userLastName : '',
+  phoneNo : '',
+  Email : '',
+  dob : ''
+  }
 
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [user, setUser] = useState('');
+  const [filters, setFilters] = useState(filterState)
   const rowGetter = ({ index }) => user[index];
-  console.log(user);
-  
+
+  // Update filters and apply them
+  const handleFilterChange = (column, value) => {
+    const newFilters = { ...filters, [column]: value };
+    setFilters(newFilters);
+
+    // Apply filters to the data
+    const newData = user.filter((row) =>
+      Object.keys(newFilters).every((key) => {
+        if (!newFilters[key]) return true; // No filter applied for this column
+        return row[key].toString().toLowerCase().includes(newFilters[key].toLowerCase());
+      })
+    );
+
+    setUser(newData);
+  };
+
+   // Render header with search inputs
+   const headerRenderer = ({ dataKey, label }) => (
+    <div>
+      <div>{label}</div>
+      <input
+        type="text"
+        placeholder={`Search ${label}`}
+        value={filters[dataKey]}
+        //onChange={(e) => handleFilterChange(dataKey, e.target.value)}
+        style={{ width: "70%", padding: "4px", marginTop: "1px" }}
+      />
+    </div>
+  );
 
   const userList = async() =>{
     startLoading();
@@ -125,7 +79,7 @@ const UserAdminList = () => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Customer List</h1>
+            <h1 className="h3 mb-3">UserAdminList</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">
@@ -138,32 +92,6 @@ const UserAdminList = () => {
                   </div>
                   <div className="card-body">
                     <div className="dataTables_wrapper">
-                      <div className="row">
-                        <div className="col-sm-12 col-md-6">
-                          <label>
-                            Show{" "}
-                            <select
-                              name="entries"
-                              className="form-select form-select-sm"
-                            >
-                              <option value="10">10</option>
-                              <option value="25">25</option>
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                            </select>{" "}
-                            entries
-                          </label>
-                        </div>
-                        <div className="col-sm-12 col-md-6 text-end">
-                          <label>
-                            Search:{" "}
-                            <input
-                              type="search"
-                              className="form-control form-control-sm"
-                            />
-                          </label>
-                        </div>
-                      </div>
                       <div className="row">
                         <div className="col-sm-12">
                           {/* <table className="table table-striped">
@@ -195,22 +123,26 @@ const UserAdminList = () => {
                               ))}
                             </tbody>
                           </table> */}
+                          <AutoSizer>
+                          {({ height, width }) => (
                           <Table
                             width={1000} // Total width of the table
                             height={300} // Total height of the table
-                            headerHeight={40} // Height of the header row
+                            headerHeight={70} // Height of the header row
                             rowHeight={50} // Height of each row
                             rowCount={user.length} // Total number of rows
                             rowGetter={rowGetter} // Function to retrieve data for a row
                             className="table table-striped"
                           >
                             {/* <Column label="userId" dataKey="userId" width={100} /> */}
-                            <Column label="userFirstName"  dataKey="userFirstName" width={300} />
-                            <Column label="userLastName" dataKey="userLastName" width={300} />
-                            <Column label="Phone No." dataKey="phoneNo" width={150} />
-                            <Column label="Email" dataKey="userEmail" width={250} />
-                            <Column label="dob" dataKey="dob" width={250} />
+                            <Column label="userFirstName"  dataKey="userFirstName" headerRenderer={headerRenderer} width={300} />
+                            <Column label="userLastName" dataKey="userLastName" headerRenderer={headerRenderer} width={300} />
+                            <Column label="Phone No." dataKey="phoneNo" headerRenderer={headerRenderer} width={150} />
+                            <Column label="Email" dataKey="userEmail" headerRenderer={headerRenderer} width={250} />
+                            <Column label="dob" dataKey="dob" headerRenderer={headerRenderer} width={250} />
                           </Table>
+                          )}
+                          </AutoSizer>
                         </div>
                       </div>
                     </div>
