@@ -4,90 +4,9 @@ import { LoadingContext } from '../../store/loading-context';
 import { NotificationManager } from 'react-notifications';
 import { callApi } from '../../General/GeneralMethod';
 import { Column, Table, AutoSizer} from "react-virtualized";
+import { headerRenderer } from '../../General/Common/Utils';
 
 const AddBookingPackage = () => {
-  const tableData = [
-    {
-      name: "Airi Satou",
-      position: "Accountant",
-      office: "Tokyo",
-      age: 33,
-      startDate: "2018/11/28",
-      salary: "$162,700",
-    },
-    {
-      name: "Angelica Ramos",
-      position: "Chief Executive Officer (CEO)",
-      office: "London",
-      age: 47,
-      startDate: "2019/10/09",
-      salary: "$1,200,000",
-    },
-    {
-      name: "Ashton Cox",
-      position: "Junior Technical Author",
-      office: "San Francisco",
-      age: 66,
-      startDate: "2019/01/12",
-      salary: "$86,000",
-    },
-    {
-      name: "Bradley Greer",
-      position: "Software Engineer",
-      office: "London",
-      age: 41,
-      startDate: "2022/10/13",
-      salary: "$132,000",
-    },
-    {
-      name: "Brenden Wagner",
-      position: "Software Engineer",
-      office: "San Francisco",
-      age: 28,
-      startDate: "2023/06/07",
-      salary: "$206,850",
-    },
-    {
-      name: "Brielle Williamson",
-      position: "Integration Specialist",
-      office: "New York",
-      age: 61,
-      startDate: "2022/12/02",
-      salary: "$372,000",
-    },
-    {
-      name: "Bruno Nash",
-      position: "Software Engineer",
-      office: "London",
-      age: 38,
-      startDate: "2023/05/03",
-      salary: "$163,500",
-    },
-    {
-      name: "Caesar Vance",
-      position: "Pre-Sales Support",
-      office: "New York",
-      age: 21,
-      startDate: "2023/12/12",
-      salary: "$106,450",
-    },
-    {
-      name: "Cara Stevens",
-      position: "Sales Assistant",
-      office: "New York",
-      age: 46,
-      startDate: "2023/12/06",
-      salary: "$145,600",
-    },
-    {
-      name: "Cedric Kelly",
-      position: "Senior Javascript Developer",
-      office: "Edinburgh",
-      age: 22,
-      startDate: "2022/03/29",
-      salary: "$433,060",
-    },
-  ];
 
   const filterState = {
     packageName : '',
@@ -102,18 +21,12 @@ const AddBookingPackage = () => {
   const [bookingfilters, setBookingFilters] = useState(filterState)
   const rowGetter = ({ index }) => bookingData[index];
 
-  const headerRenderer = ({ dataKey, label }) => (
-    <div>
-      <div>{label}</div>
-      <input
-        type="text"
-        placeholder={`Search ${label}`}
-        value={bookingfilters[dataKey]}
-        //onChange={(e) => handleFilterChange(dataKey, e.target.value)}
-        style={{ width: "70%", padding: "4px", marginTop: "1px" }}
-      />
-    </div>
-  );
+  const handleFilterChange = (dataKey, value) => {
+    setBookingFilters((prevFilters) => ({
+      ...prevFilters,
+      [dataKey]: value,
+    }));
+  };
 
   const bookingList = async() =>{
     startLoading();
@@ -181,54 +94,90 @@ const AddBookingPackage = () => {
                     </div>
                     <div className="row dt-row">
                       <div className="col-sm-12">
-                        {/* <table className="table table-striped">
-                          <thead className="table-dark">
-                            <tr>
-                              <th>Name</th>
-                              <th>Position</th>
-                              <th>Office</th>
-                              <th>Age</th>
-                              <th>Start Date</th>
-                              <th>Salary</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {tableData.map((row, index) => (
-                              <tr key={index}>
-                                <td>{row.name}</td>
-                                <td>{row.position}</td>
-                                <td>{row.office}</td>
-                                <td>{row.age}</td>
-                                <td>{row.startDate}</td>
-                                <td>{row.salary}</td>
-                                <td>
-                                  <FiTrash2 className="align-middle" />
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table> */}
                         <AutoSizer>
                           {({ height, width }) => (
-                          <Table
-                            width={1000} // Total width of the table
-                            height={300} // Total height of the table
-                            headerHeight={70} // Height of the header row
-                            rowHeight={50} // Height of each row
-                            rowCount={bookingData.length} // Total number of rows
-                            rowGetter={rowGetter} // Function to retrieve data for a row
-                            className="table table-striped"
-                          >
-                            {/* <Column label="userId" dataKey="userId" width={100} /> */}
-                            <Column label="packageName"  dataKey="packageName" headerRenderer={headerRenderer} width={300} />
-                            <Column label="description" dataKey="description" headerRenderer={headerRenderer} width={300} />
-                            <Column label="basePrice" dataKey="basePrice" headerRenderer={headerRenderer} width={150} />
-                            <Column label="vehicleType" dataKey="vehicleType" headerRenderer={headerRenderer} width={250} />
-                            <Column label="vehicleFuelType" dataKey="vehicleFuelType" headerRenderer={headerRenderer} width={250} />
-                          </Table>
+                            <Table
+                              width={1000} // Total width of the table
+                              height={300} // Total height of the table
+                              headerHeight={70} // Height of the header row
+                              rowHeight={50} // Height of each row
+                              rowCount={bookingData.length} // Total number of rows
+                              rowGetter={rowGetter} // Function to retrieve data for a row
+                              rowClassName={({ index }) =>
+                                index % 2 === 0
+                                  ? "virtualized-row"
+                                  : "virtualized-row alternate"
+                              }
+                            >
+                              {/* <Column label="userId" dataKey="userId" width={100} /> */}
+                              <Column
+                                label="packageName"
+                                className="virtualized-header"
+                                dataKey="packageName"
+                                headerRenderer={(props) =>
+                                  headerRenderer({
+                                    ...props,
+                                    bookingfilters,
+                                    //handleFilterChange,
+                                  })
+                                }
+                                width={300}
+                              />
+                              <Column
+                                label="description"
+                                className="virtualized-header"
+                                dataKey="description"
+                                headerRenderer={(props) =>
+                                  headerRenderer({
+                                    ...props,
+                                    bookingfilters,
+                                    // handleFilterChange,
+                                  })
+                                }
+                                width={300}
+                              />
+                              <Column
+                                label="basePrice"
+                                className="virtualized-header"
+                                dataKey="basePrice"
+                                headerRenderer={(props) =>
+                                  headerRenderer({
+                                    ...props,
+                                    bookingfilters,
+                                    // handleFilterChange,
+                                  })
+                                }
+                                width={150}
+                              />
+                              <Column
+                                label="vehicleType"
+                                className="virtualized-header"
+                                dataKey="vehicleType"
+                                headerRenderer={(props) =>
+                                  headerRenderer({
+                                    ...props,
+                                    bookingfilters,
+                                    // handleFilterChange,
+                                  })
+                                }
+                                width={250}
+                              />
+                              <Column
+                                label="vehicleFuelType"
+                                className="virtualized-header"
+                                dataKey="vehicleFuelType"
+                                headerRenderer={(props) =>
+                                  headerRenderer({
+                                    ...props,
+                                    bookingfilters,
+                                    // handleFilterChange,
+                                  })
+                                }
+                                width={250}
+                              />
+                            </Table>
                           )}
-                          </AutoSizer>
+                        </AutoSizer>
                       </div>
                     </div>
                   </div>

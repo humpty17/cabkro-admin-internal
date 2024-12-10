@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaFileExport, FaTrash } from "react-icons/fa";
 import { FiPlus, FiDownload } from "react-icons/fi";
-import { Column, Table } from "react-virtualized";
+import { AutoSizer, Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css";
 import { LoadingContext } from "../../store/loading-context";
 import { callApi } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
+import 'bootstrap/dist/css/bootstrap.css'
 
 const data =[
   { "id": 1, "name": "John Doe", "age": 25, "email": "john.doe1@example.com" },
@@ -64,7 +65,14 @@ const PopularDestinations = () => {
   const rowGetter = ({ index }) => data[index];
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [getDestination, setGetDestination] = useState(null)
-  console.log(getDestination);
+  const [bookingfilters, setBookingFilters] = useState({});
+
+  const handleFilterChange = (dataKey, value) => {
+    setBookingFilters((prevFilters) => ({
+      ...prevFilters,
+      [dataKey]: value,
+    }));
+  };
   
   const getPopularDestination = async () => {
     startLoading();
@@ -117,107 +125,62 @@ const PopularDestinations = () => {
                   </div>
                   <div className="card-body">
                     <div className="dataTables_wrapper dt-bootstrap5 no-footer">
-                      <div className="row">
-                        <div className="col-sm-12 col-md-6">
-                          <div className="dataTables_length">
-                            <label>
-                              Show
-                              <select
-                                name="entries"
-                                aria-controls="datatables"
-                                className="form-select form-select-sm"
-                              >
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                              </select>{" "}
-                              entries
-                            </label>
-                          </div>
-                        </div>
-                        <div className="col-sm-12 col-md-6">
-                          <div className="dataTables_filter">
-                            <label>
-                              Search:
-                              <input
-                                type="search"
-                                className="form-control form-control-sm"
-                                placeholder=""
-                              />
-                            </label>
-                          </div>
-                        </div>
-                      </div>
+                      
                       <div className="row dt-row">
                         <div className="col-sm-12">
-                          {/* <table
-                            className="table table-striped dataTable no-footer dtr-inline"
-                            style={{ width: "100%" }}
-                          >
-                            <thead className="table-dark">
-                              <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {[
-                                {
-                                  name: "Airi Satou",
-                                  position: "Accountant",
-                                  office: "Tokyo",
-                                  age: 33,
-                                  startDate: "2018/11/28",
-                                  salary: "$162,700",
-                                },
-                                {
-                                  name: "Angelica Ramos",
-                                  position: "Chief Executive Officer (CEO)",
-                                  office: "London",
-                                  age: 47,
-                                  startDate: "2019/10/09",
-                                  salary: "$1,200,000",
-                                },
-                                // Add additional data here
-                              ].map((item, index) => (
-                                <tr key={index}>
-                                  <td>{item.name}</td>
-                                  <td>{item.position}</td>
-                                  <td>{item.office}</td>
-                                  <td>{item.age}</td>
-                                  <td>{item.startDate}</td>
-                                  <td>{item.salary}</td>
-                                  <td>
-                                    <FaTrash className="align-middle text-danger" />
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table> */}
+                        <AutoSizer>
+                        {({ height, width }) => (
                           <Table
-                            width={800} // Total width of the table
+                            width={1000} // Total width of the table
                             height={300} // Total height of the table
                             headerHeight={40} // Height of the header row
                             rowHeight={50} // Height of each row
                             rowCount={data.length} // Total number of rows
                             rowGetter={rowGetter} // Function to retrieve data for a row
-                            className="table table-striped dataTable no-footer dtr-inline"
+                            rowClassName={({ index }) =>
+                              index % 2 === 0
+                                ? "virtualized-row"
+                                : "virtualized-row alternate"
+                            }
                           >
                             <Column
                               label="ID"
                               dataKey="id"
-                              width={100} // Width of the column
+                              width={100}
+                              className="virtualized-header"
                             />
-                            <Column label="Name" dataKey="name" width={300} />
-                            <Column label="Age" dataKey="age" width={150} />
-                            <Column label="Email" dataKey="email" width={250} />
+                            <Column
+                              label="Name"
+                              dataKey="name"
+                              width={300}
+                              className="virtualized-header"
+                            />
+                            <Column
+                              label="Age"
+                              dataKey="age"
+                              width={150}
+                              className="virtualized-header"
+                            />
+                            <Column
+                              label="Email"
+                              dataKey="email"
+                              width={250}
+                              className="virtualized-header"
+                            />
+                            <Column
+                              label="Action"
+                              dataKey="action"
+                              width={100}
+                              className="virtualized-header"
+                              cellRenderer={({ rowIndex }) => (
+                                <div className="virtualized-action">
+                                  <FaTrash/>
+                                </div>
+                              )}
+                            />
                           </Table>
+                          )}
+                          </AutoSizer>
                         </div>
                       </div>
                     </div>

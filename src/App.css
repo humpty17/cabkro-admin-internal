@@ -2148,13 +2148,13 @@
    width: 100%
  }
  
- .table>:not(caption)>*>* {
+ /* .table>:not(caption)>*>* {
    background-color: var(--bs-table-bg);
    border-bottom-width: var(--bs-border-width);
    box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
    color: var(--bs-table-color-state, var(--bs-table-color-type, var(--bs-table-color)));
    padding: .75rem
- }
+ } */
  
  .table>tbody {
    vertical-align: inherit
@@ -17298,6 +17298,73 @@
      width: 100vw
    }
  }
+
+ /* Table container */
+.virtualized-table {
+  border: 1px solid #dee2e6; /* Light border around the table */
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+}
+
+.ReactVirtualized__Table__headerRow {
+  background-color: #343a40 !important; 
+
+}
+.ReactVirtualized__Table__headerTruncatedText{
+  color: #fff !important;
+}
+
+/* Header styling */
+.virtualized-header {
+  /* background-color: #343a40; */
+  color: #000;
+  /* font-weight: bold;
+  text-transform: uppercase; */
+  display: flex;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.virtualized-header div {
+  /* padding: 10px; */
+  text-align: left;
+  flex: 1; /* Equal spacing for all columns */
+}
+
+/* Row styling */
+.virtualized-row {
+  display: flex;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.virtualized-row div {
+  /* padding: 10px; */
+  text-align: left;
+  flex: 1; /* Equal spacing for all columns */
+}
+
+.virtualized-row:nth-child(odd) {
+  background-color: #dee2e6; /* Light gray for alternating rows */
+}
+
+.virtualized-row:hover {
+  background-color: #f6f8fa; /* Highlight on hover */
+  cursor: pointer;
+}
+
+/* Action button styling */
+.virtualized-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #dc3545; /* Red color for delete icon */
+  cursor: pointer;
+}
+
+.virtualized-action:hover {
+  color: #a71d2a; /* Darker red on hover */
+}
+
  
  .navbar .avatar {
    margin-bottom: -15px;
