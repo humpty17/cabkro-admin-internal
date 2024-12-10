@@ -7,6 +7,7 @@ import { LoadingContext } from "../../store/loading-context";
 import { callApi } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
 import 'bootstrap/dist/css/bootstrap.css'
+import { headerRenderer } from "../../General/Common/Utils";
 
 const data =[
   { "id": 1, "name": "John Doe", "age": 25, "email": "john.doe1@example.com" },
@@ -133,7 +134,7 @@ const PopularDestinations = () => {
                           <Table
                             width={1000} // Total width of the table
                             height={300} // Total height of the table
-                            headerHeight={40} // Height of the header row
+                            headerHeight={70} // Height of the header row
                             rowHeight={50} // Height of each row
                             rowCount={data.length} // Total number of rows
                             rowGetter={rowGetter} // Function to retrieve data for a row
@@ -148,24 +149,52 @@ const PopularDestinations = () => {
                               dataKey="id"
                               width={100}
                               className="virtualized-header"
+                              headerRenderer={(props) =>
+                                headerRenderer({
+                                  ...props,
+                                  bookingfilters,
+                                  // handleFilterChange,
+                                })
+                              }
                             />
                             <Column
                               label="Name"
                               dataKey="name"
                               width={300}
                               className="virtualized-header"
+                              headerRenderer={(props) =>
+                                headerRenderer({
+                                  ...props,
+                                  bookingfilters,
+                                  // handleFilterChange,
+                                })
+                              }
                             />
                             <Column
                               label="Age"
                               dataKey="age"
                               width={150}
                               className="virtualized-header"
+                              headerRenderer={(props) =>
+                                headerRenderer({
+                                  ...props,
+                                  bookingfilters,
+                                  // handleFilterChange,
+                                })
+                              }
                             />
                             <Column
                               label="Email"
                               dataKey="email"
                               width={250}
                               className="virtualized-header"
+                              headerRenderer={(props) =>
+                                headerRenderer({
+                                  ...props,
+                                  bookingfilters,
+                                  // handleFilterChange,
+                                })
+                              }
                             />
                             <Column
                               label="Action"

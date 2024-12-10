@@ -4,6 +4,7 @@ import { LoadingContext } from '../../store/loading-context';
 import { callApi } from '../../General/GeneralMethod';
 import { NotificationManager } from 'react-notifications';
 import { Column, Table, AutoSizer} from "react-virtualized";
+import { headerRenderer } from '../../General/Common/Utils';
 
 const UserAdminList = () => {
  const filterState = {
@@ -17,37 +18,17 @@ const UserAdminList = () => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [user, setUser] = useState('');
   const [filters, setFilters] = useState(filterState)
+  const [bookingfilters, setBookingFilters] = useState(filterState)
   const rowGetter = ({ index }) => user[index];
 
   // Update filters and apply them
-  const handleFilterChange = (column, value) => {
-    const newFilters = { ...filters, [column]: value };
-    setFilters(newFilters);
-
-    // Apply filters to the data
-    const newData = user.filter((row) =>
-      Object.keys(newFilters).every((key) => {
-        if (!newFilters[key]) return true; // No filter applied for this column
-        return row[key].toString().toLowerCase().includes(newFilters[key].toLowerCase());
-      })
-    );
-
-    setUser(newData);
+  const handleFilterChange = (dataKey, value) => {
+    setBookingFilters((prevFilters) => ({
+      ...prevFilters,
+      [dataKey]: value,
+    }));
   };
 
-   // Render header with search inputs
-   const headerRenderer = ({ dataKey, label }) => (
-    <div>
-      <div>{label}</div>
-      <input
-        type="text"
-        placeholder={`Search ${label}`}
-        value={filters[dataKey]}
-        //onChange={(e) => handleFilterChange(dataKey, e.target.value)}
-        style={{ width: "70%", padding: "4px", marginTop: "1px" }}
-      />
-    </div>
-  );
 
   const userList = async() =>{
     startLoading();
@@ -85,7 +66,8 @@ const UserAdminList = () => {
                   <div className="card-header">
                     <div className="mb-3 text-end">
                       <button className="btn btn-success">
-                        <FaFileExport className="align-middle me-2" /> Export Data
+                        <FaFileExport className="align-middle me-2" /> Export
+                        Data
                       </button>
                     </div>
                   </div>
@@ -123,24 +105,79 @@ const UserAdminList = () => {
                             </tbody>
                           </table> */}
                           <AutoSizer>
-                          {({ height, width }) => (
-                          <Table
-                            width={1000} // Total width of the table
-                            height={300} // Total height of the table
-                            headerHeight={70} // Height of the header row
-                            rowHeight={50} // Height of each row
-                            rowCount={user.length} // Total number of rows
-                            rowGetter={rowGetter} // Function to retrieve data for a row
-                            className="table table-striped"
-                          >
-                            {/* <Column label="userId" dataKey="userId" width={100} /> */}
-                            <Column label="userFirstName"  dataKey="userFirstName" headerRenderer={headerRenderer} width={300} />
-                            <Column label="userLastName" dataKey="userLastName" headerRenderer={headerRenderer} width={300} />
-                            <Column label="Phone No." dataKey="phoneNo" headerRenderer={headerRenderer} width={150} />
-                            <Column label="Email" dataKey="userEmail" headerRenderer={headerRenderer} width={250} />
-                            <Column label="dob" dataKey="dob" headerRenderer={headerRenderer} width={250} />
-                          </Table>
-                          )}
+                            {({ height, width }) => (
+                              <Table
+                                width={1000} // Total width of the table
+                                height={300} // Total height of the table
+                                headerHeight={70} // Height of the header row
+                                rowHeight={50} // Height of each row
+                                rowCount={user.length} // Total number of rows
+                                rowGetter={rowGetter} // Function to retrieve data for a row
+                                className="table table-striped"
+                              >
+                                {/* <Column label="userId" dataKey="userId" width={100} /> */}
+                                <Column
+                                  label="userFirstName"
+                                  dataKey="userFirstName"
+                                  headerRenderer={(props) =>
+                                    headerRenderer({
+                                      ...props,
+                                      bookingfilters,
+                                      //handleFilterChange,
+                                    })
+                                  }
+                                  width={300}
+                                />
+                                <Column
+                                  label="userLastName"
+                                  dataKey="userLastName"
+                                  headerRenderer={(props) =>
+                                    headerRenderer({
+                                      ...props,
+                                      bookingfilters,
+                                      //handleFilterChange,
+                                    })
+                                  }
+                                  width={300}
+                                />
+                                <Column
+                                  label="Phone No."
+                                  dataKey="phoneNo"
+                                  headerRenderer={(props) =>
+                                    headerRenderer({
+                                      ...props,
+                                      bookingfilters,
+                                      //handleFilterChange,
+                                    })
+                                  }
+                                  width={150}
+                                />
+                                <Column
+                                  label="Email"
+                                  dataKey="userEmail"
+                                  headerRenderer={(props) =>
+                                    headerRenderer({
+                                      ...props,
+                                      bookingfilters,
+                                      //handleFilterChange,
+                                    })
+                                  }
+                                  width={250}
+                                />
+                                <Column
+                                  label="dob"
+                                  dataKey="dob"
+                                  headerRenderer={(props) =>
+                                    headerRenderer({
+                                      ...props,
+                                      bookingfilters,
+                                      //handleFilterChange,
+                                    })
+                                  }
+                                  width={250}
+                                />
+                              </Table>
+                            )}
                           </AutoSizer>
                         </div>
                       </div>
