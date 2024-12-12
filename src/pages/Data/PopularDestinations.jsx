@@ -7,7 +7,7 @@ import { LoadingContext } from "../../store/loading-context";
 import { callApi } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
 import 'bootstrap/dist/css/bootstrap.css'
-import { headerRenderer } from "../../General/Common/Utils";
+import { headerRenderer } from "../../General/Common/VitualizedTable/SearchHeaderRenderer";
 
 const data =[
   { "id": 1, "name": "John Doe", "age": 25, "email": "john.doe1@example.com" },

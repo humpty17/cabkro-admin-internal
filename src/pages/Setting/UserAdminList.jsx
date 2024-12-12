@@ -4,7 +4,7 @@ import { LoadingContext } from '../../store/loading-context';
 import { callApi } from '../../General/GeneralMethod';
 import { NotificationManager } from 'react-notifications';
 import { Column, Table, AutoSizer} from "react-virtualized";
-import { headerRenderer } from '../../General/Common/Utils';
+import { headerRenderer } from '../../General/Common/VitualizedTable/SearchHeaderRenderer';
 
 const UserAdminList = () => {
  const filterState = {
@@ -75,35 +75,6 @@ const UserAdminList = () => {
                     <div className="dataTables_wrapper">
                       <div className="row">
                         <div className="col-sm-12">
-                          {/* <table className="table table-striped">
-                            <thead className="table-dark">
-                              <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start Date</th>
-                                <th>Salary</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {customers.map((customer, index) => (
-                                <tr key={index}>
-                                  <td>{customer.name}</td>
-                                  <td>{customer.position}</td>
-                                  <td>{customer.office}</td>
-                                  <td>{customer.age}</td>
-                                  <td>{customer.startDate}</td>
-                                  <td>{customer.salary}</td>
-                                  <td>
-                                    <FaEdit className="align-middle me-3" />
-                                    <FaTrashAlt className="align-middle" />
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table> */}
                           <AutoSizer>
                             {({ height, width }) => (
                               <Table
@@ -113,7 +84,11 @@ const UserAdminList = () => {
                                 rowHeight={50} // Height of each row
                                 rowCount={user.length} // Total number of rows
                                 rowGetter={rowGetter} // Function to retrieve data for a row
-                                className="table table-striped"
+                                rowClassName={({ index }) =>
+                                  index % 2 === 0
+                                    ? "virtualized-row"
+                                    : "virtualized-row alternate"
+                                }
                               >
                                 {/* <Column label="userId" dataKey="userId" width={100} /> */}
                                 <Column

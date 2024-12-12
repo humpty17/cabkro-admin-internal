@@ -4,7 +4,8 @@ import { LoadingContext } from '../../store/loading-context';
 import { NotificationManager } from 'react-notifications';
 import { callApi } from '../../General/GeneralMethod';
 import { Column, Table, AutoSizer} from "react-virtualized";
-import { headerRenderer } from '../../General/Common/Utils';
+import { headerRenderer } from '../../General/Common/VitualizedTable/SearchHeaderRenderer';
+import DownloadExcelButton from '../../General/Buttons/DownloadExcelButton';
 
 const AddBookingPackage = () => {
 
@@ -20,6 +21,8 @@ const AddBookingPackage = () => {
   const [bookingData, setBookingData] = useState([])
   const [bookingfilters, setBookingFilters] = useState(filterState)
   const rowGetter = ({ index }) => bookingData[index];
+ // console.log(bookingData);
+  
 
   const handleFilterChange = (dataKey, value) => {
     setBookingFilters((prevFilters) => ({
@@ -67,10 +70,7 @@ const AddBookingPackage = () => {
                         <FiPlus className="align-middle me-2" />
                         Upload Package List
                       </button>
-                      <button className="btn btn-secondary">
-                        <FiDownload className="align-middle me-2" />
-                        Download sample
-                      </button>
+                      <DownloadExcelButton columns={bookingData}/>
                       <button className="btn btn-success">Submit Data</button>
                     </div>
                   </div>
