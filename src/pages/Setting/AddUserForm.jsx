@@ -68,7 +68,7 @@ const AddUserForm = () => {
 
       if (response && response.data) {  // Check for response and response.data
         if (response.data.code === 200) {
-          console.log(response.data.data);
+          //console.log(response.data.data);
           NotificationManager.success(response.data.message)
         } else {
           console.error("API Error:", response.data.code, response.data);

@@ -6,6 +6,7 @@ import { callApi } from '../../General/GeneralMethod';
 import { Column, Table, AutoSizer} from "react-virtualized";
 import { headerRenderer } from '../../General/Common/VitualizedTable/SearchHeaderRenderer';
 import DownloadExcelButton from '../../General/Buttons/DownloadExcelButton';
+import UploadExcelButton from '../../General/Buttons/UploadExcelButton';
 
 const AddBookingPackage = () => {
 
@@ -66,10 +67,7 @@ const AddBookingPackage = () => {
                 <div className="card">
                   <div className="card-header">
                     <div className="mb-3 text-end">
-                      <button className="btn btn-primary">
-                        <FiPlus className="align-middle me-2" />
-                        Upload Package List
-                      </button>
+                      <UploadExcelButton/>
                       <DownloadExcelButton columns={bookingData}/>
                       <button className="btn btn-success">Submit Data</button>
                     </div>
@@ -93,12 +91,12 @@ const AddBookingPackage = () => {
                       </div>
                     </div>
                     <div className="row dt-row">
-                      <div className="col-sm-12">
+                      <div className="col-sm-12" style={{height: '100%', width: '100%' }}>
                         <AutoSizer>
                           {({ height, width }) => (
                             <Table
-                              width={1000} // Total width of the table
-                              height={300} // Total height of the table
+                              width={height} // Total width of the table
+                              height={width} // Total height of the table
                               headerHeight={70} // Height of the header row
                               rowHeight={50} // Height of each row
                               rowCount={bookingData.length} // Total number of rows

@@ -12,7 +12,7 @@ const DownloadExcelButton = ({ columns }) => {
     const worksheet = workbook.addWorksheet("Table Data");
 
     // Step 2: Add table headers
-    const headers = Object.keys(columns[0]); // Assumes the first row defines the structure
+    const headers = Object.keys(columns[1]); // Assumes the first row defines the structure
     worksheet.addRow(headers);
 
     // Add data rows
