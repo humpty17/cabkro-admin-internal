@@ -3,7 +3,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import "react-notifications/lib/notifications.css";
 import { ApiHeader, DEFAULTDATE, EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
-import { callApi } from "../../General/GeneralMethod";
+import { callApi, getCurrentDate, getCurrentDateTime } from "../../General/GeneralMethod";
 import DateInput from "../../General/Input/DateInput";
 import EmailInput from "../../General/Input/EmailInput";
 import NumberInput from "../../General/Input/NumberInput";
@@ -39,12 +39,12 @@ const AddCustomer = () => {
     "workLocation3Longitude": 0,
     "paymentMethod": "",
     "status": true,
-    "createdDate": "2024-12-15T15:59:00.128Z",
-    "modifyDate": "2024-12-15T15:59:00.128Z",
+    "createdDate": getCurrentDateTime(),
+    "modifyDate": getCurrentDateTime(),
     "isDeleted": true,
     "deletedReason": "",
     "referCode": "",
-    "lastLoginDate": "2024-12-15T15:59:00.128Z",
+    "lastLoginDate": getCurrentDateTime(),
     "isAdult": true,
     "noOfRide": 0,
     "isCouponCode": "",
@@ -95,25 +95,28 @@ const AddCustomer = () => {
       if(!validation()) return
       startLoading();
       console.log(addCustomer)
-      // try {
-      //   const response = await callApi("post", `${process.env.REACT_APP_API_URL}api/Auth/RegisterUser`, {...addCustomer}, {...ApiHeader});
-      //   stopLoading();
+      try {
+        const response = await callApi("post", `${process.env.REACT_APP_API_URL}api/Auth/RegisterUser`, {...addCustomer}, {...ApiHeader});
+        stopLoading();
   
-      //   if (response && response.data) {  // Check for response and response.data
-      //     if (response.data.code === 200) {
-      //       //console.log(response.data.data);
-      //       NotificationManager.success(response.data.message)
-      //     } else {
-      //       console.error("API Error:", response.data.code, response.data);
-      //       NotificationManager.error(response.data.message)
-      //     }
-      //   } else {
-      //     console.error("API returned an invalid response:", response);
-      //     NotificationManager.warning(response.data.message)
-      //   }
-      // } catch (error) {
-      //   console.error("API call failed:", error);
-      // }
+        if (response && response.data) {
+          stopLoading()  // Check for response and response.data
+          if (response.data.code === 200) {
+            handleReset()
+            //console.log(response.data.data);
+            NotificationManager.success(response.data.message)
+          } else {
+            console.error("API Error:", response.data.code, response.data);
+            NotificationManager.error(response.data.message)
+          }
+        } else {
+          stopLoading()
+          console.error("API returned an invalid response:", response);
+          NotificationManager.warning(response.data.message)
+        }
+      } catch (error) {
+        console.error("API call failed:", error);
+      }
     };
 
   const handleReset = () =>{
@@ -185,7 +188,7 @@ const AddCustomer = () => {
                             <div className="col-sm-8">
                               <DateInput
                                 inputName={"dob"}
-                                maxName={"2024-12-31"}
+                                maxName={getCurrentDate()}
                                 valueName={addCustomer.dob}
                                 onChangeName={handleChange}
                               />
