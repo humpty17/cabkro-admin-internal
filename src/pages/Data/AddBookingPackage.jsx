@@ -91,12 +91,12 @@ const AddBookingPackage = () => {
                       </div>
                     </div>
                     <div className="row dt-row">
-                      <div className="col-sm-12" style={{height: '100%', width: '100%' }}>
+                      <div className="col-sm-12" style={{ }}>
                         <AutoSizer>
                           {({ height, width }) => (
                             <Table
-                              width={height} // Total width of the table
-                              height={width} // Total height of the table
+                              width={850} // Total width of the table
+                              height={300} // Total height of the table
                               headerHeight={70} // Height of the header row
                               rowHeight={50} // Height of each row
                               rowCount={bookingData.length} // Total number of rows

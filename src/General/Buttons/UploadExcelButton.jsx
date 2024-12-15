@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ExcelJS from "exceljs";
+import ExcelJS, { Workbook } from "exceljs";
 import axios from "axios";
 import { FiPlus } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
@@ -9,49 +9,38 @@ const UploadExcelButton = () => {
   const [fileName, setFileName] = useState("No file chosen");
 
   const handleFileChange = async (event) => {
+    debugger;
     const file = event.target.files[0];
     if (!file) {
       NotificationManager.warning("No file selected!");
       return;
     }
-
+  
     setFileName(file.name);
-
-    try {
-      // Initialize ExcelJS workbook
-      const workbook = new ExcelJS.Workbook();
-      const fileReader = new FileReader();
-
-      fileReader.onload = async (e) => {
+  
+    const fileReader = new FileReader();
+    fileReader.onload = async (e) => {
+      try {
         const buffer = e.target.result;
+        const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(buffer);
-
+  
         // Parse data from the first worksheet
         const worksheet = workbook.getWorksheet(1);
         const data = [];
-
+  
         worksheet.eachRow((row, rowNumber) => {
-          // Skip the header row (optional)
-          if (rowNumber === 1) return;
-
-          // Extract row data (excluding the empty first index)
+          if (rowNumber === 1) return; // Skip header row
           const rowData = row.values.slice(1);
           data.push(rowData);
         });
-
+  
         console.log("Parsed Data:", data);
-
+  
         // Upload data to the server
-        const response = await callApi(
-          "post",
-          `Auth/RegisterAdminUser`,
-          { ...data },
-          {}
-        );
+        const response = await callApi("post", `Auth/RegisterAdminUser`, { data }, {});
         if (response && response.data) {
-          // Check for response and response.data
           if (response.data.code === 200) {
-            //console.log(response.data.data);
             NotificationManager.success(response.data.message);
             NotificationManager.success("Data uploaded successfully!");
           } else {
@@ -59,15 +48,14 @@ const UploadExcelButton = () => {
             NotificationManager.error(response.data.message);
           }
         }
+      } catch (err) {
+        console.error("Error in file processing:", err);
+        NotificationManager.error("An error occurred while processing the file.");
       }
-
-      fileReader.readAsArrayBuffer(file)
-    } catch (error) {
-      console.error("Error processing file:", error);
-      NotificationManager.error("Failed to process the file!");
-    }
+    };
+  
+    fileReader.readAsArrayBuffer(file);
   };
-
   return (
     <>
       <input type="file" accept=".xlsx, .xls" id="actual-btn" onChange={handleFileChange} hidden/>
