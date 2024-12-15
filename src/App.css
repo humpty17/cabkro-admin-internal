@@ -16777,7 +16777,10 @@
  .card {
    box-shadow: 0 0 .875rem 0 rgba(33, 37, 41, .05);
    margin-bottom: 24px;
-   height: 301%;
+ }
+
+ .table-height{
+  height: 320% !important;
  }
  
  .card-header {
@@ -17364,7 +17367,6 @@
 .virtualized-action:hover {
   color: #a71d2a; /* Darker red on hover */
 }
-
  
  .navbar .avatar {
    margin-bottom: -15px;

@@ -64,7 +64,7 @@ const AddBookingPackage = () => {
             <h1 className="h3 mb-3">Add Booking Packages</h1>
             <div className="row">
               <div className="col-12">
-                <div className="card">
+                <div className="card table-height">
                   <div className="card-header">
                     <div className="mb-3 text-end">
                       <UploadExcelButton/>
@@ -73,23 +73,6 @@ const AddBookingPackage = () => {
                     </div>
                   </div>
                   <div className="card-body">
-                    <div className="row">
-                      <div className="col-sm-12 col-md-6">
-                        <h2>Preview</h2>
-                      </div>
-                      <div className="col-sm-12 col-md-6">
-                        <div className="dataTables_filter">
-                          <label>
-                            Search:
-                            <input
-                              type="search"
-                              className="form-control form-control-sm"
-                              placeholder=""
-                            />
-                          </label>
-                        </div>
-                      </div>
-                    </div>
                     <div className="row dt-row">
                       <div className="col-sm-12" style={{ }}>
                         <AutoSizer>

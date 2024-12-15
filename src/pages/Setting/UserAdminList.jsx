@@ -62,7 +62,7 @@ const UserAdminList = () => {
             <h1 className="h3 mb-3">UserAdminList</h1>
             <div className="row">
               <div className="col-12">
-                <div className="card">
+                <div className="card table-height">
                   <div className="card-header">
                     <div className="mb-3 text-end">
                       <button className="btn btn-success">
@@ -78,8 +78,8 @@ const UserAdminList = () => {
                           <AutoSizer>
                             {({ height, width }) => (
                               <Table
-                                width={1000} // Total width of the table
-                                height={300} // Total height of the table
+                              width={850} // Total width of the table
+                              height={300}  // Total height of the table
                                 headerHeight={70} // Height of the header row
                                 rowHeight={50} // Height of each row
                                 rowCount={user.length} // Total number of rows
