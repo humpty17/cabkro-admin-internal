@@ -5,7 +5,7 @@ export const callApi = async (methodType, url, apiData, apiHeader) =>{
         //console.log(process.env.REACT_APP_API_URL)
         const response = await axios({
             method: methodType,
-            url: process.env.REACT_APP_API_URL + url,
+            url: url,
             data: { ...apiData },
             headers: { ...apiHeader },
         });

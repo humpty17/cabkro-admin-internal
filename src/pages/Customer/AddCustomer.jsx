@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import "react-notifications/lib/notifications.css";
-import { EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
+import { ApiHeader, DEFAULTDATE, EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import DateInput from "../../General/Input/DateInput";
 import EmailInput from "../../General/Input/EmailInput";
@@ -11,113 +11,134 @@ import PasswordInput from "../../General/Input/PasswordInput";
 import TypeInput from "../../General/Input/TypeInput";
 import FormLabel from "../../General/Label/FormLabel";
 import { LoadingContext } from "../../store/loading-context";
-import ResetButton from "../../General/Buttons/ResetButton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
+import ResetButton from "../../General/Buttons/ResetButton";
 
-const AddUserForm = () => {
-
+const AddCustomer = () => {
   const InitialState = {
-    userFirstName :'',
-    userLastName : '',
-    userEmail: '',
-    password: '',
-    phoneNo : '',
-    dob : '',
-    gender: 0
+    
+    "userFirstName": "",
+    "userLastName": "",
+    "carOwnerAgencyName": "",
+    "phoneNo": "",
+    "userEmail": "",
+    "password": "",
+    "gender": 0,
+    "dob": DEFAULTDATE,
+    "emergencyContactNo": "",
+    "homeLocation": "",
+    "workLocation": "",
+    "workLocation1": "",
+    "workLocation2": "",
+    "workLocation3": "",
+    "workLocation1Latitude": 0,
+    "workLocation1Longitude": 0,
+    "workLocation2Latitude": 0,
+    "workLocation2Longitude": 0,
+    "workLocation3Latitude": 0,
+    "workLocation3Longitude": 0,
+    "paymentMethod": "",
+    "status": true,
+    "createdDate": "2024-12-15T15:59:00.128Z",
+    "modifyDate": "2024-12-15T15:59:00.128Z",
+    "isDeleted": true,
+    "deletedReason": "",
+    "referCode": "",
+    "lastLoginDate": "2024-12-15T15:59:00.128Z",
+    "isAdult": true,
+    "noOfRide": 0,
+    "isCouponCode": "",
+    "other1": 0,
+    "other2": "",
+    "panNo": "",
+    "userImage": "",
+    "userType": 0,
+    "acceptTermsCondition": 0
   };
+
   const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [addData, setAddData] = useState(InitialState);
-  const [type, setType] = useState('password');
-  const [icon, setIcon] = useState(<FaEyeSlash/>); 
-  
+  const [addCustomer, setAddCustomer] = useState(InitialState);
+
   const handleChange = (e) =>{
     if(e.target.name === "phoneNo"){
       if(e.target.value.length > 10){
         return
       }
     }
-    setAddData({
-      ...addData,
+    console.log(e)
+    setAddCustomer({
+      ...addCustomer,
       [e.target.name] : e.target.value
     })
      //console.log(typeof e.target.value);
   }
-  const validation = () => {
-    
-    if(addData.userFirstName === '' || addData.userLastName === '' || addData.dob === '' || addData.gender === '' || addData.userEmail === '' || addData.password === '' || addData.phoneNo === ''){
-      NotificationManager.warning("Enter required fields")
-      return false
-    }
-    if (!PHONENOREGEX.test(addData.phoneNo)) {
-      NotificationManager.warning("Your phone number is not valid!")
-      return false
-    }
-    if(!EMAILREGEX.test(addData.userEmail)){
-      NotificationManager.warning("Your email is not valid!")
-      return false
-    }
-    return true
-  }
 
-  const handleUserForm = async (event) => {
-    event.preventDefault();
-    if(!validation()) return
-    startLoading();
-    
-    try {
-      const response = await callApi("post", `${process.env.REACT_APP_API_URL} Auth/RegisterAdminUser`, {...addData}, {});
-      stopLoading();
-
-      if (response && response.data) {  // Check for response and response.data
-        if (response.data.code === 200) {
-          //console.log(response.data.data);
-          NotificationManager.success(response.data.message)
-        } else {
-          console.error("API Error:", response.data.code, response.data);
-          NotificationManager.error(response.data.message)
-        }
-      } else {
-        console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message)
+   const validation = () => {
+      
+      if(addCustomer.userFirstName === '' || addCustomer.userLastName === '' || addCustomer.dob === '' || addCustomer.gender === '' || addCustomer.userEmail === '' || addCustomer.phoneNo === ''){
+        NotificationManager.warning("Enter required fields")
+        return false
       }
-    } catch (error) {
-      console.error("API call failed:", error);
+      if (!PHONENOREGEX.test(addCustomer.phoneNo)) {
+        NotificationManager.warning("Your phone number is not valid!")
+        return false
+      }
+      if(!EMAILREGEX.test(addCustomer.userEmail)){
+        NotificationManager.warning("Your email is not valid!")
+        return false
+      }
+      return true
     }
-  };
+
+  const handleCustomerForm = async (event) => {
+      event.preventDefault();
+      if(!validation()) return
+      startLoading();
+      console.log(addCustomer)
+      // try {
+      //   const response = await callApi("post", `${process.env.REACT_APP_API_URL}api/Auth/RegisterUser`, {...addCustomer}, {...ApiHeader});
+      //   stopLoading();
   
-  const handleToggleData = () => {
-    if (type==='password'){
-       setIcon(<FaEye/>);
-       setType('text')
-    } else {
-       setIcon(<FaEyeSlash/>)
-       setType('password')
-    }
-  }
+      //   if (response && response.data) {  // Check for response and response.data
+      //     if (response.data.code === 200) {
+      //       //console.log(response.data.data);
+      //       NotificationManager.success(response.data.message)
+      //     } else {
+      //       console.error("API Error:", response.data.code, response.data);
+      //       NotificationManager.error(response.data.message)
+      //     }
+      //   } else {
+      //     console.error("API returned an invalid response:", response);
+      //     NotificationManager.warning(response.data.message)
+      //   }
+      // } catch (error) {
+      //   console.error("API call failed:", error);
+      // }
+    };
 
   const handleReset = () =>{
-    setAddData({...InitialState})
+    setAddCustomer({...InitialState})
   }
   return (
     <div className="wrapper">
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Add User</h1>
+            <h1 className="h3 mb-3">Add Customer</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card-body">
                   <div className="col-12 col-xl-6">
                     <div className="card">
                       <div className="card-body">
-                        <form onSubmit={handleUserForm}>
+                        <form onSubmit={handleCustomerForm}>
                           <div className="mb-3 row">
                             <FormLabel label={"First Name"} />
                             <div className="col-sm-8">
                               <TypeInput
                                 inputName={"userFirstName"}
                                 placeholderName={"Your first name"}
-                                valueName={addData.userFirstName}
+                                valueName={addCustomer.userFirstName}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -129,7 +150,7 @@ const AddUserForm = () => {
                               <TypeInput
                                 inputName={"userLastName"}
                                 placeholderName={"Your last name"}
-                                valueName={addData.userLastName}
+                                valueName={addCustomer.userLastName}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -141,7 +162,7 @@ const AddUserForm = () => {
                               <NumberInput
                                 inputName={"phoneNo"}
                                 placeholderName={"8957465342"}
-                                valueName={addData.phoneNo}
+                                valueName={addCustomer.phoneNo}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -153,30 +174,10 @@ const AddUserForm = () => {
                               <EmailInput
                                 inputName={"userEmail"}
                                 placeholderName={"Email"}
-                                valueName={addData.userEmail}
+                                valueName={addCustomer.userEmail}
                                 onChangeName={handleChange}
                               />
                             </div>
-                          </div>
-
-                          <div className="mb-3 row">
-                            <FormLabel label={"Password"} />
-                            <div className="col-sm-8 input-group_1">
-                              <PasswordInput
-                                type={type}
-                                inputName={"password"}
-                                placeholderName={"Password"}
-                                valueName={addData.password}
-                                onChangeName={handleChange}
-                              />
-                              <span
-                              className="input-group-text"
-                              onClick={handleToggleData}
-                            >
-                              {icon}
-                            </span>
-                            </div>
-                            
                           </div>
 
                           <div className="mb-3 row">
@@ -185,7 +186,7 @@ const AddUserForm = () => {
                               <DateInput
                                 inputName={"dob"}
                                 maxName={"2024-12-31"}
-                                valueName={addData.dob}
+                                valueName={addCustomer.dob}
                                 onChangeName={handleChange}
                               />
                             </div>
@@ -201,8 +202,8 @@ const AddUserForm = () => {
                                     type="radio"
                                     value={"1"}
                                     className="form-check-input"
-                                   // defaultChecked={addData.gender}
-                                    checked={addData.gender === "1" ? true : false}
+                                   // defaultChecked={addCustomer.gender}
+                                    checked={addCustomer.gender === "1" ? true : false}
                                     onChange={handleChange}
                                   />
                                   <span className="form-check-label">Male</span>
@@ -212,8 +213,8 @@ const AddUserForm = () => {
                                     name="gender"
                                     type="radio"
                                     value={"2"}
-                                   // defaultChecked={addData.gender}
-                                    checked={addData.gender === "2" ? true : false}
+                                   // defaultChecked={addCustomer.gender}
+                                    checked={addCustomer.gender === "2" ? true : false}
                                     className="form-check-input"
                                     onChange={handleChange}
                                   />
@@ -252,7 +253,7 @@ const AddUserForm = () => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddUserForm;
+export default AddCustomer

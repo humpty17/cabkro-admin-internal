@@ -6,6 +6,7 @@ import PopularDestinations from "./pages/Data/PopularDestinations";
 import { CurrentPageContext } from "./store/pages-context";
 import {
   ADDBOOKINGPACKAGE,
+  ADDCUSTOMER,
   ADDUSERFORM,
   DASHBOARDPAGE,
   LOGINPAGE,
@@ -20,6 +21,7 @@ import AddUserForm from "./pages/Setting/AddUserForm";
 import LoginContextProvider, { LoginContext } from "./store/login-context";
 import UserAdminList from "./pages/Setting/UserAdminList";
 import AddBookingPackage from "./pages/Data/AddBookingPackage";
+import AddCustomer from "./pages/Customer/AddCustomer";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -43,6 +45,9 @@ const Home = () => {
             {/* setting section */}
             {currentPage === ADDUSERFORM && <AddUserForm/>}
             {currentPage === USERADMINLIST && <UserAdminList/>}
+
+            {/* customer section  */}
+            {currentPage === ADDCUSTOMER && <AddCustomer/>}
           </div>
         </div>
       )}
