@@ -2,14 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FiPlus, FiDownload, FiTrash2 } from 'react-icons/fi'; // Feather Icons
 import { LoadingContext } from '../../store/loading-context';
 import { NotificationManager } from 'react-notifications';
-import { callApi } from '../../General/GeneralMethod';
+import { callApi, getCurrentDateTime } from '../../General/GeneralMethod';
 import { Column, Table, AutoSizer} from "react-virtualized";
 import { headerRenderer } from '../../General/Common/VitualizedTable/SearchHeaderRenderer';
 import DownloadExcelButton from '../../General/Buttons/DownloadExcelButton';
 import UploadExcelButton from '../../General/Buttons/UploadExcelButton';
+import { LoginContext } from '../../store/login-context';
+import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
+import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
 
 const AddBookingPackage = () => {
-
+  const {user} = useContext(LoginContext)
   const filterState = {
     packageName : '',
     description : '',
@@ -18,12 +21,77 @@ const AddBookingPackage = () => {
     vehicleFuelType : ''
   }
 
+  const bookingDataExcelHeaader = {
+    "packageName": "",
+    "description": "",
+    "minDistance": 0,
+    "maxDistance": 0.0,
+    "ratePerKM": 0.0,
+    "basePrice": 0,
+    "discountRate": 0,
+    "discountAmount": 0,
+    "vehicleType": "",
+    "vehicleFuelType": "",
+    "vehicleModelName": "",
+    "vehicleSeaterCount": 0,
+    "pickupAddress": "",
+    "destinationAddress": "",
+    "pickupLatLong": 0,
+    "destinationLatLong": 0,
+    "timeDurationHours": 0,
+    "dayCount": 0,
+    "specificDay": 0,
+    "specificDate": 0,
+    "offerPrice": 0,
+    "rentalHours": 0,
+    "rentaldays": 0,
+    "plusMember": 0,
+    "gstRate": 0,
+    "gstAmount": 0,
+    "offerDescription": "",
+    "breakFast": false,
+    "lunch": false,
+    "dinner": false,
+    "extraService": "",
+    // "createdDate": getCurrentDateTime(),
+    // "modifyDate": getCurrentDateTime(),
+    // "userId": 0,
+    // "isActive": true,
+    // "isDeleted": false,
+    "other1": 0,
+    "other2": "",
+    "totalAmount": 0,
+    "luggageAllowed": "",
+    "advancePercentage": 0,
+    "tollTaxType": "",
+    "tollTaxAmount": 0,
+    "petAnimal": "",
+    "petAnimalAmount": 0,
+    "extraLuggage": "",
+    "extraLuggageAmount": 0,
+    "driverChargesType": "",
+    "driverChargesAmount": 0,
+    "nightChargesType": "",
+    "nightChargesAmount": 0
+  }
+  
+  const otherData = {
+    "createdDate": getCurrentDateTime(),
+    "modifyDate": getCurrentDateTime(),
+    "userId": user ? user.userId : 0,
+    "isActive": true,
+    "isDeleted": false,
+  }
+
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [bookingData, setBookingData] = useState([])
   const [bookingfilters, setBookingFilters] = useState(filterState)
-  const rowGetter = ({ index }) => bookingData[index];
+  const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : bookingData[index];
+  const [isShowPreview, setIsShowPreview] = useState(false)
+  const [previewBookingData, setPreviewBookingData] = useState([])
  // console.log(bookingData);
   
+
 
   const handleFilterChange = (dataKey, value) => {
     setBookingFilters((prevFilters) => ({
@@ -35,10 +103,11 @@ const AddBookingPackage = () => {
   const bookingList = async() =>{
     startLoading();
     try {
-      const response = await callApi("get",`Data/GetBookingPackages`,{},{});
+      const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Data/GetBookingPackages`,{},{});
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
+          console.log(bookingData)
           setBookingData(response.data.data)
         } else {
           NotificationManager.error(response.data.message);
@@ -56,6 +125,47 @@ const AddBookingPackage = () => {
     bookingList()
   },[])
 
+  const setPreviewData = (data)=>{
+    setIsShowPreview(true)
+    setPreviewBookingData(data)
+  }
+
+  const handleCancelClick = ()=>{
+    setIsShowPreview(false)
+    setPreviewBookingData(false)
+  }
+
+  const submitExcelData = async ()=>{
+    if(previewBookingData.length === 0){
+      NotificationManager.warning("No data available for upload.")
+      return
+    }
+    startLoading()
+    try{
+      const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/AddBookingPackages`,previewBookingData,{});
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response.data.code === 200) {
+         NotificationManager.success(response.data.message)
+         handleReset()
+        } else {
+          NotificationManager.error(response.data.message);
+        }
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.warning(response.data.message);
+      }
+    }
+    catch(err){
+      stopLoading()
+    }
+  }
+
+  const handleReset = ()=>{
+    setIsShowPreview(false)
+    setPreviewBookingData([])
+    bookingList()
+  }
   return (
     <div className="wrapper">
       <div className="main">
@@ -65,11 +175,14 @@ const AddBookingPackage = () => {
             <div className="row">
               <div className="col-12">
                 <div className="card table-height">
-                  <div className="card-header">
-                    <div className="mb-3 text-end">
-                      <UploadExcelButton/>
-                      <DownloadExcelButton columns={bookingData}/>
-                      <button className="btn btn-success">Submit Data</button>
+                  <div className="card-header row">
+                    <h2 className='col-7'>{isShowPreview ? "Preview" : ""}</h2>
+                    <div className="mb-3 text-end col-5">
+                      
+                      {isShowPreview === false ? <UploadExcelButton setPreviewData={setPreviewData} otherData={otherData}/> : null}
+                      {isShowPreview === false ? <DownloadExcelButton columns={Object.keys(bookingDataExcelHeaader)} fileName={"Booking_Package_Sample"}/> : null}
+                      {isShowPreview === true ? <SubmitExcelButton handleSubmitClick ={submitExcelData}></SubmitExcelButton> :null}
+                      {isShowPreview === true ? <CancelExcelButton handleCancelClick={handleCancelClick}></CancelExcelButton> : null}
                     </div>
                   </div>
                   <div className="card-body">
@@ -82,7 +195,7 @@ const AddBookingPackage = () => {
                               height={300} // Total height of the table
                               headerHeight={70} // Height of the header row
                               rowHeight={50} // Height of each row
-                              rowCount={bookingData.length} // Total number of rows
+                              rowCount={isShowPreview ? previewBookingData.length : bookingData.length} // Total number of rows
                               rowGetter={rowGetter} // Function to retrieve data for a row
                               rowClassName={({ index }) =>
                                 index % 2 === 0

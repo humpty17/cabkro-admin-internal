@@ -78,7 +78,7 @@ const PopularDestinations = () => {
   const getPopularDestination = async () => {
     startLoading();
     try {
-      const response = await callApi("get",`Data/GetAllPopularDestinations`,{},{});
+      const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllPopularDestinations`,{},{});
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {

@@ -3,16 +3,16 @@ import { Workbook } from "exceljs";
 import { saveAs } from "file-saver";
 import { FiDownload } from "react-icons/fi";
 
-const DownloadExcelButton = ({ columns }) => {
+const DownloadExcelButton = ({ columns, fileName }) => {
   // columns: An array of column headers from the table
   const handleDownload = async () => {
     debugger
     // Step 1: Create a workbook and a worksheet
     const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet("Table Data");
+    const worksheet = workbook.addWorksheet(fileName);
 
     // Step 2: Add table headers
-    const headers = Object.keys(columns[1]); // Assumes the first row defines the structure
+    const headers = columns; // Assumes the first row defines the structure
     worksheet.addRow(headers);
 
     // Add data rows
@@ -30,7 +30,7 @@ const DownloadExcelButton = ({ columns }) => {
     const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 
     // Step 5: Trigger download
-    saveAs(blob, "table-data.xlsx");
+    saveAs(blob, fileName);
   }
   return (
     <button

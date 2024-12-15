@@ -5,7 +5,7 @@ import { FiPlus } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
 import { callApi } from "../GeneralMethod";
 
-const UploadExcelButton = () => {
+const UploadExcelButton = ({setPreviewData, otherData}) => {
   const [fileName, setFileName] = useState("No file chosen");
 
   const handleFileChange = async (event) => {
@@ -20,6 +20,7 @@ const UploadExcelButton = () => {
   
     const fileReader = new FileReader();
     fileReader.onload = async (e) => {
+      debugger
       try {
         const buffer = e.target.result;
         const workbook = new ExcelJS.Workbook();
@@ -29,25 +30,43 @@ const UploadExcelButton = () => {
         const worksheet = workbook.getWorksheet(1);
         const data = [];
   
-        worksheet.eachRow((row, rowNumber) => {
-          if (rowNumber === 1) return; // Skip header row
-          const rowData = row.values.slice(1);
-          data.push(rowData);
-        });
+        // worksheet.eachRow((row, rowNumber) => {
+        //   debugger
+        //   if (rowNumber === 1) return; // Skip header row
+        //   console.log(row)
+        //   const rowData = row;
+        //   data.push(rowData);
+        // });
   
+        const headers = [];
+        worksheet.getRow(1).eachCell((cell, colNumber) => {
+          headers.push(cell.text);
+        });
+        
+        worksheet.eachRow((row, rowNumber) => {
+          if (rowNumber > 1) {  // Skip the header row
+            const rowData = {};
+            row.eachCell((cell, colNumber) => {
+              rowData[headers[colNumber - 1]] = cell.text;
+            });
+            const rowUpdatedData = {...rowData, ...otherData}
+            data.push(rowUpdatedData);
+          }
+        });
+        setPreviewData(data)
         console.log("Parsed Data:", data);
   
         // Upload data to the server
-        const response = await callApi("post", `Auth/RegisterAdminUser`, { data }, {});
-        if (response && response.data) {
-          if (response.data.code === 200) {
-            NotificationManager.success(response.data.message);
-            NotificationManager.success("Data uploaded successfully!");
-          } else {
-            console.error("API Error:", response.data.code, response.data);
-            NotificationManager.error(response.data.message);
-          }
-        }
+        // const response = await callApi("post", `Auth/RegisterAdminUser`, { data }, {});
+        // if (response && response.data) {
+        //   if (response.data.code === 200) {
+        //     NotificationManager.success(response.data.message);
+        //     NotificationManager.success("Data uploaded successfully!");
+        //   } else {
+        //     console.error("API Error:", response.data.code, response.data);
+        //     NotificationManager.error(response.data.message);
+        //   }
+        // }
       } catch (err) {
         console.error("Error in file processing:", err);
         NotificationManager.error("An error occurred while processing the file.");

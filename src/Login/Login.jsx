@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
 import { FaLock, FaPhone } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { NotificationManager } from "react-notifications";
+import { DASHBOARDPAGE, PHONENOREGEX } from '../General/ConstStates';
 import { callApi } from "../General/GeneralMethod";
-import LoadingContextProvider, { LoadingContext } from "../store/loading-context";
-import { FaEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa6";
-import { CurrentPageContext } from "../store/pages-context";
-import { DASHBOARDPAGE, LOGINPAGE, PHONENOREGEX } from '../General/ConstStates';
+import { LoadingContext } from "../store/loading-context";
 import { LoginContext } from "../store/login-context";
+import { CurrentPageContext } from "../store/pages-context";
 
 
 const Login = () => {
@@ -47,7 +46,7 @@ const Login = () => {
     //console.log(enteredUserDetail)
     if(!validate()) return
     startLoading()
-    const response = await callApi("get", `Auth/LoginAdmin?Phone=${enteredUserDetail.phoneNo}&Password=${enteredUserDetail.password}`, {}, {})
+    const response = await callApi("get", `${process.env.REACT_APP_API_URL_ADMIN}Auth/LoginAdmin?Phone=${enteredUserDetail.phoneNo}&Password=${enteredUserDetail.password}`, {}, {})
     stopLoading()
     if(response!==null && response !==undefined){
       //console.log(response)

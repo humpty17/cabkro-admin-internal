@@ -6,7 +6,7 @@ export const callApi = async (methodType, url, apiData, apiHeader) =>{
         const response = await axios({
             method: methodType,
             url: url,
-            data: { ...apiData },
+            data: apiData ,
             headers: { ...apiHeader },
         });
         return response

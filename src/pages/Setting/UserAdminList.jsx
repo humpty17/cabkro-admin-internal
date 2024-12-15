@@ -33,7 +33,7 @@ const UserAdminList = () => {
   const userList = async() =>{
     startLoading();
     try {
-      const response = await callApi("get",`Auth/GetAdminUserList`,{},{});
+      const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Auth/GetAdminUserList`,{},{});
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
