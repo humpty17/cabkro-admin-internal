@@ -11,9 +11,9 @@ const VirtualizedTable = ({
   width,
   height,
   onRowClick,
-  bookingfilters
+  bookingfilters,
+  rowGetter
 }) => {
-  console.log(rowCountAdd)
   return (
     <div style={{ width: "100%", height: height || "300px" }}>
       <AutoSizer>
@@ -23,17 +23,14 @@ const VirtualizedTable = ({
             height={height || autoHeight}
             headerHeight={headerHeight}
             rowHeight={rowHeight}
-            rowCount={rowCountAdd}
-            rowGetter={({ index }) => rowCountAdd[index]}
+            rowCount={rowCountAdd.length}
+            rowGetter={rowGetter}
             onRowClick={onRowClick}
             rowClassName={({ index }) =>
               index % 2 === 0 ? "virtualized-row" : "virtualized-row alternate"
             }
           >
-            
-            
             {columns.map(({ dataKey, label, width: colWidth }) => (
-              
               <Column
                 key={dataKey}
                 className= {"virtualized-header"}

@@ -201,7 +201,7 @@ const AddBookingPackage = () => {
             <h1 className="h3 mb-3">Add Booking Packages</h1>
             <div className="row">
               <div className="col-12">
-                <div className="card table-height">
+                <div className="card">
                   <div className="card-header row">
                     <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
                     <div className="mb-3 text-end col-7">
@@ -319,7 +319,7 @@ const AddBookingPackage = () => {
                             </Table>
                           )}
                         </AutoSizer> */}
-                        <VirtualizedTable rowCountAdd={bookingData} bookingfilters={bookingfilters} columns={columns}/>
+                        <VirtualizedTable rowCountAdd={isShowPreview ? previewBookingData : bookingData} bookingfilters={bookingfilters} columns={columns} rowGetter={rowGetter}/>
                       </div>
                     </div>
                   </div>

@@ -54,7 +54,7 @@ const UserAdminList = () => {
   const [user, setUser] = useState('');
   const [filters, setFilters] = useState(filterState)
   const [bookingfilters, setBookingFilters] = useState(filterState)
-  // const rowGetter = ({ index }) => user[index];
+  const rowGetter = ({ index }) => user[index];
   
   
 
@@ -115,7 +115,7 @@ const UserAdminList = () => {
                     <div className="dataTables_wrapper">
                       <div className="row">
                         <div className="col-sm-12">
-                          <VirtualizedTable rowCountAdd={user} bookingfilters={bookingfilters} columns={columns}/>
+                          <VirtualizedTable rowCountAdd={user} bookingfilters={bookingfilters} columns={columns} rowGetter={rowGetter}/>
                         </div>
                       </div>
                     </div>
