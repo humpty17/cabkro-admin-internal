@@ -86,12 +86,10 @@ const AddBookingPackage = () => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [bookingData, setBookingData] = useState([])
   const [bookingfilters, setBookingFilters] = useState(filterState)
-  const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : bookingData[index];
   const [isShowPreview, setIsShowPreview] = useState(false)
   const [previewBookingData, setPreviewBookingData] = useState([])
+  const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : bookingData[index];
  // console.log(bookingData);
-  
-
 
   const handleFilterChange = (dataKey, value) => {
     setBookingFilters((prevFilters) => ({
@@ -176,18 +174,35 @@ const AddBookingPackage = () => {
               <div className="col-12">
                 <div className="card table-height">
                   <div className="card-header row">
-                    <h2 className='col-7'>{isShowPreview ? "Preview" : ""}</h2>
-                    <div className="mb-3 text-end col-5">
-                      
-                      {isShowPreview === false ? <UploadExcelButton setPreviewData={setPreviewData} otherData={otherData}/> : null}
-                      {isShowPreview === false ? <DownloadExcelButton columns={Object.keys(bookingDataExcelHeaader)} fileName={"Booking_Package_Sample"}/> : null}
-                      {isShowPreview === true ? <SubmitExcelButton handleSubmitClick ={submitExcelData}></SubmitExcelButton> :null}
-                      {isShowPreview === true ? <CancelExcelButton handleCancelClick={handleCancelClick}></CancelExcelButton> : null}
+                    <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
+                    <div className="mb-3 text-end col-7">
+                      {isShowPreview === false ? (
+                        <UploadExcelButton
+                          setPreviewData={setPreviewData}
+                          otherData={otherData}
+                        />
+                      ) : null}
+                      {isShowPreview === false ? (
+                        <DownloadExcelButton
+                          columns={Object.keys(bookingDataExcelHeaader)}
+                          fileName={"Booking_Package_Sample"}
+                        />
+                      ) : null}
+                      {isShowPreview === true ? (
+                        <SubmitExcelButton
+                          handleSubmitClick={submitExcelData}
+                        ></SubmitExcelButton>
+                      ) : null}
+                      {isShowPreview === true ? (
+                        <CancelExcelButton
+                          handleCancelClick={handleCancelClick}
+                        ></CancelExcelButton>
+                      ) : null}
                     </div>
                   </div>
                   <div className="card-body">
                     <div className="row dt-row">
-                      <div className="col-sm-12" style={{ }}>
+                      <div className="col-sm-12" style={{}}>
                         <AutoSizer>
                           {({ height, width }) => (
                             <Table
@@ -195,7 +210,11 @@ const AddBookingPackage = () => {
                               height={300} // Total height of the table
                               headerHeight={70} // Height of the header row
                               rowHeight={50} // Height of each row
-                              rowCount={isShowPreview ? previewBookingData.length : bookingData.length} // Total number of rows
+                              rowCount={
+                                isShowPreview
+                                  ? previewBookingData.length
+                                  : bookingData.length
+                              } // Total number of rows
                               rowGetter={rowGetter} // Function to retrieve data for a row
                               rowClassName={({ index }) =>
                                 index % 2 === 0

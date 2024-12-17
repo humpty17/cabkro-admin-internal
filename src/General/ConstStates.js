@@ -15,6 +15,7 @@ export const ADDBOOKINGPACKAGE = "AddBookingPackage"
 // Setting Section
 export const ADDUSERFORM = "AddUserForm"
 export const USERADMINLIST = "UserAdminList"
+export const PROFILE = "Profile"
 
 // Customer Section 
 export const ADDCUSTOMER = "AddCustomer"

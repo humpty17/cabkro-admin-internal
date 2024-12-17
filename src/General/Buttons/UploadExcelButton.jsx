@@ -3,13 +3,12 @@ import ExcelJS, { Workbook } from "exceljs";
 import axios from "axios";
 import { FiPlus } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
-import { callApi } from "../GeneralMethod";
 
 const UploadExcelButton = ({setPreviewData, otherData}) => {
   const [fileName, setFileName] = useState("No file chosen");
 
   const handleFileChange = async (event) => {
-    debugger;
+    //debugger;
     const file = event.target.files[0];
     if (!file) {
       NotificationManager.warning("No file selected!");
@@ -20,7 +19,7 @@ const UploadExcelButton = ({setPreviewData, otherData}) => {
   
     const fileReader = new FileReader();
     fileReader.onload = async (e) => {
-      debugger
+      //debugger
       try {
         const buffer = e.target.result;
         const workbook = new ExcelJS.Workbook();
@@ -55,18 +54,6 @@ const UploadExcelButton = ({setPreviewData, otherData}) => {
         });
         setPreviewData(data)
         console.log("Parsed Data:", data);
-  
-        // Upload data to the server
-        // const response = await callApi("post", `Auth/RegisterAdminUser`, { data }, {});
-        // if (response && response.data) {
-        //   if (response.data.code === 200) {
-        //     NotificationManager.success(response.data.message);
-        //     NotificationManager.success("Data uploaded successfully!");
-        //   } else {
-        //     console.error("API Error:", response.data.code, response.data);
-        //     NotificationManager.error(response.data.message);
-        //   }
-        // }
       } catch (err) {
         console.error("Error in file processing:", err);
         NotificationManager.error("An error occurred while processing the file.");
@@ -78,7 +65,7 @@ const UploadExcelButton = ({setPreviewData, otherData}) => {
   return (
     <>
       <input type="file" accept=".xlsx, .xls" id="actual-btn" onChange={handleFileChange} hidden/>
-      <label htmlFor="actual-btn" className="btn btn-primary" >
+      <label htmlFor="actual-btn" className="btn btn-primary mx-1" >
         <FiPlus className="align-middle me-2" />
         Upload Package List
       </label>

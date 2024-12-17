@@ -11,6 +11,7 @@ import {
   DASHBOARDPAGE,
   LOGINPAGE,
   POPULARDESTINATIONPAGE,
+  PROFILE,
   REGISTERPAGE,
   USERADMINLIST,
 } from "./General/ConstStates";
@@ -22,6 +23,7 @@ import LoginContextProvider, { LoginContext } from "./store/login-context";
 import UserAdminList from "./pages/Setting/UserAdminList";
 import AddBookingPackage from "./pages/Data/AddBookingPackage";
 import AddCustomer from "./pages/Customer/AddCustomer";
+import Profile from "./pages/Setting/Profile/Profile";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -45,6 +47,7 @@ const Home = () => {
             {/* setting section */}
             {currentPage === ADDUSERFORM && <AddUserForm/>}
             {currentPage === USERADMINLIST && <UserAdminList/>}
+            {currentPage === PROFILE && <Profile/>}
 
             {/* customer section  */}
             {currentPage === ADDCUSTOMER && <AddCustomer/>}

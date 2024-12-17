@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const EmailInput = ({inputName, placeholderName, valueName, onChangeName}) => {
   return (

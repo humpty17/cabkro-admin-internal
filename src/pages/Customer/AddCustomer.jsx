@@ -65,7 +65,7 @@ const AddCustomer = () => {
         return
       }
     }
-    console.log(e)
+    //console.log(e)
     setAddCustomer({
       ...addCustomer,
       [e.target.name] : e.target.value
@@ -94,7 +94,7 @@ const AddCustomer = () => {
       event.preventDefault();
       if(!validation()) return
       startLoading();
-      console.log(addCustomer)
+      //console.log(addCustomer)
       try {
         const response = await callApi("post", `${process.env.REACT_APP_API_URL}api/Auth/RegisterUser`, {...addCustomer}, {...ApiHeader});
         stopLoading();
