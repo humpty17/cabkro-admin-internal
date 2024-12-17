@@ -8,6 +8,9 @@ import {
   ADDBOOKINGPACKAGE,
   ADDCUSTOMER,
   ADDUSERFORM,
+  ADDVEHICLELIST,
+  BOOKINGPACKAGELIST,
+  CUSTOMERLIST,
   DASHBOARDPAGE,
   LOGINPAGE,
   POPULARDESTINATIONPAGE,
@@ -24,6 +27,9 @@ import UserAdminList from "./pages/Setting/UserAdminList";
 import AddBookingPackage from "./pages/Data/AddBookingPackage";
 import AddCustomer from "./pages/Customer/AddCustomer";
 import Profile from "./pages/Setting/Profile/Profile";
+import AddVehicleList from "./pages/Data/AddVehicleList";
+import BookingPackageList from "./pages/Data/BookingPackageList";
+import CustomerList from "./pages/Customer/CustomerList";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -43,6 +49,8 @@ const Home = () => {
             {/* data section */}
             {currentPage === POPULARDESTINATIONPAGE && <PopularDestinations/>}
             {currentPage === ADDBOOKINGPACKAGE && <AddBookingPackage/>}
+            {currentPage === ADDVEHICLELIST && <AddVehicleList/>}
+            {currentPage === BOOKINGPACKAGELIST && <BookingPackageList/>}
 
             {/* setting section */}
             {currentPage === ADDUSERFORM && <AddUserForm/>}
@@ -51,6 +59,7 @@ const Home = () => {
 
             {/* customer section  */}
             {currentPage === ADDCUSTOMER && <AddCustomer/>}
+            {currentPage === CUSTOMERLIST && <CustomerList/>}
           </div>
         </div>
       )}

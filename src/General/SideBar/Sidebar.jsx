@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, POPULARDESTINATIONPAGE, PROFILE, USERADMINLIST } from "../../General/ConstStates";
+import { ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, BOOKINGPACKAGELIST, CUSTOMERLIST, POPULARDESTINATIONPAGE, PROFILE, USERADMINLIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 
@@ -61,7 +61,7 @@ const Sidebar = () => {
             </a>
           </li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="AddVehicleList.html">
+            <a className="sidebar-link" onClick={()=>handleItemClick(ADDVEHICLELIST)}>
               <FaCar className="align-middle me-2" />
               <SidebarName name={'Add Vehicle List'}/>
             </a>
@@ -74,7 +74,7 @@ const Sidebar = () => {
             </a>
           </li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="BookingPackageList.html">
+            <a className="sidebar-link" onClick={() =>handleItemClick(BOOKINGPACKAGELIST)}>
               <FiList className="align-middle" />
               <SidebarName name={'Booking Packages List'}/>
             </a>
@@ -132,7 +132,7 @@ const Sidebar = () => {
             </a>
           </li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="CustomerList.html">
+            <a className="sidebar-link" onClick={()=>handleItemClick(CUSTOMERLIST)}>
               <FiList className="align-middle" />
               <span className="align-middle">Customer List</span>
             </a>

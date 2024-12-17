@@ -11,6 +11,8 @@ export const DASHBOARDPAGE="Dashboard"
 // Data Section
 export const POPULARDESTINATIONPAGE="PopularDestinations"
 export const ADDBOOKINGPACKAGE = "AddBookingPackage"
+export const ADDVEHICLELIST = "AddVehicleList"
+export const BOOKINGPACKAGELIST = "BookingPackageList"
 
 // Setting Section
 export const ADDUSERFORM = "AddUserForm"
@@ -19,6 +21,7 @@ export const PROFILE = "Profile"
 
 // Customer Section 
 export const ADDCUSTOMER = "AddCustomer"
+export const CUSTOMERLIST = "CustomerList"
 
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;
