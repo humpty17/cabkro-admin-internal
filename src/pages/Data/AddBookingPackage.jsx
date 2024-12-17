@@ -10,8 +10,37 @@ import UploadExcelButton from '../../General/Buttons/UploadExcelButton';
 import { LoginContext } from '../../store/login-context';
 import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
 import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
+import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
 
 const AddBookingPackage = () => {
+  const columns = [
+    {
+      label: "PackageName",
+      dataKey: "packageName",
+      width: 300,
+    },
+    {
+      label: "Description",
+      dataKey: "description",
+      width: 300,
+    },
+    {
+      label: "Price",
+      dataKey: "basePrice",
+      width: 150,
+    },
+    {
+      label: "VehicleType",
+      dataKey: "vehicleType",
+      width: 250,
+    },
+    {
+      label: "VehicleFuelType",
+      dataKey: "vehicleFuelType",
+      width: 250,
+    },
+  ];
+  
   const {user} = useContext(LoginContext)
   const filterState = {
     packageName : '',
@@ -203,7 +232,7 @@ const AddBookingPackage = () => {
                   <div className="card-body">
                     <div className="row dt-row">
                       <div className="col-sm-12" style={{}}>
-                        <AutoSizer>
+                        {/* <AutoSizer>
                           {({ height, width }) => (
                             <Table
                               width={850} // Total width of the table
@@ -222,7 +251,6 @@ const AddBookingPackage = () => {
                                   : "virtualized-row alternate"
                               }
                             >
-                              {/* <Column label="userId" dataKey="userId" width={100} /> */}
                               <Column
                                 label="packageName"
                                 className="virtualized-header"
@@ -290,7 +318,8 @@ const AddBookingPackage = () => {
                               />
                             </Table>
                           )}
-                        </AutoSizer>
+                        </AutoSizer> */}
+                        <VirtualizedTable rowCountAdd={bookingData} bookingfilters={bookingfilters} columns={columns}/>
                       </div>
                     </div>
                   </div>

@@ -5,8 +5,43 @@ import { callApi } from '../../General/GeneralMethod';
 import { NotificationManager } from 'react-notifications';
 import { Column, Table, AutoSizer} from "react-virtualized";
 import { headerRenderer } from '../../General/Common/VitualizedTable/SearchHeaderRenderer';
+import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
+
 
 const UserAdminList = () => {
+  const columns = [
+    {
+      label: "First Name",
+      dataKey: "userFirstName",
+      width: 200,
+      
+    },
+    {
+      label: "Last Name",
+      dataKey: "userLastName",
+      width: 200,
+      
+    },
+    {
+      label: "Phone No.",
+      dataKey: "phoneNo",
+      width: 150,
+      
+    },
+    {
+      label: "Email",
+      dataKey: "userEmail",
+      width: 250,
+      
+    },
+    {
+      label: "Date of Birth",
+      dataKey: "dob",
+      width: 150,
+      
+    },
+  ];
+
  const filterState = {
   userFirstName : '',
   userLastName : '',
@@ -19,7 +54,9 @@ const UserAdminList = () => {
   const [user, setUser] = useState('');
   const [filters, setFilters] = useState(filterState)
   const [bookingfilters, setBookingFilters] = useState(filterState)
-  const rowGetter = ({ index }) => user[index];
+  // const rowGetter = ({ index }) => user[index];
+  
+  
 
   // Update filters and apply them
   const handleFilterChange = (dataKey, value) => {
@@ -37,6 +74,7 @@ const UserAdminList = () => {
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
+          console.log(user);
           setUser(response.data.data)
         } else {
           NotificationManager.error(response.data.message);
@@ -54,6 +92,8 @@ const UserAdminList = () => {
     userList()
   },[])
 
+ 
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -62,7 +102,7 @@ const UserAdminList = () => {
             <h1 className="h3 mb-3">UserAdminList</h1>
             <div className="row">
               <div className="col-12">
-                <div className="card table-height">
+                <div className="card">
                   <div className="card-header">
                     <div className="mb-3 text-end">
                       <button className="btn btn-success">
@@ -75,85 +115,7 @@ const UserAdminList = () => {
                     <div className="dataTables_wrapper">
                       <div className="row">
                         <div className="col-sm-12">
-                          <AutoSizer>
-                            {({ height, width }) => (
-                              <Table
-                              width={850} // Total width of the table
-                              height={300}  // Total height of the table
-                                headerHeight={70} // Height of the header row
-                                rowHeight={50} // Height of each row
-                                rowCount={user.length} // Total number of rows
-                                rowGetter={rowGetter} // Function to retrieve data for a row
-                                rowClassName={({ index }) =>
-                                  index % 2 === 0
-                                    ? "virtualized-row"
-                                    : "virtualized-row alternate"
-                                }
-                              >
-                                {/* <Column label="userId" dataKey="userId" width={100} /> */}
-                                <Column
-                                  label="userFirstName"
-                                  dataKey="userFirstName"
-                                  headerRenderer={(props) =>
-                                    headerRenderer({
-                                      ...props,
-                                      bookingfilters,
-                                      //handleFilterChange,
-                                    })
-                                  }
-                                  width={300}
-                                />
-                                <Column
-                                  label="userLastName"
-                                  dataKey="userLastName"
-                                  headerRenderer={(props) =>
-                                    headerRenderer({
-                                      ...props,
-                                      bookingfilters,
-                                      //handleFilterChange,
-                                    })
-                                  }
-                                  width={300}
-                                />
-                                <Column
-                                  label="Phone No."
-                                  dataKey="phoneNo"
-                                  headerRenderer={(props) =>
-                                    headerRenderer({
-                                      ...props,
-                                      bookingfilters,
-                                      //handleFilterChange,
-                                    })
-                                  }
-                                  width={150}
-                                />
-                                <Column
-                                  label="Email"
-                                  dataKey="userEmail"
-                                  headerRenderer={(props) =>
-                                    headerRenderer({
-                                      ...props,
-                                      bookingfilters,
-                                      //handleFilterChange,
-                                    })
-                                  }
-                                  width={250}
-                                />
-                                <Column
-                                  label="dob"
-                                  dataKey="dob"
-                                  headerRenderer={(props) =>
-                                    headerRenderer({
-                                      ...props,
-                                      bookingfilters,
-                                      //handleFilterChange,
-                                    })
-                                  }
-                                  width={250}
-                                />
-                              </Table>
-                            )}
-                          </AutoSizer>
+                          <VirtualizedTable rowCountAdd={user} bookingfilters={bookingfilters} columns={columns}/>
                         </div>
                       </div>
                     </div>
