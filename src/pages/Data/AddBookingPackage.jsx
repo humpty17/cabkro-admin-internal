@@ -39,6 +39,19 @@ const AddBookingPackage = () => {
       dataKey: "vehicleFuelType",
       width: 250,
     },
+    {
+      label: "Action",
+      dataKey: "action",
+      width: 150,
+      cellRenderer: ({ rowData }) => (
+        <div>
+          <FiTrash2
+            style={{ cursor: "pointer", color: "red" }}
+            // onClick={() => handleDelete(rowData)}
+          />
+        </div>
+      ),
+    },
   ];
   
   const {user} = useContext(LoginContext)

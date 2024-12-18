@@ -30,13 +30,14 @@ const VirtualizedTable = ({
               index % 2 === 0 ? "virtualized-row" : "virtualized-row alternate"
             }
           >
-            {columns.map(({ dataKey, label, width: colWidth }) => (
+            {columns.map(({ dataKey, label, width: colWidth,cellRenderer }) => (
               <Column
                 key={dataKey}
                 className= {"virtualized-header"}
                 label={label}
                 dataKey={dataKey}
                 width={colWidth || 100}
+                cellRenderer={cellRenderer}
                 headerRenderer={(props) =>
                   headerRenderer({
                     ...props,

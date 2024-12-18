@@ -23,6 +23,9 @@ export const PROFILE = "Profile"
 export const ADDCUSTOMER = "AddCustomer"
 export const CUSTOMERLIST = "CustomerList"
 
+// Extra Section
+export const FAQS = "Faqs"
+
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;
 export const EMAILREGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i

@@ -12,6 +12,7 @@ import {
   BOOKINGPACKAGELIST,
   CUSTOMERLIST,
   DASHBOARDPAGE,
+  FAQS,
   LOGINPAGE,
   POPULARDESTINATIONPAGE,
   PROFILE,
@@ -30,6 +31,8 @@ import Profile from "./pages/Setting/Profile/Profile";
 import AddVehicleList from "./pages/Data/AddVehicleList";
 import BookingPackageList from "./pages/Data/BookingPackageList";
 import CustomerList from "./pages/Customer/CustomerList";
+import Faqs from "./pages/Extra/FAQs";
+import FAQs from "./pages/Extra/FAQs";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -60,6 +63,9 @@ const Home = () => {
             {/* customer section  */}
             {currentPage === ADDCUSTOMER && <AddCustomer/>}
             {currentPage === CUSTOMERLIST && <CustomerList/>}
+
+            {/* Extra section */}
+            {currentPage === FAQS && <FAQs/>}
           </div>
         </div>
       )}
