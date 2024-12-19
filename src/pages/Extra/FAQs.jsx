@@ -35,7 +35,7 @@ const FAQs = () => {
     },
     {
       label: "Action",
-      dataKey: "action",
+      dataKey: "id",
       width: 150,
       cellRenderer: ({ rowData }) => (
         <div>
@@ -46,7 +46,7 @@ const FAQs = () => {
           />
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-            // onClick={() => handleDelete(rowData)}
+             onClick={() => handleDeleteFaqs(rowData)}
           />
         </div>
       ),
@@ -57,13 +57,15 @@ const FAQs = () => {
     Answer : "",
     CreatedDate : "",
     Action : ''
-
   }
   
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [faqList, setFaqList] = useState([])
   const [bookingfilters, setBookingFilters] = useState(faqState)
+  const [isActive, setIsActive] = useState(true)
   const rowGetter = ({ index }) => faqList[index];
+  
+  console.log(faqList);
 
   const faqsList = async() =>{
       startLoading();
@@ -86,6 +88,35 @@ const FAQs = () => {
       } 
     }
 
+    const handleDeleteFaqs = async(rowData) =>{
+      const { id } = rowData;
+      console.log(rowData);
+      
+      startLoading();
+      try {
+        //debugger
+        const response = await callApi("put",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateFAQ?${id}`,{},{});
+        stopLoading();
+        if (response.data.code === 200) {
+          setIsActive(false)
+          } else {
+            NotificationManager.error(response.data.message || "Failed to delete FAQ.");
+          }
+      } catch (error) {
+        console.error("API call failed:", error);
+      }
+    }
+
+    const handleEditFaq = async() =>{
+      startLoading()
+      try {
+        const response = await callApi("put",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/SaveFAQ`,{},{});
+        stopLoading()
+      } catch (error) {
+        
+      }
+    }
+
   useEffect(() =>{
     faqsList()
   },[])
@@ -101,7 +132,7 @@ const FAQs = () => {
               <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <form>
+                    <form onSubmit={handleEditFaq}>
                       <div className="row">
                         <div className="mb-3 col-md-4">
                           <label className="form-label" htmlFor="inputEmail4">

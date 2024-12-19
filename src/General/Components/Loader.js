@@ -7,7 +7,7 @@ const Loader = () =>{
   const {isLoading} = useContext(LoadingContext);
 
     useEffect(()=>{
-      console.log(isLoading)
+      //console.log(isLoading)
     },[isLoading])
     if (isLoading === false) return null;
   return(
