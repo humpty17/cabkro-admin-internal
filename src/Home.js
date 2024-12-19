@@ -17,6 +17,7 @@ import {
   POPULARDESTINATIONPAGE,
   PROFILE,
   REGISTERPAGE,
+  SMTP,
   USERADMINLIST,
 } from "./General/ConstStates";
 
@@ -33,6 +34,7 @@ import BookingPackageList from "./pages/Data/BookingPackageList";
 import CustomerList from "./pages/Customer/CustomerList";
 import Faqs from "./pages/Extra/FAQs";
 import FAQs from "./pages/Extra/FAQs";
+import SMTPDetails from "./pages/Extra/SMTPDetails";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -66,6 +68,7 @@ const Home = () => {
 
             {/* Extra section */}
             {currentPage === FAQS && <FAQs/>}
+            {currentPage === SMTP && <SMTPDetails/>}
           </div>
         </div>
       )}
