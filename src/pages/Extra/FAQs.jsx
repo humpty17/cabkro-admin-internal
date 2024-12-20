@@ -111,6 +111,7 @@ const FAQs = () => {
         NotificationManager.error(APINULLERROR);
       }
     } catch (error) {
+      stopLoading();
       console.error("API call failed:", error);
       NotificationManager.error(APICALLFAIL, error);
     }
@@ -158,6 +159,7 @@ const FAQs = () => {
       }
       
     } catch (error) {
+      stopLoading();
       console.error(APICALLFAIL, error);
     }
   };
@@ -213,6 +215,7 @@ const FAQs = () => {
         }
         
       } catch (error) {
+        stopLoading();
         console.error(APICALLFAIL, error);
       }
     

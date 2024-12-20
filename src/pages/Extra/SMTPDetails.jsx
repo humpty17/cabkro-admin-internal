@@ -1,30 +1,58 @@
-import React, { useContext, useState } from "react";
-import { FaRegEnvelope, FaLock, FaServer, FaEye, FaEyeSlash } from "react-icons/fa";
-import { FiCheckSquare } from "react-icons/fi";
+import React, { useContext, useEffect, useState } from "react";
+import { NotificationManager } from "react-notifications";
+import ResetButton from "../../General/Buttons/ResetButton";
+import SubmitButton from "../../General/Buttons/SubmitButton";
+import { callApi } from "../../General/GeneralMethod";
 import EmailInput from "../../General/Input/EmailInput";
+import NumberInput from "../../General/Input/NumberInput";
 import PasswordInput from "../../General/Input/PasswordInput";
 import TypeInput from "../../General/Input/TypeInput";
-import NumberInput from "../../General/Input/NumberInput";
-import SubmitButton from "../../General/Buttons/SubmitButton";
-import { NotificationManager } from "react-notifications";
-import { LoadingContext } from "../../store/loading-context";
-import { callApi } from "../../General/GeneralMethod";
-import { ApiHeader } from "../../General/ConstStates";
-import ResetButton from "../../General/Buttons/ResetButton";
 import { AdminContext } from "../../store/admin-context";
+import { LoadingContext } from "../../store/loading-context";
+import { APICALLFAIL, APINULLERROR } from "../../General/ConstStates";
 
 const SMTPDetails = () => {
-  const initialState = {
-    mailFrom : '',
-    mailCC : '',
-    mailFromPassword : '',
-    ssl: true,
-    server : '',
-    portNo : 0
-  }
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const {icon, type, handleToggleData} = useContext(AdminContext)
+  const initialState = {
+    "s_id": 0,
+    "mailFrom": "",
+    "mailCC": "",
+    "mailFromPassword": "",
+    "ssl": true,
+    "server": "",
+    "portNo": 0,
+    "isActive": true
+  }
+  
   const [smtpData, setSmtpData] = useState(initialState)
+
+  useEffect(()=>{
+    fetchSMTPDetails()
+  },[])
+
+  const fetchSMTPDetails = async()=>{
+    startLoading()
+    try{
+      const response = await callApi("get", `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/GetActiveSMTPDetails`,{},{})
+      stopLoading()
+      if(response!==null && response!==undefined){
+        if(response?.data?.code === 200){
+          setSmtpData(response?.data?.data || initialState)
+        }
+        else{
+          setSmtpData(initialState)
+        }
+      }
+      else{
+        NotificationManager.error(APINULLERROR)
+      }
+    }catch(err){
+      stopLoading()
+      console.log(APICALLFAIL, err)
+      NotificationManager.error(APICALLFAIL)
+    }
+  }
 
   const handleSmtpForm = async (event) => {
       event.preventDefault();
@@ -37,10 +65,8 @@ const SMTPDetails = () => {
         if (response && response.data) {
           stopLoading()  // Check for response and response.data
           if (response.data.code === 200) {
-            handleReset()
-           // console.log(response.data.data);
-            setSmtpData(response.data.data)
-            NotificationManager.success(response.data.message)
+            setSmtpData(response?.data?.data)
+            NotificationManager.success(response?.data?.message)
           } else {
             console.error("API Error:", response.data.code, response.data);
             NotificationManager.error(response.data.message)
@@ -48,10 +74,11 @@ const SMTPDetails = () => {
         } else {
           stopLoading()
           console.error("API returned an invalid response:", response);
-          NotificationManager.warning(response.data.message)
+          NotificationManager.warning(APINULLERROR)
         }
       } catch (error) {
-        console.error("API call failed:", error);
+        stopLoading()
+        console.error(APICALLFAIL, error);
       }
     };
 
@@ -167,8 +194,8 @@ const SMTPDetails = () => {
                           />
                         </div>
                         <div className="mb-3 col-md-3 mt-4">
-                          <SubmitButton />
-                          <ResetButton onHandleClick={handleReset} />
+                          <SubmitButton buttonName={"Submit"}/>
+                          
                         </div>
                       </div>
                     </form>
