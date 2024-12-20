@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
-import ResetButton from "../../General/Buttons/ResetButton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
+import { APICALLFAIL, APINULLERROR, SAVEDATAERROR } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import EmailInput from "../../General/Input/EmailInput";
 import NumberInput from "../../General/Input/NumberInput";
@@ -9,7 +9,6 @@ import PasswordInput from "../../General/Input/PasswordInput";
 import TypeInput from "../../General/Input/TypeInput";
 import { AdminContext } from "../../store/admin-context";
 import { LoadingContext } from "../../store/loading-context";
-import { APICALLFAIL, APINULLERROR } from "../../General/ConstStates";
 
 const SMTPDetails = () => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
@@ -42,6 +41,7 @@ const SMTPDetails = () => {
         }
         else{
           setSmtpData(initialState)
+          // NotificationManager.error(response?.data?.message || FETCHDATAERROR)
         }
       }
       else{
@@ -69,7 +69,7 @@ const SMTPDetails = () => {
             NotificationManager.success(response?.data?.message)
           } else {
             console.error("API Error:", response.data.code, response.data);
-            NotificationManager.error(response.data.message)
+            NotificationManager.error(response?.data?.message || SAVEDATAERROR)
           }
         } else {
           stopLoading()
@@ -79,6 +79,7 @@ const SMTPDetails = () => {
       } catch (error) {
         stopLoading()
         console.error(APICALLFAIL, error);
+        NotificationManager.error(APICALLFAIL, error)
       }
     };
 
@@ -91,9 +92,7 @@ const SMTPDetails = () => {
   }
 
 
-  const handleReset = () =>{
-    setSmtpData({...initialState})
-  }
+  
   return (
     <div className="wrapper">
       <div className="main">

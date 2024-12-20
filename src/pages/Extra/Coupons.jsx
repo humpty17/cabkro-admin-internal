@@ -78,7 +78,6 @@ const Coupons = () => {
   const [searchFilters, setSearchFilters] = useState(couponState)
   const [couponListData, setCouponListData] = useState([])
   const [addCouponData, setAddCouponData] = useState(initialState)
-  const rowGetter = ({ index }) => couponListData[index];
 
   const couponList = async() =>{
       startLoading();

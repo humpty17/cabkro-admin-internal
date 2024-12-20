@@ -40,6 +40,10 @@ export const APICALLFAIL = "API call failed:"
 export const FETCHDATAERROR = "Error while fetching data"
 //SAVE DATA ERROR
 export const SAVEDATAERROR = "Error while saving data"
+//DELETE DATA ERROR
+export const DELETEDATAERROR = "Error while deleting data"
+//UPDATE DATA ERROR
+export const UPDATEDATAERROR = "Error while updating data"
 
 //ACTION COLUMN HEADING
 export const ACTION = "Action"

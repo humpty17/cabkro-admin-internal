@@ -10,7 +10,7 @@ import {
 } from "../../General/GeneralMethod";
 import TypeInput from "../../General/Input/TypeInput";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, SAVEDATAERROR, UPDATEDATAERROR } from "../../General/ConstStates";
 
 const FAQs = () => {
 
@@ -104,7 +104,7 @@ const FAQs = () => {
         if (response?.data?.code === 200) {
           setFaqList(response?.data?.data || []);
         } else {
-          NotificationManager.error(response?.data?.message || "Failed to Get FQAs");
+          NotificationManager.error(response?.data?.message || FETCHDATAERROR);
         }
       } else {
         console.error("API returned an invalid response:", response);
@@ -150,7 +150,7 @@ const FAQs = () => {
           // setIsActive(false)
         } else {
           NotificationManager.error(
-            response?.data?.message || "Failed to delete FAQ."
+            response?.data?.message || DELETEDATAERROR
           );
         }
       }
@@ -161,6 +161,7 @@ const FAQs = () => {
     } catch (error) {
       stopLoading();
       console.error(APICALLFAIL, error);
+      NotificationManager.error(APICALLFAIL,error)
     }
   };
 
@@ -183,7 +184,7 @@ const FAQs = () => {
               setIsEditMode(false)
             }
             else{
-              NotificationManager.error(response?.data?.message || "Error while update")
+              NotificationManager.error(response?.data?.message || UPDATEDATAERROR)
             }
           }
           else{
@@ -200,13 +201,13 @@ const FAQs = () => {
           stopLoading();
           if(response!==null || response!==undefined){
             if(response?.data?.code === 200){
-              NotificationManager.success(response?.data?.message || "FAQs save successfully")
+              NotificationManager.success(response?.data?.message || "FAQs saved successfully")
               faqsList();
               setAddFaq(initialFaq);
               setIsEditMode(false)
             }
             else{
-              NotificationManager.error(response?.data?.message || "Error while saving data")
+              NotificationManager.error(response?.data?.message || SAVEDATAERROR)
             }
           }
           else{
@@ -217,6 +218,7 @@ const FAQs = () => {
       } catch (error) {
         stopLoading();
         console.error(APICALLFAIL, error);
+        NotificationManager.response(APICALLFAIL, error)
       }
     
   };
