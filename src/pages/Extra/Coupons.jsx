@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaFileExport } from "react-icons/fa";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
-import SubmitButton from "../../General/Buttons/SubmitButton";
-import ExportButtton from "../../General/Buttons/ExportButtton";
-import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import { NotificationManager } from "react-notifications";
-import { callApi } from "../../General/GeneralMethod";
+import ExportButtton from "../../General/Buttons/ExportButtton";
+import SubmitButton from "../../General/Buttons/SubmitButton";
+import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
+import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
+import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR, SAVEDATAERROR } from "../../General/ConstStates";
+import NumberInput from "../../General/Input/NumberInput";
+import TypeInput from "../../General/Input/TypeInput";
 
 const Coupons = () => {
   const columns = [
@@ -36,8 +38,8 @@ const Coupons = () => {
     //   width: 100,
     // },
     {
-      label: "Action",
-      dataKey: "id",
+      label: ACTION,
+      dataKey: ACTION,
       width: 150,
       cellRenderer: ({ rowData }) => (
         <div>
@@ -62,9 +64,20 @@ const Coupons = () => {
     appliedDate:'',
     isValid: true
   }
+
+  const initialState = {
+    "appliedCouponID": 0,
+    "couponCode": "",
+    "discountAmount": 0,
+    "discountPercent": 0,
+    "appliedDate": getCurrentDateTime(),
+    "isValid": true,
+    "expirationDate": getCurrentDateTime()
+  }
   const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [bookingfilters, setBookingFilters] = useState(couponState)
+  const [searchFilters, setSearchFilters] = useState(couponState)
   const [couponListData, setCouponListData] = useState([])
+  const [addCouponData, setAddCouponData] = useState(initialState)
   const rowGetter = ({ index }) => couponListData[index];
 
   const couponList = async() =>{
@@ -74,17 +87,18 @@ const Coupons = () => {
         stopLoading();
         if (response !== null && response !== undefined) {
           if (response.data.code === 200) {
-          // console.log(faqList);
-            setCouponListData(response.data.data)
+            setCouponListData(response?.data?.data || [])
           } else {
-            NotificationManager.error(response.data.message);
+            NotificationManager.error(response?.data?.message || FETCHDATAERROR);
           }
         } else {
-          console.error("API returned an invalid response:", response);
-          NotificationManager.warning(response.data.message);
+          console.error(APINULLERROR, response);
+          NotificationManager.error(APINULLERROR);
         }
       } catch (error) {
-        console.error("API call failed:", error);
+        stopLoading()
+        console.error(APICALLFAIL, error);
+        NotificationManager.error(APICALLFAIL, error)
       } 
     }
 
@@ -92,7 +106,38 @@ const Coupons = () => {
     useEffect(() =>{
       couponList()
     },[])
+
+    const handleInputChange = (e)=>{
+      setAddCouponData({
+        ...addCouponData, [e.target.name]:e.target.value
+      })
+    }
   
+    const handleSaveCoupen = async() =>{
+      startLoading()
+      try{
+        const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/AddCoupon`,{...addCouponData},{})
+        stopLoading()
+        if(response!==null && response!==undefined){
+          if(response?.data?.code === 200){
+            NotificationManager.success(response?.data?.message || "Coupon details saved successfully")
+            setAddCouponData(initialState)
+            couponList()
+          }
+          else{
+            NotificationManager.error(response?.data?.message || SAVEDATAERROR)
+          }
+        }
+        else{
+          NotificationManager.error(APINULLERROR)
+        }
+      }
+      catch(err){
+        stopLoading()
+        console.log(APICALLFAIL, err)
+        NotificationManager.error(APICALLFAIL, err)
+      }
+    }
   return (
     <div className="wrapper">
       <div className="main">
@@ -103,26 +148,29 @@ const Coupons = () => {
               <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <form>
+                    <div>
                       <div className="row">
                         <div className="mb-3 col-md-2">
                           <label className="form-label" htmlFor="couponCode">
                             Coupon Code
                           </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="couponCode"
+                          <TypeInput
+                            inputName={"couponCode"}
+                            placeholderName={"Coupon Code"}
+                            valueName={addCouponData.couponCode}
+                            onChangeName={handleInputChange}
                           />
                         </div>
                         <div className="mb-3 col-md-2">
                           <label className="form-label" htmlFor="discountAmount">
                             Dis. Amount
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
+                          <NumberInput
                             id="discountAmount"
+                            inputName={"discountAmount"}
+                            placeholderName={"Discount Amount"}
+                            valueName={addCouponData.discountAmount}
+                            onChangeName={handleInputChange}
                           />
                         </div>
                         <div className="mb-3 col-md-2">
@@ -132,25 +180,27 @@ const Coupons = () => {
                           >
                             Dis. Percent
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="discountPercent"
+                          <NumberInput
+                            id="portNo"
+                            inputName={"discountPercent"}
+                            placeholderName={"Discount Percent"}
+                            valueName={addCouponData.discountPercent}
+                            onChangeName={handleInputChange}
                           />
                         </div>
                         <div className="mb-3 col-md-5 mt-4">
-                          <SubmitButton/>
+                          <SubmitButton buttonName={"Submit"} handleClick={handleSaveCoupen}/>
                           <ExportButtton/>
                         </div>
                       </div>
-                    </form>
+                    </div>
                     <div
                       id="datatables-reponsive_wrapper"
                       className="dataTables_wrapper dt-bootstrap5 no-footer"
                     >
                       <div className="row dt-row">
                         <div className="col-sm-12">
-                          <VirtualizedTable rowCountAdd={couponListData} bookingfilters={bookingfilters} columns={columns} rowGetter={rowGetter} />
+                          <VirtualizedTable tableData={couponListData} tableSearchFilters={searchFilters} columns={columns} />
                         </div>
                       </div>
                     </div>

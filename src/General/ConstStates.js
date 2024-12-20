@@ -36,5 +36,10 @@ export const EMAILREGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
 export const APINULLERROR = "API returned an invalid response"
 export const APICALLFAIL = "API call failed:"
 
+//FETCH DATA ERROR
+export const FETCHDATAERROR = "Error while fetching data"
+//SAVE DATA ERROR
+export const SAVEDATAERROR = "Error while saving data"
+
 //ACTION COLUMN HEADING
 export const ACTION = "Action"
