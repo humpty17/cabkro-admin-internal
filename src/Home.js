@@ -10,6 +10,7 @@ import {
   ADDUSERFORM,
   ADDVEHICLELIST,
   BOOKINGPACKAGELIST,
+  COUPONS,
   CUSTOMERLIST,
   DASHBOARDPAGE,
   FAQS,
@@ -35,6 +36,7 @@ import CustomerList from "./pages/Customer/CustomerList";
 import Faqs from "./pages/Extra/FAQs";
 import FAQs from "./pages/Extra/FAQs";
 import SMTPDetails from "./pages/Extra/SMTPDetails";
+import Coupons from "./pages/Extra/Coupons";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -69,6 +71,7 @@ const Home = () => {
             {/* Extra section */}
             {currentPage === FAQS && <FAQs/>}
             {currentPage === SMTP && <SMTPDetails/>}
+            {currentPage === COUPONS && <Coupons/>}
           </div>
         </div>
       )}

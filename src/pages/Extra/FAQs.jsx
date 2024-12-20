@@ -5,6 +5,9 @@ import { LoadingContext } from '../../store/loading-context';
 import { NotificationManager } from 'react-notifications';
 import { callApi } from '../../General/GeneralMethod';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
+import SubmitButton from '../../General/Buttons/SubmitButton';
+import ExportButtton from '../../General/Buttons/ExportButtton';
+import EmailInput from "../../General/Input/EmailInput";
 
 const FAQs = () => {
   const columns = [
@@ -53,10 +56,10 @@ const FAQs = () => {
     },
   ];
   const faqState = {
-    Question :"",
-    Answer : "",
-    CreatedDate : "",
-    Action : ''
+    question :"",
+    answer : "",
+    created_at : "",
+    isActive : true
   }
   
   const {startLoading, stopLoading} = useContext(LoadingContext)
@@ -90,12 +93,14 @@ const FAQs = () => {
 
     const handleDeleteFaqs = async(rowData) =>{
       const { id } = rowData;
-      console.log(rowData);
+     // console.log(rowData);
       
       startLoading();
       try {
         //debugger
         const response = await callApi("put",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateFAQ?${id}`,{},{});
+        console.log(response);
+        
         stopLoading();
         if (response.data.code === 200) {
           setIsActive(false)
@@ -115,6 +120,14 @@ const FAQs = () => {
       } catch (error) {
         
       }
+    }
+
+    const handleChangeFaqs = (e) =>{
+      setFaqList({
+        ...faqList,
+        [e.target.name] : e.target.value
+      })
+      //console.log(e.target.value);
     }
 
   useEffect(() =>{
@@ -143,6 +156,13 @@ const FAQs = () => {
                             className="form-control"
                             id="inputEmail4"
                           />
+                          <EmailInput
+                                inputName={"question"}
+                                placeholderName={"Question"}
+                                valueName={faqList.question}
+                                onChangeName={handleChangeFaqs}
+                              />
+                          
                         </div>
                         <div className="mb-3 col-md-4">
                           <label className="form-label" htmlFor="inputPassword4">
@@ -155,13 +175,8 @@ const FAQs = () => {
                           />
                         </div>
                         <div className="mb-3 col-md-4 mt-4">
-                          <button type="submit" className="btn btn-primary mx-1">
-                            Submit
-                          </button>
-                          <button className="btn btn-success ">
-                            <FaFileExport className="align-middle me-2" />
-                            Export Data
-                          </button>
+                          <SubmitButton/>
+                          <ExportButtton/>
                         </div>
                       </div>
                     </form>
@@ -172,44 +187,6 @@ const FAQs = () => {
                     >
                       <div className="row dt-row">
                         <div className="col-sm-12">
-                          {/* <table
-                            id="datatables-reponsive"
-                            className="table table-striped dataTable no-footer dtr-inline"
-                            style={{ width: '100%' }}
-                            aria-describedby="datatables-reponsive_info"
-                          >
-                            <thead className="table-dark">
-                              <tr>
-                                <th>Sr no.</th>
-                                <th>Question</th>
-                                <th>Answer</th>
-                                <th>Created Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr className="odd">
-                                <td>1</td>
-                                <td>{faqList.question}</td>
-                                <td>Tokyo</td>
-                                <td>12-12-2024</td>
-                                <td>
-                                  <FiEdit className="align-middle me-3" />
-                                  <FiTrash2 className="align-middle" />
-                                </td>
-                              </tr>
-                              <tr className="even">
-                                <td>2</td>
-                                <td>Chief Executive Officer (CEO)</td>
-                                <td>London</td>
-                                <td>12-12-2024</td>
-                                <td>
-                                  <FiEdit className="align-middle me-3" />
-                                  <FiTrash2 className="align-middle" />
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table> */}
                           <VirtualizedTable rowCountAdd={faqList} bookingfilters={bookingfilters} columns={columns} rowGetter={rowGetter} />
                         </div>
                       </div>
