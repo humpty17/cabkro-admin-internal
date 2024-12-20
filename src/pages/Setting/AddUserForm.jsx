@@ -238,7 +238,7 @@ const AddUserForm = () => {
                           <div className="mb-3 row">
                             <div className="col-sm-9 ms-sm-auto">
                             <ResetButton onHandleClick={handleReset}/>
-                              <SubmitButton/>
+                              <SubmitButton buttonName={"Submit"}/>
                             </div>
                           </div>
                         </form>

@@ -1,15 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { FaFileExport } from 'react-icons/fa';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { LoadingContext } from '../../store/loading-context';
-import { NotificationManager } from 'react-notifications';
-import { callApi } from '../../General/GeneralMethod';
-import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
-import SubmitButton from '../../General/Buttons/SubmitButton';
-import ExportButtton from '../../General/Buttons/ExportButtton';
-import EmailInput from "../../General/Input/EmailInput";
+import React, { useContext, useEffect, useState } from "react";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { NotificationManager } from "react-notifications";
+import ExportButtton from "../../General/Buttons/ExportButtton";
+import SubmitButton from "../../General/Buttons/SubmitButton";
+import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
+import {
+  callApi,
+  getCurrentDateTime
+} from "../../General/GeneralMethod";
+import TypeInput from "../../General/Input/TypeInput";
+import { LoadingContext } from "../../store/loading-context";
+import { ACTION, APICALLFAIL, APINULLERROR } from "../../General/ConstStates";
 
 const FAQs = () => {
+
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+
   const columns = [
     {
       label: "Question",
@@ -31,109 +37,193 @@ const FAQs = () => {
       dataKey: "created_at",
       width: 200,
     },
+    // {
+    //   label: "Update Date",
+    //   dataKey: "updated_at",
+    //   width: 200,
+    // },
     {
-      label: "Update Date",
-      dataKey: "updated_at",
-      width: 200,
-    },
-    {
-      label: "Action",
-      dataKey: "id",
+      label: ACTION,
+      dataKey: ACTION,
       width: 150,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            // onClick={() => handleEdit(rowData)}
+            onClick={() => {setIsEditMode(true);setAddFaq(rowData)}}
           />
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-             onClick={() => handleDeleteFaqs(rowData)}
+            onClick={() => handleDeleteFaqs(rowData)}
           />
         </div>
       ),
     },
   ];
+
   const faqState = {
-    question :"",
-    answer : "",
-    created_at : "",
-    isActive : true
-  }
-  
-  const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [faqList, setFaqList] = useState([])
-  const [bookingfilters, setBookingFilters] = useState(faqState)
-  const [isActive, setIsActive] = useState(true)
-  const rowGetter = ({ index }) => faqList[index];
-  
-  console.log(faqList);
+    question: "",
+    answer: "",
+    created_at: "",
+   
+  };
 
-  const faqsList = async() =>{
-      startLoading();
-      try {
-        const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/GetAllFAQs`,{},{});
-        stopLoading();
-        if (response !== null && response !== undefined) {
-          if (response.data.code === 200) {
-          // console.log(faqList);
-            setFaqList(response.data.data)
-          } else {
-            NotificationManager.error(response.data.message);
-          }
+  const initialFaq = {
+    id: 0,
+    question: "",
+    answer: "",
+    category: "",
+    created_at: getCurrentDateTime(),
+    updated_at: getCurrentDateTime(),
+    isActive: true,
+    other1: 0,
+    other2: 0,
+    other3: "",
+    other4: "",
+    other5: "",
+  };
+
+  const [addFaq, setAddFaq] = useState(initialFaq);
+  const [faqList, setFaqList] = useState([]);
+  const [searchFilters, setSearchFilters] = useState(faqState)
+  const [isEditMode, setIsEditMode] = useState(false)
+  
+
+  const faqsList = async () => {
+    startLoading();
+    try {
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/GetAllFAQs`,
+        {},
+        {}
+      );
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response?.data?.code === 200) {
+          setFaqList(response?.data?.data || []);
         } else {
-          console.error("API returned an invalid response:", response);
-          NotificationManager.warning(response.data.message);
+          NotificationManager.error(response?.data?.message || "Failed to Get FQAs");
         }
-      } catch (error) {
-        console.error("API call failed:", error);
-      } 
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.error(APINULLERROR);
+      }
+    } catch (error) {
+      console.error("API call failed:", error);
+      NotificationManager.error(APICALLFAIL, error);
     }
+  };
 
-    const handleDeleteFaqs = async(rowData) =>{
-      const { id } = rowData;
-     // console.log(rowData);
+  const handleInputChange = (e) => {
+    setAddFaq({
+      ...addFaq,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  
+
+  const handleDeleteFaqs = async (rowData) => {
+    const { id } = rowData;
+
+    startLoading();
+    try {
+      //debugger
+      const response = await callApi(
+        "put",
+        `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateFAQ?id=${id}`,
+        { ...rowData, isActive: false },
+        {}
+      );
+      console.log(response);
+
+      stopLoading();
+      if(response!==null && response!==undefined){
+        if (response?.data?.code === 200) {
+          NotificationManager.success(
+            response?.data?.message || "FAQ deleted successfully"
+          );
+          faqsList()
+          // setIsActive(false)
+        } else {
+          NotificationManager.error(
+            response?.data?.message || "Failed to delete FAQ."
+          );
+        }
+      }
+      else{
+        NotificationManager.error(APINULLERROR)
+      }
       
+    } catch (error) {
+      console.error(APICALLFAIL, error);
+    }
+  };
+
+  const handleEditFaq = async () => {
       startLoading();
       try {
-        //debugger
-        const response = await callApi("put",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateFAQ?${id}`,{},{});
-        console.log(response);
-        
-        stopLoading();
-        if (response.data.code === 200) {
-          setIsActive(false)
-          } else {
-            NotificationManager.error(response.data.message || "Failed to delete FAQ.");
+        if (addFaq.id > 0) {
+          const response = await callApi(
+            "put",
+            `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateFAQ?id=${addFaq.id}`,
+            {...addFaq},
+            {}
+          );
+          stopLoading();
+          if(response!==null && response!==undefined){
+            if(response?.data?.code === 200){
+              NotificationManager.success(response?.data?.message || "FAQ updated successfully");
+              faqsList();
+              setAddFaq(initialFaq)
+              setIsEditMode(false)
+            }
+            else{
+              NotificationManager.error(response?.data?.message || "Error while update")
+            }
           }
-      } catch (error) {
-        console.error("API call failed:", error);
-      }
-    }
-
-    const handleEditFaq = async() =>{
-      startLoading()
-      try {
-        const response = await callApi("put",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/SaveFAQ`,{},{});
-        stopLoading()
-      } catch (error) {
+          else{
+            NotificationManager.error(APINULLERROR)
+          }
+        }
+        else{
+          const response = await callApi(
+            "post",
+            `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/SaveFAQ?`,
+            { ...addFaq },
+            {}
+          );    
+          stopLoading();
+          if(response!==null || response!==undefined){
+            if(response?.data?.code === 200){
+              NotificationManager.success(response?.data?.message || "FAQs save successfully")
+              faqsList();
+              setAddFaq(initialFaq);
+              setIsEditMode(false)
+            }
+            else{
+              NotificationManager.error(response?.data?.message || "Error while saving data")
+            }
+          }
+          else{
+            NotificationManager.error(APINULLERROR)
+          }
+        }
         
+      } catch (error) {
+        console.error(APICALLFAIL, error);
       }
-    }
-
-    const handleChangeFaqs = (e) =>{
-      setFaqList({
-        ...faqList,
-        [e.target.name] : e.target.value
-      })
-      //console.log(e.target.value);
-    }
-
-  useEffect(() =>{
-    faqsList()
-  },[])
     
+  };
+
+  
+
+  useEffect(() => {
+    faqsList();
+  }, []);
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -145,41 +235,44 @@ const FAQs = () => {
               <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <form onSubmit={handleEditFaq}>
+                    <div>
                       <div className="row">
                         <div className="mb-3 col-md-4">
                           <label className="form-label" htmlFor="inputEmail4">
                             Question
                           </label>
-                          <input
+                          {/* <input
                             type="email"
                             className="form-control"
                             id="inputEmail4"
+                          /> */}
+                          <TypeInput
+                            inputName={"question"}
+                            placeholderName={"Question"}
+                            valueName={addFaq.question}
+                            onChangeName={handleInputChange}
                           />
-                          <EmailInput
-                                inputName={"question"}
-                                placeholderName={"Question"}
-                                valueName={faqList.question}
-                                onChangeName={handleChangeFaqs}
-                              />
-                          
                         </div>
                         <div className="mb-3 col-md-4">
-                          <label className="form-label" htmlFor="inputPassword4">
+                          <label
+                            className="form-label"
+                            htmlFor="inputPassword4"
+                          >
                             Answer
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="inputPassword4"
-                          />
+                          <TypeInput
+                            inputName={"answer"}
+                            placeholderName={"Answer"}
+                            valueName={addFaq.answer}
+                            onChangeName={handleInputChange}
+                          ></TypeInput>
                         </div>
                         <div className="mb-3 col-md-4 mt-4">
-                          <SubmitButton/>
-                          <ExportButtton/>
+                          <SubmitButton buttonName={isEditMode ? "Update" : "Submit"} handleClick={handleEditFaq} />
+                          <ExportButtton />
                         </div>
                       </div>
-                    </form>
+                    </div>
 
                     <div
                       id="datatables-reponsive_wrapper"
@@ -187,7 +280,11 @@ const FAQs = () => {
                     >
                       <div className="row dt-row">
                         <div className="col-sm-12">
-                          <VirtualizedTable rowCountAdd={faqList} bookingfilters={bookingfilters} columns={columns} rowGetter={rowGetter} />
+                          <VirtualizedTable
+                            tableData={faqList}
+                            tableSearchFilters={searchFilters}
+                            columns={columns}
+                          />
                         </div>
                       </div>
                     </div>

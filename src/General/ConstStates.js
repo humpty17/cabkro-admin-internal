@@ -31,3 +31,10 @@ export const COUPONS = "Coupons"
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;
 export const EMAILREGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+
+//API ERROR NULL
+export const APINULLERROR = "API returned an invalid response"
+export const APICALLFAIL = "API call failed:"
+
+//ACTION COLUMN HEADING
+export const ACTION = "Action"

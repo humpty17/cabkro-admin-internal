@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { FaFileExport, FaEdit, FaTrashAlt } from "react-icons/fa";
-import { LoadingContext } from '../../store/loading-context';
-import { callApi } from '../../General/GeneralMethod';
+import React, { useContext, useEffect, useState } from 'react';
+import { FaFileExport } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
-import { Column, Table, AutoSizer} from "react-virtualized";
-import { headerRenderer } from '../../General/Common/VitualizedTable/SearchHeaderRenderer';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
+import { callApi } from '../../General/GeneralMethod';
+import { LoadingContext } from '../../store/loading-context';
 
 
 const UserAdminList = () => {
@@ -53,7 +51,7 @@ const UserAdminList = () => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [user, setUser] = useState('');
   const [filters, setFilters] = useState(filterState)
-  const [bookingfilters, setBookingFilters] = useState(filterState)
+  const [searchFilters, setSearchFilters]= useState(filterState)
   const rowGetter = ({ index }) => user[index];
   
   
@@ -115,7 +113,7 @@ const UserAdminList = () => {
                     <div className="dataTables_wrapper">
                       <div className="row">
                         <div className="col-sm-12">
-                          <VirtualizedTable rowCountAdd={user} bookingfilters={bookingfilters} columns={columns} rowGetter={rowGetter}/>
+                          <VirtualizedTable tableData={user} tableSearchFilters={searchFilters} columns={columns} rowGetter={rowGetter}/>
                         </div>
                       </div>
                     </div>

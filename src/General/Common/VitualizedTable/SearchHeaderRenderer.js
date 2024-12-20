@@ -1,14 +1,15 @@
-export const headerRenderer = ({ dataKey, label, bookingfilters, handleFilterChange }) => {
+import { ACTION } from "../../ConstStates";
+
+export const headerRenderer = ({ dataKey, label, tableSearchFilters, handleFilterChange }) => {
   return (
     <div>
       <div className="ReactVirtualized__Table__headerTruncatedText">{label}</div>
-      <input
+      {label!==ACTION?<input
         type="text"
         placeholder={`Search ${label}`}
-        value={bookingfilters[dataKey] || ''} // Ensure no undefined value
+        value={tableSearchFilters[dataKey] || ''} // Ensure no undefined value
         //onChange={(e) => handleFilterChange(dataKey, e.target.value)}
         style={{ width: "90%", padding: "4px", marginTop: "1px" }}
-      />
-    </div>
-  );
+      /> : <div></div>}
+    </div> )
 };

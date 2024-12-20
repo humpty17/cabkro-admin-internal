@@ -17364,6 +17364,10 @@
   cursor: pointer;
 }
 
+.ReactVirtualized__Table__headerRow{
+  text-transform: capitalize !important;
+}
+
 .virtualized-action:hover {
   color: #a71d2a; /* Darker red on hover */
 }

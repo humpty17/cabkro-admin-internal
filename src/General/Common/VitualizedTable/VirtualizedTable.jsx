@@ -4,16 +4,16 @@ import 'react-virtualized/styles.css'; // Import default styles
 import { headerRenderer } from './SearchHeaderRenderer';
 
 const VirtualizedTable = ({
-  rowCountAdd=[],
+  tableData=[],
   columns,
   rowHeight = 50,
   headerHeight = 80,
   width,
   height,
   onRowClick,
-  bookingfilters,
-  rowGetter
+  tableSearchFilters
 }) => {
+  const rowGetter = ({ index }) => tableData[index];
   return (
     <div style={{ width: "100%", height: height || "300px" }}>
       <AutoSizer>
@@ -23,7 +23,7 @@ const VirtualizedTable = ({
             height={height || autoHeight}
             headerHeight={headerHeight}
             rowHeight={rowHeight}
-            rowCount={rowCountAdd.length}
+            rowCount={tableData.length}
             rowGetter={rowGetter}
             onRowClick={onRowClick}
             rowClassName={({ index }) =>
@@ -41,7 +41,7 @@ const VirtualizedTable = ({
                 headerRenderer={(props) =>
                   headerRenderer({
                     ...props,
-                    bookingfilters,
+                    tableSearchFilters,
                     //handleFilterChange,
                   })
                 }

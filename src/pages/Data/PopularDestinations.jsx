@@ -66,14 +66,9 @@ const PopularDestinations = () => {
   const rowGetter = ({ index }) => data[index];
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [getDestination, setGetDestination] = useState(null)
-  const [bookingfilters, setBookingFilters] = useState({});
+  const [tableSearchFilters, setSearchFilters] = useState({});
 
-  const handleFilterChange = (dataKey, value) => {
-    setBookingFilters((prevFilters) => ({
-      ...prevFilters,
-      [dataKey]: value,
-    }));
-  };
+  
   
   const getPopularDestination = async () => {
     startLoading();
@@ -152,7 +147,7 @@ const PopularDestinations = () => {
                               headerRenderer={(props) =>
                                 headerRenderer({
                                   ...props,
-                                  bookingfilters,
+                                  tableSearchFilters,
                                   // handleFilterChange,
                                 })
                               }
@@ -165,7 +160,7 @@ const PopularDestinations = () => {
                               headerRenderer={(props) =>
                                 headerRenderer({
                                   ...props,
-                                  bookingfilters,
+                                  tableSearchFilters,
                                   // handleFilterChange,
                                 })
                               }
@@ -178,7 +173,7 @@ const PopularDestinations = () => {
                               headerRenderer={(props) =>
                                 headerRenderer({
                                   ...props,
-                                  bookingfilters,
+                                  tableSearchFilters,
                                   // handleFilterChange,
                                 })
                               }
@@ -191,7 +186,7 @@ const PopularDestinations = () => {
                               headerRenderer={(props) =>
                                 headerRenderer({
                                   ...props,
-                                  bookingfilters,
+                                  tableSearchFilters,
                                   // handleFilterChange,
                                 })
                               }

@@ -11,6 +11,7 @@ import { LoginContext } from '../../store/login-context';
 import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
 import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
+import { ACTION } from '../../General/ConstStates';
 
 const AddBookingPackage = () => {
   const columns = [
@@ -40,8 +41,8 @@ const AddBookingPackage = () => {
       width: 250,
     },
     {
-      label: "Action",
-      dataKey: "action",
+      label: ACTION,
+      dataKey: ACTION,
       width: 150,
       cellRenderer: ({ rowData }) => (
         <div>
@@ -127,14 +128,14 @@ const AddBookingPackage = () => {
 
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [bookingData, setBookingData] = useState([])
-  const [bookingfilters, setBookingFilters] = useState(filterState)
+  const [searchFilters, setSearchFilters] = useState(filterState)
   const [isShowPreview, setIsShowPreview] = useState(false)
   const [previewBookingData, setPreviewBookingData] = useState([])
   const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : bookingData[index];
  // console.log(bookingData);
 
   const handleFilterChange = (dataKey, value) => {
-    setBookingFilters((prevFilters) => ({
+    setSearchFilters((prevFilters) => ({
       ...prevFilters,
       [dataKey]: value,
     }));
@@ -245,7 +246,7 @@ const AddBookingPackage = () => {
                   <div className="card-body">
                     <div className="row dt-row">
                       <div className="col-sm-12">
-                        <VirtualizedTable rowCountAdd={isShowPreview ? previewBookingData : bookingData} bookingfilters={bookingfilters} columns={columns} rowGetter={rowGetter}/>
+                        <VirtualizedTable tableData={isShowPreview ? previewBookingData : bookingData} tableSearchFilters={searchFilters} columns={columns} rowGetter={rowGetter}/>
                       </div>
                     </div>
                   </div>
