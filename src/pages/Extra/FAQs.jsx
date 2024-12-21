@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiEdit} from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
@@ -11,6 +11,7 @@ import {
 import TypeInput from "../../General/Input/TypeInput";
 import { LoadingContext } from "../../store/loading-context";
 import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, SAVEDATAERROR, UPDATEDATAERROR } from "../../General/ConstStates";
+import { FaTrash } from "react-icons/fa";
 
 const FAQs = () => {
 
@@ -53,8 +54,8 @@ const FAQs = () => {
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {setIsEditMode(true);setAddFaq(rowData)}}
           />
-          <FiTrash2
-            style={{ cursor: "pointer", color: "red" }}
+          <FaTrash
+            style={{ cursor: "pointer", color: "#a71d2a" }}
             onClick={() => handleDeleteFaqs(rowData)}
           />
         </div>
@@ -123,8 +124,6 @@ const FAQs = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  
 
   const handleDeleteFaqs = async (rowData) => {
     const { id } = rowData;

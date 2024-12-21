@@ -9,6 +9,7 @@ import { LoadingContext } from "../../store/loading-context";
 import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR, SAVEDATAERROR } from "../../General/ConstStates";
 import NumberInput from "../../General/Input/NumberInput";
 import TypeInput from "../../General/Input/TypeInput";
+import { FaTrash } from "react-icons/fa";
 
 const Coupons = () => {
   const columns = [
@@ -48,7 +49,7 @@ const Coupons = () => {
             style={{ cursor: "pointer", color: "blue" }}
             // onClick={() => handleEdit(rowData)}
           />
-          <FiTrash2
+          <FaTrash
             style={{ cursor: "pointer", color: "red" }}
             // onClick={() => handleDelete(rowData)}
           />

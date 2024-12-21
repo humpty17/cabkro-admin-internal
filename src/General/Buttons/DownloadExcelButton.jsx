@@ -34,7 +34,7 @@ const DownloadExcelButton = ({ columns, fileName }) => {
   }
   return (
     <button
-      className="btn btn-secondary" onClick={handleDownload}
+      className="btn btn-secondary mx-2" onClick={handleDownload}
     >
       <FiDownload className="align-middle me-2" />
       Download sample

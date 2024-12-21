@@ -1,27 +1,204 @@
-import React, { useState } from "react";
-import { FiPlus, FiDownload, FiTrash2 } from "react-icons/fi";
-import { FaFileExport } from "react-icons/fa";
+import React, { useContext, useEffect, useState } from "react";
+import { FiPlus, FiDownload, FiTrash2, FiEdit } from "react-icons/fi";
+import { FaFileExport, FaTrash } from "react-icons/fa";
+import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
+import { LoadingContext } from "../../store/loading-context";
+import { NotificationManager } from "react-notifications";
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR } from "../../General/ConstStates";
+import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
+import UploadExcelButton from "../../General/Buttons/UploadExcelButton";
+import DownloadExcelButton from '../../General/Buttons/DownloadExcelButton'
+import ExportButtton from "../../General/Buttons/ExportButtton";
+import SubmitExcelButton from "../../General/Buttons/SubmitExcelButton";
+import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
+import { LoginContext } from "../../store/login-context";
 
 const AddVehicleList = () => {
   // Table data state
-  const [data, setData] = useState([
-    { id: 1, name: "Airi Satou", position: "Accountant", office: "Tokyo", age: 33, startDate: "2018/11/28", salary: "$162,700" },
-    { id: 2, name: "Angelica Ramos", position: "CEO", office: "London", age: 47, startDate: "2019/10/09", salary: "$1,200,000" },
-    { id: 3, name: "Ashton Cox", position: "Junior Technical Author", office: "San Francisco", age: 66, startDate: "2019/01/12", salary: "$86,000" },
-    { id: 4, name: "Bradley Greer", position: "Software Engineer", office: "London", age: 41, startDate: "2022/10/13", salary: "$132,000" },
-    { id: 5, name: "Brenden Wagner", position: "Software Engineer", office: "San Francisco", age: 28, startDate: "2023/06/07", salary: "$206,850" },
-    { id: 6, name: "Brielle Williamson", position: "Integration Specialist", office: "New York", age: 61, startDate: "2022/12/02", salary: "$372,000" },
-    { id: 7, name: "Bruno Nash", position: "Software Engineer", office: "London", age: 38, startDate: "2023/05/03", salary: "$163,500" },
-    { id: 8, name: "Caesar Vance", position: "Pre-Sales Support", office: "New York", age: 21, startDate: "2023/12/12", salary: "$106,450" },
-    { id: 9, name: "Cara Stevens", position: "Sales Assistant", office: "New York", age: 46, startDate: "2023/12/06", salary: "$145,600" },
-    { id: 10, name: "Cedric Kelly", position: "Senior Javascript Developer", office: "Edinburgh", age: 22, startDate: "2022/03/29", salary: "$433,060" },
-  ]);
+  const columns = [
+    {
+      label: "VehicleBrand",
+      dataKey: "vehicleBrand",
+      width: 200,
+    },
+    {
+      label: "vehicleType",
+      dataKey: "vehicleType",
+      width: 200,
+    },
+    {
+      label: "vehicleModelName",
+      dataKey: "vehicleModelName",
+      width: 200,
+    },
+    {
+      label: "vehiclesSeats",
+      dataKey: "vehiclesSeats",
+      width: 100,
+    },
+    {
+      label: "vehicleFuelType",
+      dataKey: "vehicleFuelType",
+      width: 200,
+    },
+    {
+      label: "vehicleColour",
+      dataKey: "vehicleColour",
+      width: 150,
+    },
+    {
+      label: ACTION,
+      dataKey: ACTION,
+      width: 150,
+      cellRenderer: ({ rowData }) => (
+        <div>
+          <FaTrash
+            style={{ cursor: "pointer", color: "#a71d2a" }}
+            // onClick={() => handleDeleteVehicle(rowData)}
+          />
+        </div>
+      ),
+    },
+  ];
+  
+const {user} = useContext(LoginContext)
+  const initialVehicle = {
+    vid: 0,
+    vehicleBrand: "",
+    vehicleType: "",
+    vehicleModelName: "",
+    vehicleFuelType: "",
+    vehiclesSeats: 0,
+    other1: 0,
+    vehicleLooking: "",
+    vehicleColour: ""
+  }
+
+ const otherData = {
+    "createdDate": getCurrentDateTime(),
+    "modifyDate": getCurrentDateTime(),
+    "userId": user ? user.userId : 0,
+    "isActive": true,
+    "isDeleted": false,
+  }
+
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+  const [AddVehicleData,setAddVehicleData] = useState([])
+  const [searchFilters, setSearchFilters] = useState(initialVehicle)
+  const [isShowPreview, setIsShowPreview] = useState(false)
+  const [previewBookingData, setPreviewBookingData] = useState([])
+  const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : AddVehicleData[index];
+
+  const VehicleList = async () => {
+    startLoading();
+    try {
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllVehicleList`,
+        {},
+        {}
+      );
+
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response?.data?.code === 200) {
+          setAddVehicleData(response?.data?.data || []);
+        } else {
+          NotificationManager.error(response?.data?.message || FETCHDATAERROR);
+        }
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.error(APINULLERROR);
+      }
+    } catch (error) {
+      stopLoading();
+      console.error("API call failed:", error);
+      NotificationManager.error(APICALLFAIL, error);
+    }
+  };
+  useEffect(() => {
+    VehicleList();
+  }, []);
 
   // Function to delete a row
-  const handleDelete = (id) => {
-    const updatedData = data.filter((item) => item.id !== id);
-    setData(updatedData);
+  const handleDeleteVehicle = async (rowData) => {
+    const { vid } = rowData;
+
+    startLoading();
+    try {
+      //debugger
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetVehicleListById/${vid}`,
+        { ...rowData, isActive: false },
+        {}
+      );
+      console.log(response);
+
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response?.data?.code === 200) {
+          NotificationManager.success(
+            response?.data?.message || "Vehicle deleted successfully"
+          );
+          VehicleList();
+          // setIsActive(false)
+        } else {
+          NotificationManager.error(response?.data?.message || DELETEDATAERROR);
+        }
+      } else {
+        NotificationManager.error(APINULLERROR);
+      }
+    } catch (error) {
+      stopLoading();
+      console.error(APICALLFAIL, error);
+      NotificationManager.error(APICALLFAIL, error);
+    }
   };
+
+ 
+
+const submitExcelData = async ()=>{
+    if(previewBookingData.length === 0){
+      NotificationManager.warning("No data available for upload.")
+      return
+    }
+    startLoading()
+    try{
+      const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/AddVehicleList`,previewBookingData,{});
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response.data.code === 200) {
+         NotificationManager.success(response.data.message)
+         handleReset()
+        } else {
+          NotificationManager.error(response.data.message);
+        }
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.warning(response.data.message);
+      }
+    }
+    catch(err){
+      stopLoading()
+    }
+  }
+
+  const setPreviewData = (data)=>{
+    setIsShowPreview(true)
+    setPreviewBookingData(data)
+  }
+
+  const handleCancelClick = ()=>{
+    setIsShowPreview(false)
+    setPreviewBookingData(false)
+  }
+
+  const handleReset = ()=>{
+    setIsShowPreview(false)
+    setPreviewBookingData([])
+    VehicleList()
+  }
 
   return (
     <div className="container mt-4">
@@ -29,83 +206,43 @@ const AddVehicleList = () => {
 
       <div className="card">
         {/* Card Header */}
-        <div className="card-header">
-          <div className="text-end mb-3">
-            <button className="btn btn-primary me-2">
-              <FiPlus className="align-middle me-2" /> Upload Vehicle List
-            </button>
-            <button className="btn btn-secondary me-2">
-              <FiDownload className="align-middle me-2" /> Download Sample
-            </button>
-            <button className="btn btn-success">
-              <FaFileExport className="align-middle me-2" /> Export Data
-            </button>
-          </div>
-        </div>
+        <div className="card-header row">
+                    <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
+                    <div className="mb-3 text-end col-7">
+                      {isShowPreview === false ? (
+                        <UploadExcelButton
+                          setPreviewData={setPreviewData}
+                          otherData={otherData}
+                        />
+                      ) : null}
+                      {isShowPreview === false ? (
+                        <DownloadExcelButton
+                          columns={Object.keys(initialVehicle)}
+                          fileName={"Add_Vehicle_Sample"}
+                        />
+                      ) : null}
+                      {isShowPreview === true ? (
+                        <SubmitExcelButton
+                          handleSubmitClick={submitExcelData}
+                        ></SubmitExcelButton>
+                      ) : null}
+                      {isShowPreview === true ? (
+                        <CancelExcelButton
+                          handleCancelClick={handleCancelClick}
+                        ></CancelExcelButton>
+                      ) : null}
+                    </div>
+                  </div>
 
         {/* Card Body */}
         <div className="card-body">
-          <div className="row mb-3">
-            {/* Show Entries */}
-            <div className="col-md-6">
-              <label>
-                Show{" "}
-                <select className="form-select form-select-sm d-inline w-auto">
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>{" "}
-                entries
-              </label>
-            </div>
-
-            {/* Search Input */}
-            <div className="col-md-6 text-end">
-              <label>
-                Search:{" "}
-                <input
-                  type="search"
-                  className="form-control form-control-sm d-inline w-auto"
-                  placeholder="Search"
-                />
-              </label>
-            </div>
-          </div>
 
           {/* Table */}
-          <table className="table table-striped">
-            <thead className="table-dark">
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start Date</th>
-                <th>Salary</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row) => (
-                <tr key={row.id}>
-                  <td>{row.name}</td>
-                  <td>{row.position}</td>
-                  <td>{row.office}</td>
-                  <td>{row.age}</td>
-                  <td>{row.startDate}</td>
-                  <td>{row.salary}</td>
-                  <td>
-                    <FiTrash2
-                      className="text-danger cursor-pointer"
-                      onClick={() => handleDelete(row.id)}
-                      title="Delete"
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <VirtualizedTable
+            tableData={rowGetter}
+            tableSearchFilters={searchFilters}
+            columns={columns}
+          />
         </div>
       </div>
     </div>

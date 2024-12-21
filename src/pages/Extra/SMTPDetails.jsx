@@ -60,7 +60,7 @@ const SMTPDetails = () => {
       try {
         const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/SaveSMTPDetails`, {...smtpData}, {});
         stopLoading();
-        console.log(response);
+        //console.log(response);
   
         if (response && response.data) {
           stopLoading()  // Check for response and response.data

@@ -17320,12 +17320,8 @@
 
 /* Header styling */
 .virtualized-header {
-  /* background-color: #343a40; */
   color: #000;
-  /* font-weight: bold;
-  text-transform: uppercase; */
   display: flex;
-  border-bottom: 2px solid #dee2e6;
 }
 
 .virtualized-header div {
@@ -17337,7 +17333,7 @@
 /* Row styling */
 .virtualized-row {
   display: flex;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #d4d4d4;
 }
 
 .virtualized-row div {
@@ -17347,11 +17343,11 @@
 }
 
 .virtualized-row:nth-child(odd) {
-  background-color: #dee2e6; /* Light gray for alternating rows */
+  background-color: #f2f2f2; /* Light gray for alternating rows */
 }
 
 .virtualized-row:hover {
-  background-color: #f6f8fa; /* Highlight on hover */
+  /* background-color: #f6f8fa; Highlight on hover */
   cursor: pointer;
 }
 
