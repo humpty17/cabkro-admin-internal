@@ -54,7 +54,7 @@ const AddVehicleList = () => {
         <div>
           <FaTrash
             style={{ cursor: "pointer", color: "#a71d2a" }}
-            // onClick={() => handleDeleteVehicle(rowData)}
+            onClick={() => handleDeleteVehicle(rowData)}
           />
         </div>
       ),
@@ -123,7 +123,6 @@ const {user} = useContext(LoginContext)
   // Function to delete a row
   const handleDeleteVehicle = async (rowData) => {
     const { vid } = rowData;
-
     startLoading();
     try {
       //debugger
@@ -133,7 +132,7 @@ const {user} = useContext(LoginContext)
         { ...rowData, isActive: false },
         {}
       );
-      console.log(response);
+     // console.log(response);
 
       stopLoading();
       if (response !== null && response !== undefined) {
@@ -163,7 +162,7 @@ const submitExcelData = async ()=>{
       NotificationManager.warning("No data available for upload.")
       return
     }
-    startLoading()
+    startLoading();
     try{
       const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/AddVehicleList`,previewBookingData,{});
       stopLoading();
@@ -207,36 +206,35 @@ const submitExcelData = async ()=>{
       <div className="card">
         {/* Card Header */}
         <div className="card-header row">
-                    <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
-                    <div className="mb-3 text-end col-7">
-                      {isShowPreview === false ? (
-                        <UploadExcelButton
-                          setPreviewData={setPreviewData}
-                          otherData={otherData}
-                        />
-                      ) : null}
-                      {isShowPreview === false ? (
-                        <DownloadExcelButton
-                          columns={Object.keys(initialVehicle)}
-                          fileName={"Add_Vehicle_Sample"}
-                        />
-                      ) : null}
-                      {isShowPreview === true ? (
-                        <SubmitExcelButton
-                          handleSubmitClick={submitExcelData}
-                        ></SubmitExcelButton>
-                      ) : null}
-                      {isShowPreview === true ? (
-                        <CancelExcelButton
-                          handleCancelClick={handleCancelClick}
-                        ></CancelExcelButton>
-                      ) : null}
-                    </div>
-                  </div>
+          <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
+          <div className="mb-3 text-end col-7">
+            {isShowPreview === false ? (
+              <UploadExcelButton
+                setPreviewData={setPreviewData}
+                otherData={otherData}
+              />
+            ) : null}
+            {isShowPreview === false ? (
+              <DownloadExcelButton
+                columns={Object.keys(initialVehicle)}
+                fileName={"Add_Vehicle_Sample"}
+              />
+            ) : null}
+            {isShowPreview === true ? (
+              <SubmitExcelButton
+                handleSubmitClick={submitExcelData}
+              ></SubmitExcelButton>
+            ) : null}
+            {isShowPreview === true ? (
+              <CancelExcelButton
+                handleCancelClick={handleCancelClick}
+              ></CancelExcelButton>
+            ) : null}
+          </div>
+        </div>
 
         {/* Card Body */}
         <div className="card-body">
-
           {/* Table */}
           <VirtualizedTable
             tableData={rowGetter}
