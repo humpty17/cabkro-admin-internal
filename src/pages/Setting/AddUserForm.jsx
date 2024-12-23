@@ -13,6 +13,7 @@ import FormLabel from "../../General/Label/FormLabel";
 import { LoadingContext } from "../../store/loading-context";
 import ResetButton from "../../General/Buttons/ResetButton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
+import { AdminContext } from "../../store/admin-context";
 
 const AddUserForm = () => {
 
@@ -27,8 +28,7 @@ const AddUserForm = () => {
   };
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [addData, setAddData] = useState(InitialState);
-  const [type, setType] = useState('password');
-  const [icon, setIcon] = useState(<FaEyeSlash/>); 
+  const {icon, type, handleToggleData} = useContext(AdminContext)
   
   const handleChange = (e) =>{
     if(e.target.name === "phoneNo"){
@@ -84,16 +84,6 @@ const AddUserForm = () => {
       console.error("API call failed:", error);
     }
   };
-  
-  const handleToggleData = () => {
-    if (type==='password'){
-       setIcon(<FaEye/>);
-       setType('text')
-    } else {
-       setIcon(<FaEyeSlash/>)
-       setType('password')
-    }
-  }
 
   const handleReset = () =>{
     setAddData({...InitialState})

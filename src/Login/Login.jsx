@@ -7,6 +7,7 @@ import { callApi } from "../General/GeneralMethod";
 import { LoadingContext } from "../store/loading-context";
 import { LoginContext } from "../store/login-context";
 import { CurrentPageContext } from "../store/pages-context";
+import { AdminContext } from "../store/admin-context";
 
 
 const Login = () => {
@@ -17,11 +18,10 @@ const Login = () => {
     rememberMe: false
  }
   const {startLoading, stopLoading} = useContext(LoadingContext)
+  const {icon, type, handleToggleData} = useContext(AdminContext)
   const {setCurrentPage} = useContext(CurrentPageContext)
   const {user,login, logout} = useContext(LoginContext)
   const [enteredUserDetail, setEnteredUserDetail] = useState(initialState)
-  const [type, setType] = useState('password');
-  const [icon, setIcon] = useState(<FaEyeSlash/>);
 
   const handleInputChange = (e)=>{
     setEnteredUserDetail({...enteredUserDetail, [e.target.name]: e.target.value})
@@ -65,15 +65,6 @@ const Login = () => {
     }
   }
 
-  const handleToggle = () => {
-    if (type==='password'){
-       setIcon(<FaEye/>);
-       setType('text')
-    } else {
-       setIcon(<FaEyeSlash/>)
-       setType('password')
-    }
- }
   return (
     <main className="d-flex w-100">
       <div className="container d-flex flex-column">
@@ -120,7 +111,7 @@ const Login = () => {
                             value={enteredUserDetail.password}
                             onChange={handleInputChange}
                           />
-                          <span className="input-group-text" onClick={handleToggle}>
+                          <span className="input-group-text" onClick={handleToggleData}>
                           {icon }
                           </span>
                         </div>

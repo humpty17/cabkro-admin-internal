@@ -55,7 +55,7 @@ const FAQs = () => {
             onClick={() => {setIsEditMode(true);setAddFaq(rowData)}}
           />
           <FaTrash
-            style={{ cursor: "pointer", color: "#a71d2a" }}
+            style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleDeleteFaqs(rowData)}
           />
         </div>

@@ -4,10 +4,16 @@ import { FaFileExport, FaTrash } from "react-icons/fa";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { NotificationManager } from "react-notifications";
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR } from "../../General/ConstStates";
+import {
+  ACTION,
+  APICALLFAIL,
+  APINULLERROR,
+  DELETEDATAERROR,
+  FETCHDATAERROR,
+} from "../../General/ConstStates";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import UploadExcelButton from "../../General/Buttons/UploadExcelButton";
-import DownloadExcelButton from '../../General/Buttons/DownloadExcelButton'
+import DownloadExcelButton from "../../General/Buttons/DownloadExcelButton";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 import SubmitExcelButton from "../../General/Buttons/SubmitExcelButton";
 import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
@@ -60,8 +66,8 @@ const AddVehicleList = () => {
       ),
     },
   ];
-  
-const {user} = useContext(LoginContext)
+
+  const { user } = useContext(LoginContext);
   const initialVehicle = {
     vid: 0,
     vehicleBrand: "",
@@ -71,23 +77,24 @@ const {user} = useContext(LoginContext)
     vehiclesSeats: 0,
     other1: 0,
     vehicleLooking: "",
-    vehicleColour: ""
-  }
+    vehicleColour: "",
+  };
 
- const otherData = {
-    "createdDate": getCurrentDateTime(),
-    "modifyDate": getCurrentDateTime(),
-    "userId": user ? user.userId : 0,
-    "isActive": true,
-    "isDeleted": false,
-  }
+  const otherData = {
+    createdDate: getCurrentDateTime(),
+    modifyDate: getCurrentDateTime(),
+    userId: user ? user.userId : 0,
+    isActive: true,
+    isDeleted: false,
+  };
 
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  const [AddVehicleData,setAddVehicleData] = useState([])
-  const [searchFilters, setSearchFilters] = useState(initialVehicle)
-  const [isShowPreview, setIsShowPreview] = useState(false)
-  const [previewBookingData, setPreviewBookingData] = useState([])
-  const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : AddVehicleData[index];
+  const [AddVehicleData, setAddVehicleData] = useState([]);
+  const [searchFilters, setSearchFilters] = useState(initialVehicle);
+  const [isShowPreview, setIsShowPreview] = useState(false);
+  const [previewBookingData, setPreviewBookingData] = useState([]);
+  const rowGetter = ({ index }) =>
+    isShowPreview ? previewBookingData[index] : AddVehicleData[index];
 
   const VehicleList = async () => {
     startLoading();
@@ -132,7 +139,7 @@ const {user} = useContext(LoginContext)
         { ...rowData, isActive: false },
         {}
       );
-     // console.log(response);
+      // console.log(response);
 
       stopLoading();
       if (response !== null && response !== undefined) {
@@ -155,21 +162,24 @@ const {user} = useContext(LoginContext)
     }
   };
 
- 
-
-const submitExcelData = async ()=>{
-    if(previewBookingData.length === 0){
-      NotificationManager.warning("No data available for upload.")
-      return
+  const submitExcelData = async () => {
+    if (previewBookingData.length === 0) {
+      NotificationManager.warning("No data available for upload.");
+      return;
     }
     startLoading();
-    try{
-      const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/AddVehicleList`,previewBookingData,{});
+    try {
+      const response = await callApi(
+        "post",
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/AddVehicleList`,
+        previewBookingData,
+        {}
+      );
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-         NotificationManager.success(response.data.message)
-         handleReset()
+          NotificationManager.success(response.data.message);
+          handleReset();
         } else {
           NotificationManager.error(response.data.message);
         }
@@ -177,27 +187,26 @@ const submitExcelData = async ()=>{
         console.error("API returned an invalid response:", response);
         NotificationManager.warning(response.data.message);
       }
+    } catch (err) {
+      stopLoading();
     }
-    catch(err){
-      stopLoading()
-    }
-  }
+  };
 
-  const setPreviewData = (data)=>{
-    setIsShowPreview(true)
-    setPreviewBookingData(data)
-  }
+  const setPreviewData = (data) => {
+    setIsShowPreview(true);
+    setPreviewBookingData(data);
+  };
 
-  const handleCancelClick = ()=>{
-    setIsShowPreview(false)
-    setPreviewBookingData(false)
-  }
+  const handleCancelClick = () => {
+    setIsShowPreview(false);
+    setPreviewBookingData(false);
+  };
 
-  const handleReset = ()=>{
-    setIsShowPreview(false)
-    setPreviewBookingData([])
-    VehicleList()
-  }
+  const handleReset = () => {
+    setIsShowPreview(false);
+    setPreviewBookingData([]);
+    VehicleList();
+  };
 
   return (
     <div className="container mt-4">
