@@ -246,7 +246,7 @@ const AddVehicleList = () => {
         <div className="card-body">
           {/* Table */}
           <VirtualizedTable
-            tableData={AddVehicleData}
+            tableData={isShowPreview ? previewBookingData : AddVehicleData}
             tableSearchFilters={searchFilters}
             columns={columns}
           />
