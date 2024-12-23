@@ -237,7 +237,7 @@ const submitExcelData = async ()=>{
         <div className="card-body">
           {/* Table */}
           <VirtualizedTable
-            tableData={rowGetter}
+            tableData={AddVehicleData}
             tableSearchFilters={searchFilters}
             columns={columns}
           />
