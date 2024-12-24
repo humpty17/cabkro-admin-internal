@@ -59,7 +59,7 @@ const AddVehicleList = () => {
       cellRenderer: ({ rowData }) => (
         <div>
           <FaTrash
-            style={{ cursor: "pointer", color: "#a71d2a" }}
+            style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleDeleteVehicle(rowData)}
           />
         </div>
@@ -93,8 +93,6 @@ const AddVehicleList = () => {
   const [searchFilters, setSearchFilters] = useState(initialVehicle);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [previewBookingData, setPreviewBookingData] = useState([]);
-  const rowGetter = ({ index }) =>
-    isShowPreview ? previewBookingData[index] : AddVehicleData[index];
 
   const VehicleList = async () => {
     startLoading();

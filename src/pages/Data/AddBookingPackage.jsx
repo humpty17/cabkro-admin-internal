@@ -12,6 +12,7 @@ import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
 import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
 import { ACTION } from '../../General/ConstStates';
+import { FaTrash } from 'react-icons/fa';
 
 const AddBookingPackage = () => {
   const columns = [
@@ -46,7 +47,7 @@ const AddBookingPackage = () => {
       width: 150,
       cellRenderer: ({ rowData }) => (
         <div>
-          <FiTrash2
+          <FaTrash
             style={{ cursor: "pointer", color: "red" }}
             // onClick={() => handleDelete(rowData)}
           />
@@ -148,7 +149,7 @@ const AddBookingPackage = () => {
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-          console.log(bookingData)
+          //console.log(bookingData)
           setBookingData(response.data.data)
         } else {
           NotificationManager.error(response.data.message);
@@ -166,15 +167,7 @@ const AddBookingPackage = () => {
     bookingList()
   },[])
 
-  const setPreviewData = (data)=>{
-    setIsShowPreview(true)
-    setPreviewBookingData(data)
-  }
-
-  const handleCancelClick = ()=>{
-    setIsShowPreview(false)
-    setPreviewBookingData(false)
-  }
+  
 
   const submitExcelData = async ()=>{
     if(previewBookingData.length === 0){
@@ -200,6 +193,16 @@ const AddBookingPackage = () => {
     catch(err){
       stopLoading()
     }
+  }
+
+  const setPreviewData = (data)=>{
+    setIsShowPreview(true)
+    setPreviewBookingData(data)
+  }
+
+  const handleCancelClick = ()=>{
+    setIsShowPreview(false)
+    setPreviewBookingData(false)
   }
 
   const handleReset = ()=>{

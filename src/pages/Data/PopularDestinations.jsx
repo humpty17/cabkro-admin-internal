@@ -4,72 +4,118 @@ import { FiPlus, FiDownload } from "react-icons/fi";
 import { AutoSizer, Column, Table } from "react-virtualized";
 import "react-virtualized/styles.css";
 import { LoadingContext } from "../../store/loading-context";
-import { callApi } from "../../General/GeneralMethod";
+import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
 import 'bootstrap/dist/css/bootstrap.css'
 import { headerRenderer } from "../../General/Common/VitualizedTable/SearchHeaderRenderer";
+import UploadExcelButton from "../../General/Buttons/UploadExcelButton";
+import DownloadExcelButton from "../../General/Buttons/DownloadExcelButton";
+import SubmitExcelButton from "../../General/Buttons/SubmitExcelButton";
+import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
+import { LoginContext } from "../../store/login-context";
+import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR } from "../../General/ConstStates";
 
-const data =[
-  { "id": 1, "name": "John Doe", "age": 25, "email": "john.doe1@example.com" },
-  { "id": 2, "name": "Jane Smith", "age": 30, "email": "jane.smith2@example.com" },
-  { "id": 3, "name": "Alice Brown", "age": 28, "email": "alice.brown3@example.com" },
-  { "id": 4, "name": "Bob White", "age": 35, "email": "bob.white4@example.com" },
-  { "id": 5, "name": "Tom Gray", "age": 27, "email": "tom.gray5@example.com" },
-  { "id": 6, "name": "Emma Green", "age": 29, "email": "emma.green6@example.com" },
-  { "id": 7, "name": "Lucas Blue", "age": 31, "email": "lucas.blue7@example.com" },
-  { "id": 8, "name": "Sophia Black", "age": 26, "email": "sophia.black8@example.com" },
-  { "id": 9, "name": "Ethan Brown", "age": 34, "email": "ethan.brown9@example.com" },
-  { "id": 10, "name": "Olivia White", "age": 32, "email": "olivia.white10@example.com" },
-  { "id": 11, "name": "Mia Gray", "age": 24, "email": "mia.gray11@example.com" },
-  { "id": 12, "name": "Noah Green", "age": 33, "email": "noah.green12@example.com" },
-  { "id": 13, "name": "Liam Black", "age": 27, "email": "liam.black13@example.com" },
-  { "id": 14, "name": "Ava Blue", "age": 29, "email": "ava.blue14@example.com" },
-  { "id": 15, "name": "Ella Smith", "age": 31, "email": "ella.smith15@example.com" },
-  { "id": 16, "name": "Mason White", "age": 28, "email": "mason.white16@example.com" },
-  { "id": 17, "name": "Harper Gray", "age": 26, "email": "harper.gray17@example.com" },
-  { "id": 18, "name": "Elijah Brown", "age": 32, "email": "elijah.brown18@example.com" },
-  { "id": 19, "name": "Charlotte Green", "age": 25, "email": "charlotte.green19@example.com" },
-  { "id": 20, "name": "Benjamin Blue", "age": 34, "email": "benjamin.blue20@example.com" },
-  { "id": 21, "name": "Isabella Black", "age": 30, "email": "isabella.black21@example.com" },
-  { "id": 22, "name": "James White", "age": 33, "email": "james.white22@example.com" },
-  { "id": 23, "name": "Emily Gray", "age": 28, "email": "emily.gray23@example.com" },
-  { "id": 24, "name": "Henry Brown", "age": 26, "email": "henry.brown24@example.com" },
-  { "id": 25, "name": "Amelia Green", "age": 32, "email": "amelia.green25@example.com" },
-  { "id": 26, "name": "Jack Blue", "age": 31, "email": "jack.blue26@example.com" },
-  { "id": 27, "name": "Sophia Black", "age": 29, "email": "sophia.black27@example.com" },
-  { "id": 28, "name": "Oliver White", "age": 24, "email": "oliver.white28@example.com" },
-  { "id": 29, "name": "Grace Gray", "age": 27, "email": "grace.gray29@example.com" },
-  { "id": 30, "name": "Logan Brown", "age": 25, "email": "logan.brown30@example.com" },
-  { "id": 31, "name": "Layla Green", "age": 30, "email": "layla.green31@example.com" },
-  { "id": 32, "name": "Jacob Blue", "age": 33, "email": "jacob.blue32@example.com" },
-  { "id": 33, "name": "Avery Black", "age": 31, "email": "avery.black33@example.com" },
-  { "id": 34, "name": "Alexander White", "age": 28, "email": "alexander.white34@example.com" },
-  { "id": 35, "name": "Victoria Gray", "age": 26, "email": "victoria.gray35@example.com" },
-  { "id": 36, "name": "William Brown", "age": 29, "email": "william.brown36@example.com" },
-  { "id": 37, "name": "Hannah Green", "age": 32, "email": "hannah.green37@example.com" },
-  { "id": 38, "name": "Daniel Blue", "age": 27, "email": "daniel.blue38@example.com" },
-  { "id": 39, "name": "Lily Black", "age": 34, "email": "lily.black39@example.com" },
-  { "id": 40, "name": "Michael White", "age": 25, "email": "michael.white40@example.com" },
-  { "id": 41, "name": "Zoe Gray", "age": 30, "email": "zoe.gray41@example.com" },
-  { "id": 42, "name": "Nathan Brown", "age": 28, "email": "nathan.brown42@example.com" },
-  { "id": 43, "name": "Ella Green", "age": 33, "email": "ella.green43@example.com" },
-  { "id": 44, "name": "Caleb Blue", "age": 31, "email": "caleb.blue44@example.com" },
-  { "id": 45, "name": "Abigail Black", "age": 27, "email": "abigail.black45@example.com" },
-  { "id": 46, "name": "Matthew White", "age": 29, "email": "matthew.white46@example.com" },
-  { "id": 47, "name": "Scarlett Gray", "age": 24, "email": "scarlett.gray47@example.com" },
-  { "id": 48, "name": "Eleanor Brown", "age": 35, "email": "eleanor.brown48@example.com" },
-  { "id": 49, "name": "Owen Green", "age": 26, "email": "owen.green49@example.com" },
-  { "id": 50, "name": "Chloe Blue", "age": 34, "email": "chloe.blue50@example.com" }
-];
 
 const PopularDestinations = () => {
-  const rowGetter = ({ index }) => data[index];
-  const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [getDestination, setGetDestination] = useState(null)
-  const [tableSearchFilters, setSearchFilters] = useState({});
+  const columns = [
+      {
+        label: "PackageName",
+        dataKey: "packageName",
+        width: 300,
+      },
+      {
+        label: "Description",
+        dataKey: "description",
+        width: 300,
+      },
+      {
+        label: "pickupCity",
+        dataKey: "pickupCity",
+        width: 150,
+      },
+      {
+        label: "destinationCity",
+        dataKey: "destinationCity",
+        width: 250,
+      },
+      {
+        label: "vehicleType",
+        dataKey: "vehicleType",
+        width: 250,
+      },
+      {
+        label: ACTION,
+        dataKey: ACTION,
+        width: 150,
+        cellRenderer: ({ rowData }) => (
+          <div>
+            <FaTrash
+              style={{ cursor: "pointer", color: "red" }}
+              onClick={() => handleDeleteDestination(rowData)}
+            />
+          </div>
+        ),
+      },
+    ];
+  const {user} = useContext(LoginContext)
+  const popularDataExcelHeader = {
+    "packageName": "",
+    "description": "",
+    "pickupCity": "",
+    "destinationCity": "",
+    "minDistance": 0,
+    "maxDistance": 0,
+    "basePrice": 0,
+    "discountRate": 0,
+    "discountAmount": 0,
+    "vehicleType": "",
+    "vehicleFuelType": "",
+    "vehicleModelName": "",
+    "vehicleSeaterCount": 0,
+    "pickupAddress": "",
+    "destinationAddress": "",
+    "pickupLatLong": 0,
+    "destinationLatLong": 0,
+    "timeDurationHours": 0,
+    "dayCount": 0,
+    "specificDay": 0,
+    "specificDate": 0,
+    "offerPrice": 0,
+    "rentalHours": 0,
+    "rentaldays": 0,
+    "plusMember": 0,
+    "gstRate": 0,
+    "gstAmount": 0,
+    "offerDescription": "",
+    "breakFast": true,
+    "lunch": true,
+    "dinner": true,
+    "extraService": "",
+    // "createdDate": "2024-12-24T12:56:26.270Z",
+    // "modifyDate": "2024-12-24T12:56:26.270Z",
+    // "userId": 0,
+    // "isActive": true,
+    // "isDeleted": true,
+    "other1": 0,
+    "other2": ""
+  }
 
+  const otherData = {
+      "createdDate": getCurrentDateTime(),
+      "modifyDate": getCurrentDateTime(),
+      "userId": user ? user.userId : 0,
+      "isActive": true,
+      "isDeleted": false,
+    }
   
-  
+  const {startLoading, stopLoading} = useContext(LoadingContext)
+  const [getDestination, setGetDestination] = useState([])
+  const [searchFilters, setSearchFilters] = useState('')
+  const [isShowPreview, setIsShowPreview] = useState(false)
+  const [previewBookingData, setPreviewBookingData] = useState([])
+  const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : getDestination[index];
+
   const getPopularDestination = async () => {
     startLoading();
     try {
@@ -78,6 +124,8 @@ const PopularDestinations = () => {
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
           setGetDestination(response.data.data)
+          console.log(response);
+          
         } else {
           NotificationManager.error(response.data.message);
         }
@@ -94,6 +142,87 @@ const PopularDestinations = () => {
     getPopularDestination()
   },[])
 
+  const submitExcelData = async ()=>{
+      if(previewBookingData.length === 0){
+        NotificationManager.warning("No data available for upload.")
+        return
+      }
+      startLoading()
+      try{
+        const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/AddOrUpdatePopularDestinations`,previewBookingData,{});
+        stopLoading();
+        if (response !== null && response !== undefined) {
+          if (response.data.code === 200) {
+           NotificationManager.success(response.data.message)
+           handleReset()
+          } else {
+            NotificationManager.error(response.data.message);
+          }
+        } else {
+          console.error("API returned an invalid response:", response);
+          NotificationManager.warning(response.data.message);
+        }
+      }
+      catch(err){
+        stopLoading()
+      }
+    }
+
+     const handleDeleteDestination = async (rowData) => {
+        const { packageID } = rowData;
+
+        startLoading();
+        try {
+          //debugger
+          const response = await callApi(
+            "DELETE",
+            `${process.env.REACT_APP_API_URL_ADMIN}Data/DeletePopularDestination/${packageID}`,
+            {},
+            {}
+          );
+          // console.log(response);
+    
+          stopLoading();
+          if(response!==null && response!==undefined){
+            if (response?.data?.code === 200) {
+              NotificationManager.success(
+                response?.data?.message || "FAQ deleted successfully"
+              );
+              getPopularDestination()
+              // setIsActive(false)
+            } else {
+              NotificationManager.error(
+                response?.data?.message || DELETEDATAERROR
+              );
+            }
+          }
+          else{
+            NotificationManager.error(APINULLERROR)
+          }
+          
+        } catch (error) {
+          stopLoading();
+          console.error(APICALLFAIL, error);
+          NotificationManager.error(APICALLFAIL,error)
+        }
+      };
+
+  const setPreviewData = (data)=>{
+    setIsShowPreview(true)
+    setPreviewBookingData(data)
+  }
+
+  const handleCancelClick = ()=>{
+    setIsShowPreview(false)
+    setPreviewBookingData(false)
+  }
+
+  const handleReset = ()=>{
+    setIsShowPreview(false)
+    setPreviewBookingData([])
+    getPopularDestination()
+  }
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -102,21 +231,32 @@ const PopularDestinations = () => {
             <h1 className="h3 mb-3">Popular Destinations</h1>
             <div className="row">
               <div className="col-12">
-                <div className="card table-height">
-                  <div className="card-header">
-                    <div className="mb-3 text-end">
-                      <button className="btn btn-primary">
-                        <FiPlus className="align-middle me-2" />
-                        Upload Popular Destinations
-                      </button>
-                      <button className="btn btn-secondary">
-                        <FiDownload className="align-middle me-2" />
-                        Download Sample
-                      </button>
-                      <button className="btn btn-success">
-                        <FaFileExport className="align-middle me-2" />
-                        Export Data
-                      </button>
+                <div className="card">
+                <div className="card-header row">
+                    <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
+                    <div className="mb-3 text-end col-7">
+                      {isShowPreview === false ? (
+                        <UploadExcelButton
+                          setPreviewData={setPreviewData}
+                          otherData={otherData}
+                        />
+                      ) : null}
+                      {isShowPreview === false ? (
+                        <DownloadExcelButton
+                          columns={Object.keys(popularDataExcelHeader)}
+                          fileName={"Destination_Package_Sample"}
+                        />
+                      ) : null}
+                      {isShowPreview === true ? (
+                        <SubmitExcelButton
+                         handleSubmitClick={submitExcelData}
+                        ></SubmitExcelButton>
+                      ) : null}
+                      {isShowPreview === true ? (
+                        <CancelExcelButton
+                          handleCancelClick={handleCancelClick}
+                        ></CancelExcelButton>
+                      ) : null}
                     </div>
                   </div>
                   <div className="card-body">
@@ -124,87 +264,7 @@ const PopularDestinations = () => {
                       
                       <div className="row dt-row">
                         <div className="col-sm-12">
-                        <AutoSizer>
-                        {({ height, width }) => (
-                          <Table
-                          width={850} // Total width of the table
-                          height={300}  // Total height of the table
-                            headerHeight={70} // Height of the header row
-                            rowHeight={50} // Height of each row
-                            rowCount={data.length} // Total number of rows
-                            rowGetter={rowGetter} // Function to retrieve data for a row
-                            rowClassName={({ index }) =>
-                              index % 2 === 0
-                                ? "virtualized-row"
-                                : "virtualized-row alternate"
-                            }
-                          >
-                            <Column
-                              label="ID"
-                              dataKey="id"
-                              width={100}
-                              className="virtualized-header"
-                              headerRenderer={(props) =>
-                                headerRenderer({
-                                  ...props,
-                                  tableSearchFilters,
-                                  // handleFilterChange,
-                                })
-                              }
-                            />
-                            <Column
-                              label="Name"
-                              dataKey="name"
-                              width={300}
-                              className="virtualized-header"
-                              headerRenderer={(props) =>
-                                headerRenderer({
-                                  ...props,
-                                  tableSearchFilters,
-                                  // handleFilterChange,
-                                })
-                              }
-                            />
-                            <Column
-                              label="Age"
-                              dataKey="age"
-                              width={150}
-                              className="virtualized-header"
-                              headerRenderer={(props) =>
-                                headerRenderer({
-                                  ...props,
-                                  tableSearchFilters,
-                                  // handleFilterChange,
-                                })
-                              }
-                            />
-                            <Column
-                              label="Email"
-                              dataKey="email"
-                              width={250}
-                              className="virtualized-header"
-                              headerRenderer={(props) =>
-                                headerRenderer({
-                                  ...props,
-                                  tableSearchFilters,
-                                  // handleFilterChange,
-                                })
-                              }
-                            />
-                            <Column
-                              label="Action"
-                              dataKey="action"
-                              width={100}
-                              className="virtualized-header"
-                              cellRenderer={({ rowIndex }) => (
-                                <div className="virtualized-action">
-                                  <FaTrash/>
-                                </div>
-                              )}
-                            />
-                          </Table>
-                          )}
-                          </AutoSizer>
+                        <VirtualizedTable tableData={isShowPreview ? previewBookingData : getDestination} tableSearchFilters={searchFilters} columns={columns} rowGetter={rowGetter}/>
                         </div>
                       </div>
                     </div>
