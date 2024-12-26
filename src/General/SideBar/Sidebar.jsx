@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, BOOKINGPACKAGELIST, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
+import { ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, BOOKINGPACKAGELIST, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 
@@ -166,7 +166,7 @@ const Sidebar = () => {
 
           <li className="sidebar-header">Extra</li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="#">
+            <a className="sidebar-link" onClick={() => handleItemClick(CONTACTUS)}>
               <FiInbox className="align-middle" />
               <span className="align-middle">Contact Us</span>
             </a>

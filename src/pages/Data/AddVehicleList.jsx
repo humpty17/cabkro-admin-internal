@@ -207,48 +207,56 @@ const AddVehicleList = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h1 className="h3 mb-3">Add Vehicle List</h1>
+    <div className="wrapper">
+      <div className="main">
+        <main className="content">
+          <div className="container-fluid p-0">
+            <h1 className="h3 mb-3">Add Vehicle List</h1>
 
-      <div className="card">
-        {/* Card Header */}
-        <div className="card-header row">
-          <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
-          <div className="mb-3 text-end col-7">
-            {isShowPreview === false ? (
-              <UploadExcelButton
-                setPreviewData={setPreviewData}
-                otherData={otherData}
-              />
-            ) : null}
-            {isShowPreview === false ? (
-              <DownloadExcelButton
-                columns={Object.keys(initialVehicle)}
-                fileName={"Add_Vehicle_Sample"}
-              />
-            ) : null}
-            {isShowPreview === true ? (
-              <SubmitExcelButton
-                handleSubmitClick={submitExcelData}
-              ></SubmitExcelButton>
-            ) : null}
-            {isShowPreview === true ? (
-              <CancelExcelButton
-                handleCancelClick={handleCancelClick}
-              ></CancelExcelButton>
-            ) : null}
+            <div className="card">
+              {/* Card Header */}
+              <div className="card-header row">
+                <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
+                <div className="mb-3 text-end col-7">
+                  {isShowPreview === false ? (
+                    <UploadExcelButton
+                      setPreviewData={setPreviewData}
+                      otherData={otherData}
+                    />
+                  ) : null}
+                  {isShowPreview === false ? (
+                    <DownloadExcelButton
+                      columns={Object.keys(initialVehicle)}
+                      fileName={"Add_Vehicle_Sample"}
+                    />
+                  ) : null}
+                  {isShowPreview === true ? (
+                    <SubmitExcelButton
+                      handleSubmitClick={submitExcelData}
+                    ></SubmitExcelButton>
+                  ) : null}
+                  {isShowPreview === true ? (
+                    <CancelExcelButton
+                      handleCancelClick={handleCancelClick}
+                    ></CancelExcelButton>
+                  ) : null}
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div className="card-body">
+                {/* Table */}
+                <VirtualizedTable
+                  tableData={
+                    isShowPreview ? previewBookingData : AddVehicleData
+                  }
+                  tableSearchFilters={searchFilters}
+                  columns={columns}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Card Body */}
-        <div className="card-body">
-          {/* Table */}
-          <VirtualizedTable
-            tableData={isShowPreview ? previewBookingData : AddVehicleData}
-            tableSearchFilters={searchFilters}
-            columns={columns}
-          />
-        </div>
+        </main>
       </div>
     </div>
   );

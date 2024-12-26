@@ -186,10 +186,9 @@ const PopularDestinations = () => {
           if(response!==null && response!==undefined){
             if (response?.data?.code === 200) {
               NotificationManager.success(
-                response?.data?.message || "FAQ deleted successfully"
+                response?.data?.message || "Destination deleted successfully"
               );
               getPopularDestination()
-              // setIsActive(false)
             } else {
               NotificationManager.error(
                 response?.data?.message || DELETEDATAERROR

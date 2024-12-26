@@ -27,6 +27,7 @@ export const CUSTOMERLIST = "CustomerList"
 export const FAQS = "Faqs"
 export const SMTP = "SMTPDetails"
 export const COUPONS = "Coupons"
+export const CONTACTUS = "ContactUs"
 
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;

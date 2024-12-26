@@ -10,6 +10,7 @@ import {
   ADDUSERFORM,
   ADDVEHICLELIST,
   BOOKINGPACKAGELIST,
+  CONTACTUS,
   COUPONS,
   CUSTOMERLIST,
   DASHBOARDPAGE,
@@ -37,6 +38,7 @@ import Faqs from "./pages/Extra/FAQs";
 import FAQs from "./pages/Extra/FAQs";
 import SMTPDetails from "./pages/Extra/SMTPDetails";
 import Coupons from "./pages/Extra/Coupons";
+import ContactUs from "./pages/Extra/ContactUs";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -72,6 +74,7 @@ const Home = () => {
             {currentPage === FAQS && <FAQs/>}
             {currentPage === SMTP && <SMTPDetails/>}
             {currentPage === COUPONS && <Coupons/>}
+            {currentPage === CONTACTUS && <ContactUs/>}
           </div>
         </div>
       )}
