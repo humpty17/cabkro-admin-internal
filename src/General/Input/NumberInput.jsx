@@ -1,6 +1,7 @@
+import { isDisabled } from '@testing-library/user-event/dist/utils'
 import React from 'react'
 
-const NumberInput = ({inputName, placeholderName, valueName, onChangeName}) => {
+const NumberInput = ({inputName, placeholderName, valueName, onChangeName, isDisabled}) => {
   return (
     <input
     type="number"
@@ -9,6 +10,7 @@ const NumberInput = ({inputName, placeholderName, valueName, onChangeName}) => {
     placeholder={placeholderName}
     value={valueName}
     onChange={onChangeName}
+    disabled={isDisabled ? isDisabled : false}
   />
   )
 }

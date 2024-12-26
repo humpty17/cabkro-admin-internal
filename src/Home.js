@@ -39,6 +39,7 @@ import FAQs from "./pages/Extra/FAQs";
 import SMTPDetails from "./pages/Extra/SMTPDetails";
 import Coupons from "./pages/Extra/Coupons";
 import ContactUs from "./pages/Extra/ContactUs";
+import UserProfile from "./pages/Setting/UserProfile";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -64,7 +65,7 @@ const Home = () => {
             {/* setting section */}
             {currentPage === ADDUSERFORM && <AddUserForm/>}
             {currentPage === USERADMINLIST && <UserAdminList/>}
-            {currentPage === PROFILE && <Profile/>}
+            {currentPage === PROFILE && <UserProfile/>}
 
             {/* customer section  */}
             {currentPage === ADDCUSTOMER && <AddCustomer/>}

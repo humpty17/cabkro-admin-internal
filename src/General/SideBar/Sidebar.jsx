@@ -229,12 +229,12 @@ const Sidebar = () => {
               <span className="align-middle">Profile</span>
             </a>
           </li>
-          <li className="sidebar-item">
+          {/* <li className="sidebar-item">
             <a className="sidebar-link" href="#">
               <FiShield className="align-middle" />
               <span className="align-middle">Security</span>
             </a>
-          </li>
+          </li> */}
           <li className="sidebar-item">
 						<a className="sidebar-link" onClick={()=>handleItemClick(ADDUSERFORM)}>
             <FiUserPlus className="align-middle"/> 

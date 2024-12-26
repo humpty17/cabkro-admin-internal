@@ -24,7 +24,7 @@ import {
 const PopularDestinations = () => {
   const columns = [
     {
-      label: "PackageName",
+      label: "Name",
       dataKey: "packageName",
       width: 300,
     },
@@ -34,18 +34,118 @@ const PopularDestinations = () => {
       width: 300,
     },
     {
-      label: "pickupCity",
+      label: "Pickup City",
       dataKey: "pickupCity",
       width: 150,
     },
     {
-      label: "destinationCity",
+      label: "Destination City",
       dataKey: "destinationCity",
       width: 250,
     },
     {
-      label: "vehicleType",
+      label: "Min Distance",
+      dataKey: "minDistance",
+      width: 250,
+    },
+    {
+      label: "Max Distance",
+      dataKey: "maxDistance",
+      width: 250,
+    },
+    {
+      label: "Base Price",
+      dataKey: "basePrice",
+      width: 250,
+    },
+    {
+      label: "Discount Rate",
+      dataKey: "discountRate",
+      width: 250,
+    },
+    {
+      label: "Discount Amt",
+      dataKey: "discountAmount",
+      width: 250,
+    },
+    {
+      label: "Vehicle Type",
       dataKey: "vehicleType",
+      width: 250,
+    },
+    {
+      label: "Vehicle Fuel Type",
+      dataKey: "vehicleFuelType",
+      width: 250,
+    },
+    {
+      label: "Vehicle Model Name",
+      dataKey: "vehicleModelName",
+      width: 250,
+    },
+    {
+      label: "Vehicle Seater Count",
+      dataKey: "vehicleSeaterCount",
+      width: 250,
+    },
+    {
+      label: "PickUp Address",
+      dataKey: "pickupAddress",
+      width: 250,
+    },
+    {
+      label: "Destination Address",
+      dataKey: "destinationAddress",
+      width: 250,
+    },
+    {
+      label: "Time Duration Hrs",
+      dataKey: "timeDurationHours",
+      width: 250,
+    },
+    {
+      label: "Day Count",
+      dataKey: "dayCount",
+      width: 250,
+    },
+    {
+      label: "Offer Price",
+      dataKey: "offerPrice",
+      width: 250,
+    },
+    {
+      label: "Rental Days",
+      dataKey: "rentaldays",
+      width: 250,
+    },
+    {
+      label: "Plus Member",
+      dataKey: "plusMember",
+      width: 250,
+    },
+    {
+      label: "GST Rate",
+      dataKey: "gstRate",
+      width: 250,
+    },
+    {
+      label: "GST Amt",
+      dataKey: "gstAmount",
+      width: 250,
+    },
+    {
+      label: "Offer Description",
+      dataKey: "offerDescription",
+      width: 250,
+    },
+    {
+      label: "Extra Service",
+      dataKey: "extraService",
+      width: 250,
+    },
+    {
+      label: "Other 2",
+      dataKey: "other2",
       width: 250,
     },
     {
@@ -79,14 +179,14 @@ const PopularDestinations = () => {
     vehicleSeaterCount: 0,
     pickupAddress: "",
     destinationAddress: "",
-    pickupLatLong: 0,
-    destinationLatLong: 0,
+    // pickupLatLong: 0,
+    // destinationLatLong: 0,
     timeDurationHours: 0,
     dayCount: 0,
-    specificDay: 0,
-    specificDate: 0,
+    // specificDay: 0,
+    // specificDate: 0,
     offerPrice: 0,
-    rentalHours: 0,
+    // rentalHours: 0,
     rentaldays: 0,
     plusMember: 0,
     gstRate: 0,
@@ -101,7 +201,7 @@ const PopularDestinations = () => {
     // "userId": 0,
     // "isActive": true,
     // "isDeleted": true,
-    other1: 0,
+    // other1: 0,
     other2: "",
   };
 
