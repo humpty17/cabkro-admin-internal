@@ -18,6 +18,7 @@ export const BOOKINGPACKAGELIST = "BookingPackageList"
 export const ADDUSERFORM = "AddUserForm"
 export const USERADMINLIST = "UserAdminList"
 export const PROFILE = "Profile"
+export const CHANGEPASSWORD = "ChangePassword"
 
 // Customer Section 
 export const ADDCUSTOMER = "AddCustomer"

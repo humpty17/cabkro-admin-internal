@@ -6,7 +6,7 @@ import { FiDownload } from "react-icons/fi";
 const DownloadExcelButton = ({ columns, fileName }) => {
   // columns: An array of column headers from the table
   const handleDownload = async () => {
-    debugger
+    //debugger
     // Step 1: Create a workbook and a worksheet
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet(fileName);

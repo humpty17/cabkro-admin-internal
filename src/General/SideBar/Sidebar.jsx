@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, BOOKINGPACKAGELIST, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
+import { ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 
@@ -252,7 +252,7 @@ const Sidebar = () => {
         </a>
       </li>
       <li className="sidebar-item">
-        <a className="sidebar-link" href="ChangePassword.html">
+        <a className="sidebar-link" onClick={()=>handleItemClick(CHANGEPASSWORD)}>
           <FaKey className="align-middle me-2" /> <span className="align-middle">Change Password</span>
         </a>
       </li>

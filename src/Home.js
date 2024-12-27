@@ -10,6 +10,7 @@ import {
   ADDUSERFORM,
   ADDVEHICLELIST,
   BOOKINGPACKAGELIST,
+  CHANGEPASSWORD,
   CONTACTUS,
   COUPONS,
   CUSTOMERLIST,
@@ -40,6 +41,7 @@ import SMTPDetails from "./pages/Extra/SMTPDetails";
 import Coupons from "./pages/Extra/Coupons";
 import ContactUs from "./pages/Extra/ContactUs";
 import UserProfile from "./pages/Setting/UserProfile";
+import ChangePassword from "./pages/Setting/ChangePassword";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -66,6 +68,7 @@ const Home = () => {
             {currentPage === ADDUSERFORM && <AddUserForm/>}
             {currentPage === USERADMINLIST && <UserAdminList/>}
             {currentPage === PROFILE && <UserProfile/>}
+            {currentPage === CHANGEPASSWORD && <ChangePassword/>}
 
             {/* customer section  */}
             {currentPage === ADDCUSTOMER && <AddCustomer/>}

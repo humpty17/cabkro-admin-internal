@@ -4,6 +4,9 @@ import { NotificationManager } from 'react-notifications';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
 import { callApi } from '../../General/GeneralMethod';
 import { LoadingContext } from '../../store/loading-context';
+import ExportButtton from '../../General/Buttons/ExportButtton';
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR } from '../../General/ConstStates';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 
 const UserAdminList = () => {
@@ -12,31 +15,47 @@ const UserAdminList = () => {
       label: "First Name",
       dataKey: "userFirstName",
       width: 200,
-      
     },
     {
       label: "Last Name",
       dataKey: "userLastName",
       width: 200,
-      
     },
     {
       label: "Phone No.",
       dataKey: "phoneNo",
       width: 150,
-      
     },
     {
       label: "Email",
       dataKey: "userEmail",
       width: 250,
-      
     },
     {
       label: "Date of Birth",
       dataKey: "dob",
       width: 150,
-      
+    },
+    {
+      label: ACTION,
+      dataKey: ACTION,
+      width: 150,
+      cellRenderer: ({ rowData }) => (
+        <div>
+          <FiEdit
+            className="me-3"
+            style={{ cursor: "pointer", color: "blue" }}
+            // onClick={() => {
+            //   setIsEditMode(true);
+            //   setAddFaq(rowData);
+            // }}
+          />
+          <FiTrash2
+            style={{ cursor: "pointer", color: "red" }}
+             onClick={() => handleUserAdminDelete(rowData)}
+          />
+        </div>
+      ),
     },
   ];
 
@@ -53,17 +72,6 @@ const UserAdminList = () => {
   const [filters, setFilters] = useState(filterState)
   const [searchFilters, setSearchFilters]= useState(filterState)
   const rowGetter = ({ index }) => user[index];
-  
-  
-
-  // Update filters and apply them
-  // const handleFilterChange = (dataKey, value) => {
-  //   setBookingFilters((prevFilters) => ({
-  //     ...prevFilters,
-  //     [dataKey]: value,
-  //   }));
-  // };
-
 
   const userList = async() =>{
     startLoading();
@@ -90,7 +98,38 @@ const UserAdminList = () => {
     userList()
   },[])
 
- 
+ const handleUserAdminDelete = async(rowData) =>{
+  const { userId } = rowData;
+      startLoading();
+      try {
+        //debugger
+        const response = await callApi(
+          "delete",
+          `${process.env.REACT_APP_API_URL_ADMIN}Data/GetVehicleListById/${userId}`,
+          { },
+          {}
+        );
+        // console.log(response);
+  
+        stopLoading();
+        if (response !== null && response !== undefined) {
+          if (response?.data?.code === 200) {
+            NotificationManager.success(
+              response?.data?.message || "user admin deleted successfully"
+            );
+            userList();
+          } else {
+            NotificationManager.error(response?.data?.message || DELETEDATAERROR);
+          }
+        } else {
+          NotificationManager.error(APINULLERROR);
+        }
+      } catch (error) {
+        stopLoading();
+        console.error(APICALLFAIL, error);
+        NotificationManager.error(APICALLFAIL, error);
+      }
+ }
 
   return (
     <div className="wrapper">
@@ -103,10 +142,7 @@ const UserAdminList = () => {
                 <div className="card">
                   <div className="card-header">
                     <div className="mb-3 text-end">
-                      <button className="btn btn-success">
-                        <FaFileExport className="align-middle me-2" /> Export
-                        Data
-                      </button>
+                      <ExportButtton columns={columns} fileName={"User_Admin_List"} data={user}/>
                     </div>
                   </div>
                   <div className="card-body">

@@ -3472,7 +3472,7 @@
  }
  
  .btn-success {
-   --bs-btn-color: #000!important;
+   --bs-btn-color: #fff!important;
    --bs-btn-bg: #1cbb8c!important;
    --bs-btn-border-color: #1cbb8c!important;
    --bs-btn-hover-color: #000!important;
@@ -16916,9 +16916,9 @@
  }
  
  @media(min-width:992px) {
-   .content {
+   /* .content {
      padding: 3rem 3rem 1.5rem
-   }
+   } */
  }
  
  .navbar-nav .dropdown-menu {
@@ -17318,7 +17318,7 @@
 
 .search{
   width: 100%;
-    padding: 2px 2px 2px 2px;
+    padding: 2px 2px 2px 7px;
     border: none;
     border-radius: 2px;
     margin-top: 1px;
@@ -17326,12 +17326,14 @@
 }
 
 .ReactVirtualized__Table__headerRow {
-  background-color: #343a40 !important; 
+  background-color: #212529 !important; 
 
 }
 .ReactVirtualized__Table__headerTruncatedText{
   color: #fff !important;
   font-weight: 500 !important;
+  font-size: 15px !important;
+  font-family: system-ui !important;
 }
 
 /* Header styling */

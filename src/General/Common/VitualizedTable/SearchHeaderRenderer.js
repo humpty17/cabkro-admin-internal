@@ -9,7 +9,7 @@ export const headerRenderer = ({ dataKey, label, tableSearchFilters, handleFilte
       {label !== ACTION ? (
         <input
           type="text"
-          placeholder={`Search ${label}`}
+          placeholder={`Search`}
           className="search"
           value={tableSearchFilters[dataKey] || ""} // Ensure no undefined value
           //onChange={(e) => handleFilterChange(dataKey, e.target.value)}
