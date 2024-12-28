@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FiEdit} from "react-icons/fi";
+import { FiEdit, FiTrash2} from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
@@ -54,7 +54,7 @@ const FAQs = () => {
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {setIsEditMode(true);setAddFaq(rowData)}}
           />
-          <FaTrash
+          <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleDeleteFaqs(rowData)}
           />
@@ -222,8 +222,6 @@ const FAQs = () => {
     
   };
 
-  
-
   useEffect(() => {
     faqsList();
   }, []);
@@ -241,7 +239,7 @@ const FAQs = () => {
                   <div className="card-body">
                     <div>
                       <div className="row">
-                        <div className="mb-3 col-md-4">
+                        <div className="mb-3 col-md-2">
                           <label className="form-label" htmlFor="inputEmail4">
                             Question
                           </label>
@@ -257,7 +255,7 @@ const FAQs = () => {
                             onChangeName={handleInputChange}
                           />
                         </div>
-                        <div className="mb-3 col-md-4">
+                        <div className="mb-3 col-md-2">
                           <label
                             className="form-label"
                             htmlFor="inputPassword4"
@@ -271,9 +269,27 @@ const FAQs = () => {
                             onChangeName={handleInputChange}
                           ></TypeInput>
                         </div>
-                        <div className="mb-3 col-md-4 mt-4">
+                        <div className="mb-3 col-md-2">
+                          <label
+                            className="form-label"
+                            htmlFor="inputPassword4"
+                          >
+                            Category
+                          </label>
+                          <TypeInput
+                            inputName={"category"}
+                            placeholderName={"category"}
+                            valueName={addFaq.category}
+                            onChangeName={handleInputChange}
+                          ></TypeInput>
+                        </div>
+                        <div className="mb-3 col-md-4 button">
                           <SubmitButton buttonName={isEditMode ? "Update" : "Submit"} handleClick={handleEditFaq} />
-                          <ExportButtton />
+                          <ExportButtton
+                            columns={columns}
+                            fileName={"FAQs_List"}
+                            data={faqList}
+                          />
                         </div>
                       </div>
                     </div>

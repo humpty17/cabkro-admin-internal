@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FaFileExport } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
-import { callApi } from '../../General/GeneralMethod';
+import { callApi, getCurrentDateTime } from '../../General/GeneralMethod';
 import { LoadingContext } from '../../store/loading-context';
 import ExportButtton from '../../General/Buttons/ExportButtton';
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR } from '../../General/ConstStates';
+import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, UPDATEDATAERROR, USERADMINLIST } from '../../General/ConstStates';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { CurrentPageContext } from '../../store/pages-context';
 
 
 const UserAdminList = () => {
@@ -45,10 +46,7 @@ const UserAdminList = () => {
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            // onClick={() => {
-            //   setIsEditMode(true);
-            //   setAddFaq(rowData);
-            // }}
+            onClick={() => {handleRedirect(ADDUSERFORM); handleUserEdit()}}
           />
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
@@ -60,18 +58,50 @@ const UserAdminList = () => {
   ];
 
  const filterState = {
-  userFirstName : '',
-  userLastName : '',
-  phoneNo : '',
-  Email : '',
-  dob : ''
-  }
+   userFirstName: "",
+   userLastName: "",
+   phoneNo: "",
+   Email: "",
+   dob: "",
+ };
+
+ const InitialUserAdmin = {
+   userId: 0,
+   userFirstName: "",
+   userLastName: "",
+   phoneNo: "",
+   userEmail: "",
+   password: "",
+   gender: 0,
+   dob: getCurrentDateTime(),
+   emergencyContactNo: "",
+   homeLocation: "",
+   workLocation: "",
+   paymentMethod: "",
+   status: true,
+   createdDate: getCurrentDateTime(),
+   modifyDate: getCurrentDateTime(),
+   isDeleted: true,
+   deletedReason: "",
+   referCode: "",
+   lastLoginDate: getCurrentDateTime(),
+   isAdult: true,
+   noOfRide: 0,
+   isCouponCode: "",
+   other1: 0,
+   other2: "",
+   userImage: "",
+   acceptTermsCondition: true,
+ };
 
   const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [user, setUser] = useState('');
-  const [filters, setFilters] = useState(filterState)
+  const {currentPage, handlePageClick} =useContext(CurrentPageContext)
+  const [user, setUser] = useState([]);
   const [searchFilters, setSearchFilters]= useState(filterState)
+  const [addAdmin, setAddAdmin] = useState(InitialUserAdmin)
   const rowGetter = ({ index }) => user[index];
+  console.log(user);
+  
 
   const userList = async() =>{
     startLoading();
@@ -102,11 +132,11 @@ const UserAdminList = () => {
   const { userId } = rowData;
       startLoading();
       try {
-        //debugger
+        debugger
         const response = await callApi(
-          "delete",
-          `${process.env.REACT_APP_API_URL_ADMIN}Data/GetVehicleListById/${userId}`,
-          { },
+          "DELETE",
+          `${process.env.REACT_APP_API_URL_ADMIN}Auth/DeleteAdminUser/${userId}`,
+          {},
           {}
         );
         // console.log(response);
@@ -117,6 +147,7 @@ const UserAdminList = () => {
             NotificationManager.success(
               response?.data?.message || "user admin deleted successfully"
             );
+            startLoading();
             userList();
           } else {
             NotificationManager.error(response?.data?.message || DELETEDATAERROR);
@@ -130,6 +161,42 @@ const UserAdminList = () => {
         NotificationManager.error(APICALLFAIL, error);
       }
  }
+
+ const handleUserEdit = async () => {
+   startLoading();
+   try {
+     const response = await callApi(
+       "post",
+       `${process.env.REACT_APP_API_URL_ADMIN}Auth/UpdateAdminUser`,
+       { ...user },
+       {}
+     );
+     console.log(response.data.data);
+     
+     stopLoading();
+     if (response !== null && response !== undefined) {
+       if (response?.data?.code === 200) {
+         NotificationManager.success(
+           response?.data?.message || "FAQ updated successfully"
+         );
+         userList();
+         setAddAdmin(response.data.data)
+       } else {
+         NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
+       }
+     } else {
+       NotificationManager.error(APINULLERROR);
+     }
+   } catch (error) {
+     stopLoading();
+     console.error(APICALLFAIL, error);
+     NotificationManager.response(APICALLFAIL, error);
+   }
+ };
+
+ const handleRedirect = (pageName)=>{
+  handlePageClick(pageName)
+}
 
   return (
     <div className="wrapper">

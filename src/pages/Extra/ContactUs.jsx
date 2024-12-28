@@ -8,7 +8,7 @@ import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, UPD
 import { LoginContext } from "../../store/login-context";
 import { LoadingContext } from "../../store/loading-context";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import TypeInput from "../../General/Input/TypeInput";
 
 function ContactUs() {
@@ -52,11 +52,11 @@ function ContactUs() {
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => handleEditContact({...modalData})}
+            onClick={() => handleEditContact()}
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           />
-          <FaTrash
+          <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleDeleteContact(rowData)}
           />
@@ -67,6 +67,7 @@ function ContactUs() {
 
   const { user } = useContext(LoginContext);
   const initialState = {
+    cU_id: 0,
     phoneNo: "",
     emailId: "",
     senderName: "",
@@ -124,20 +125,21 @@ function ContactUs() {
     }, []);
 
   const handleEditContact = async () => {
-        //startLoading();
+        startLoading();
         try {
+          debugger
             const response = await callApi(
               "put",
-              `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateContactUs`,
+              `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateContactUs?id=${modalData.cU_id}`,
               {...modalData},
               {}
             );
             console.log(response);
             
-            //stopLoading();
+            stopLoading();
             if(response!==null && response!==undefined){
               if(response?.data?.code === 200){
-                NotificationManager.success(response?.data?.message || "FAQ updated successfully");
+                NotificationManager.success(response?.data?.message || "Contact updated successfully");
                 ContactList();
                 setModalData(initialState)
               }
@@ -155,15 +157,6 @@ function ContactUs() {
         }
       
     };
-
-  const handleInputChange = (e) => {
-    setModalData({
-      ...modalData,
-      [e.target.name] : e.target.value
-    })
-    console.log(e.target.value);
-    
-  };
 
   const handleDeleteContact = async (rowData) => {
     const { cU_id } = rowData;
@@ -196,6 +189,15 @@ function ContactUs() {
       console.error(APICALLFAIL, error);
       NotificationManager.error(APICALLFAIL, error);
     }
+  };
+
+  const handleInputChange = (e) => {
+    setModalData({
+      ...modalData,
+      [e.target.name] : e.target.value
+    })
+    console.log(e.target.value);
+    
   };
 
   return (

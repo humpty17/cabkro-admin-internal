@@ -6,7 +6,15 @@ import SubmitButton from "../../General/Buttons/SubmitButton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR, SAVEDATAERROR } from "../../General/ConstStates";
+import {
+  ACTION,
+  APICALLFAIL,
+  APINULLERROR,
+  DELETEDATAERROR,
+  FETCHDATAERROR,
+  SAVEDATAERROR,
+  UPDATEDATAERROR,
+} from "../../General/ConstStates";
 import NumberInput from "../../General/Input/NumberInput";
 import TypeInput from "../../General/Input/TypeInput";
 import { FaTrash } from "react-icons/fa";
@@ -47,11 +55,11 @@ const Coupons = () => {
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            // onClick={() => handleEdit(rowData)}
+            onClick={() => {setIsEditMode(true);setAddCouponData(rowData)}}
           />
-          <FaTrash
+          <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-            // onClick={() => handleDelete(rowData)}
+            onClick={() => handleCouponDelete(rowData)}
           />
         </div>
       ),
@@ -59,85 +67,180 @@ const Coupons = () => {
   ];
 
   const couponState = {
-    couponCode:'',
-    discountAmount:0,
-    discountPercent:0,
-    appliedDate:'',
-    isValid: true
-  }
+    couponCode: "",
+    discountAmount: 0,
+    discountPercent: 0,
+    appliedDate: "",
+    isValid: true,
+  };
 
   const initialState = {
-    "appliedCouponID": 0,
-    "couponCode": "",
-    "discountAmount": 0,
-    "discountPercent": 0,
-    "appliedDate": getCurrentDateTime(),
-    "isValid": true,
-    "expirationDate": getCurrentDateTime()
-  }
-  const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [searchFilters, setSearchFilters] = useState(couponState)
-  const [couponListData, setCouponListData] = useState([])
-  const [addCouponData, setAddCouponData] = useState(initialState)
+    appliedCouponID: 0,
+    couponCode: "",
+    discountAmount: 0,
+    discountPercent: 0,
+    appliedDate: getCurrentDateTime(),
+    isValid: true,
+    expirationDate: getCurrentDateTime(),
+  };
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+  const [searchFilters, setSearchFilters] = useState(couponState);
+  const [couponListData, setCouponListData] = useState([]);
+  const [addCouponData, setAddCouponData] = useState(initialState);
+  const [isEditMode, setIsEditMode] = useState(false)
 
-  const couponList = async() =>{
-      startLoading();
-      try {
-        const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/GetAllCoupons`,{},{});
+  const couponList = async () => {
+    startLoading();
+    try {
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/GetAllCoupons`,
+        {},
+        {}
+      );
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response.data.code === 200) {
+          setCouponListData(response?.data?.data || []);
+        } else {
+          NotificationManager.error(response?.data?.message || FETCHDATAERROR);
+        }
+      } else {
+        console.error(APINULLERROR, response);
+        NotificationManager.error(APINULLERROR);
+      }
+    } catch (error) {
+      stopLoading();
+      console.error(APICALLFAIL, error);
+      NotificationManager.error(APICALLFAIL, error);
+    }
+  };
+  useEffect(() => {
+    couponList();
+  }, []);
+
+  // const handleSaveCoupen = async () => {
+  //   startLoading();
+  //   try {
+      
+  //     stopLoading();
+  //     if (response !== null && response !== undefined) {
+  //       if (response?.data?.code === 200) {
+  //         NotificationManager.success(
+  //           response?.data?.message || "Coupon details saved successfully"
+  //         );
+          
+  //       } else {
+  //         NotificationManager.error(response?.data?.message || SAVEDATAERROR);
+  //       }
+  //     } else {
+  //       NotificationManager.error(APINULLERROR);
+  //     }
+  //   } catch (err) {
+  //     stopLoading();
+  //     console.log(APICALLFAIL, err);
+  //     NotificationManager.error(APICALLFAIL, err);
+  //   }
+  // };
+
+  const handleCouponDelete = async (rowData) => {
+    const { appliedCouponID } = rowData;
+
+    startLoading();
+    try {
+      debugger;
+      const response = await callApi(
+        "put",
+        `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateCoupon?id=${appliedCouponID}`,
+        { ...rowData, isActive: false },
+        {}
+      );
+      // console.log(response);
+
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response?.data?.code === 200) {
+          NotificationManager.success(
+            response?.data?.message || "Coupons deleted successfully"
+          );
+          couponList();
+        } else {
+          NotificationManager.error(response?.data?.message || DELETEDATAERROR);
+        }
+      } else {
+        NotificationManager.error(APINULLERROR);
+      }
+    } catch (error) {
+      stopLoading();
+      console.error(APICALLFAIL, error);
+      NotificationManager.error(APICALLFAIL, error);
+    }
+  };
+
+  const handleEditCoupon = async () => {
+    startLoading();
+    try {
+      debugger
+      if (addCouponData.appliedCouponID > 0) {
+        const response = await callApi(
+          "put",
+          `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/UpdateCoupon?id=${addCouponData.appliedCouponID}`,
+          { ...addCouponData },
+          {}
+        );
         stopLoading();
         if (response !== null && response !== undefined) {
-          if (response.data.code === 200) {
-            setCouponListData(response?.data?.data || [])
+          if (response?.data?.code === 200) {
+            NotificationManager.success(
+              response?.data?.message || "Coupon details saved successfully"
+            );
+            couponList();
+            setAddCouponData(initialState);
+            setIsEditMode(false);
           } else {
-            NotificationManager.error(response?.data?.message || FETCHDATAERROR);
+            NotificationManager.error(
+              response?.data?.message || UPDATEDATAERROR
+            );
           }
         } else {
-          console.error(APINULLERROR, response);
           NotificationManager.error(APINULLERROR);
         }
-      } catch (error) {
-        stopLoading()
-        console.error(APICALLFAIL, error);
-        NotificationManager.error(APICALLFAIL, error)
-      } 
-    }
-
-
-    useEffect(() =>{
-      couponList()
-    },[])
-
-    const handleInputChange = (e)=>{
-      setAddCouponData({
-        ...addCouponData, [e.target.name]:e.target.value
-      })
-    }
-  
-    const handleSaveCoupen = async() =>{
-      startLoading()
-      try{
-        const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}api/Extras/AddCoupon`,{...addCouponData},{})
-        stopLoading()
-        if(response!==null && response!==undefined){
-          if(response?.data?.code === 200){
-            NotificationManager.success(response?.data?.message || "Coupon details saved successfully")
-            setAddCouponData(initialState)
-            couponList()
+      } else {
+        const response = await callApi(
+          "post",
+          `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/AddCoupon`,
+          { ...addCouponData },
+          {}
+        );
+        stopLoading();
+        if (response !== null || response !== undefined) {
+          if (response?.data?.code === 200) {
+            NotificationManager.success(
+              response?.data?.message || "Coupon details saved successfully"
+            );
+            couponList();
+            setAddCouponData(initialState);
+            setIsEditMode(false);
+          } else {
+            NotificationManager.error(response?.data?.message || SAVEDATAERROR);
           }
-          else{
-            NotificationManager.error(response?.data?.message || SAVEDATAERROR)
-          }
-        }
-        else{
-          NotificationManager.error(APINULLERROR)
+        } else {
+          NotificationManager.error(APINULLERROR);
         }
       }
-      catch(err){
-        stopLoading()
-        console.log(APICALLFAIL, err)
-        NotificationManager.error(APICALLFAIL, err)
-      }
+    } catch (error) {
+      stopLoading();
+      console.error(APICALLFAIL, error);
+      NotificationManager.response(APICALLFAIL, error);
     }
+  };
+
+  const handleInputChange = (e) => {
+    setAddCouponData({
+      ...addCouponData,
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <div className="wrapper">
       <div className="main">
@@ -162,7 +265,10 @@ const Coupons = () => {
                           />
                         </div>
                         <div className="mb-3 col-md-2">
-                          <label className="form-label" htmlFor="discountAmount">
+                          <label
+                            className="form-label"
+                            htmlFor="discountAmount"
+                          >
                             Dis. Amount
                           </label>
                           <NumberInput
@@ -188,9 +294,13 @@ const Coupons = () => {
                             onChangeName={handleInputChange}
                           />
                         </div>
-                        <div className="mb-3 col-md-5 mt-4">
-                          <SubmitButton buttonName={"Submit"} handleClick={handleSaveCoupen}/>
-                          <ExportButtton/>
+                        <div className="mb-3 col-md-5 button">
+                        <SubmitButton buttonName={isEditMode ? "Update" : "Submit"} handleClick={handleEditCoupon} />
+                          <ExportButtton
+                            columns={columns}
+                            fileName={"Coupons_List"}
+                            data={couponListData}
+                          />
                         </div>
                       </div>
                     </div>
@@ -200,7 +310,11 @@ const Coupons = () => {
                     >
                       <div className="row dt-row">
                         <div className="col-sm-12">
-                          <VirtualizedTable tableData={couponListData} tableSearchFilters={searchFilters} columns={columns} />
+                          <VirtualizedTable
+                            tableData={couponListData}
+                            tableSearchFilters={searchFilters}
+                            columns={columns}
+                          />
                         </div>
                       </div>
                     </div>

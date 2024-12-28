@@ -63,9 +63,10 @@ const AddUserForm = () => {
     event.preventDefault();
     if(!validation()) return
     startLoading();
+    debugger
     
     try {
-      const response = await callApi("post", `${process.env.REACT_APP_API_URL} Auth/RegisterAdminUser`, {...addData}, {});
+      const response = await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/RegisterAdminUser`, {...addData}, {});
       stopLoading();
 
       if (response && response.data) {  // Check for response and response.data

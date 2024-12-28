@@ -17325,6 +17325,10 @@
     outline: none;
 }
 
+.button{
+  margin-top: 31px !important;
+}
+
 .ReactVirtualized__Table__headerRow {
   background-color: #212529 !important; 
 

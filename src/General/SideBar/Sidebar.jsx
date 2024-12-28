@@ -13,8 +13,7 @@ import { CurrentPageContext } from "../../store/pages-context";
 
 const Sidebar = () => {
   const {sidebarOpen} = useContext(AdminContext)
-  const {currentPage,    
-  handlePageClick} =useContext(CurrentPageContext)
+  const {currentPage, handlePageClick} =useContext(CurrentPageContext)
   const [show, setShow] = useState(false)
 
   const handleItemClick = (pageName)=>{

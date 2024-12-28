@@ -1,9 +1,64 @@
-import React, { useState } from "react";
-import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import React, { useContext, useEffect, useState } from "react";
+import { FiEdit, FiEdit2, FiTrash2 } from "react-icons/fi";
+import { callApi } from "../../General/GeneralMethod";
+import { LoadingContext } from "../../store/loading-context";
+import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR } from "../../General/ConstStates";
+import { NotificationManager } from "react-notifications";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const CustomerList = () => {
-  const [entries, setEntries] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
+  const columns = [
+    {
+      label: "Name",
+      dataKey: "name",
+      width: 200,
+    },
+    {
+      label: "Position",
+      dataKey: "position",
+      width: 200,
+    },
+    {
+      label: "Office",
+      dataKey: "office",
+      width: 200,
+    },
+    {
+      label: "Age",
+      dataKey: "age",
+      width: 100,
+    },
+    {
+      label: "Start Date",
+      dataKey: "startDate",
+      width: 150,
+    },
+    {
+      label: "Salary",
+      dataKey: "salary",
+      width: 200,
+    },
+    {
+      label: ACTION,
+      dataKey: ACTION,
+      width: 150,
+      cellRenderer: ({ rowData }) => (
+        <div>
+          <FiEdit
+            className="me-3"
+            style={{ cursor: "pointer", color: "blue" }}
+            // onClick={() => handleEditContact(rowData)}
+          />
+          <FiTrash2
+            style={{ cursor: "pointer", color: "red" }}
+            // onClick={() => handleDeleteContact(rowData)}
+          />
+        </div>
+      ),
+    },
+  ];
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+  const [customerData, setCustomerData] = useState([])
 
   const handleExport = () => {
     alert("Data exported successfully!");
@@ -92,50 +147,46 @@ const CustomerList = () => {
     },
   ];
 
-  const filteredCustomers = customers.filter((customer) =>
-    customer.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const customerListData = async () => {
+        startLoading();
+        try {
+          const response = await callApi(
+            "get",
+            `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/GetAllContactUs`,
+            {},
+            {}
+          );
+    
+          stopLoading();
+          if (response !== null && response !== undefined) {
+            if (response?.data?.code === 200) {
+              setCustomerData(response?.data?.data || []);
+            } else {
+              NotificationManager.error(response?.data?.message || FETCHDATAERROR);
+            }
+          } else {
+            console.error("API returned an invalid response:", response);
+            NotificationManager.error(APINULLERROR);
+          }
+        } catch (error) {
+          stopLoading();
+          console.error("API call failed:", error);
+          NotificationManager.error(APICALLFAIL, error);
+        }
+      };
+      useEffect(() => {
+        customerListData();
+      }, []);
 
   return (
     <div className="container mt-4">
       <h1 className="h3 mb-3">Customer List</h1>
       <div className="card">
         <div className="card-header d-flex justify-content-end">
-          <button className="btn btn-success" onClick={handleExport}>
-            <i className="me-2"></i> Export Data
-          </button>
+          <ExportButtton/>
         </div>
         <div className="card-body">
-          <div className="row mb-3">
-            <div className="col-md-6">
-              <label>
-                Show
-                <select
-                  value={entries}
-                  onChange={(e) => setEntries(e.target.value)}
-                  className="form-select form-select-sm mx-2 d-inline-block w-auto"
-                >
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-                entries
-              </label>
-            </div>
-            <div className="col-md-6 text-end">
-              <label>
-                Search:
-                <input
-                  type="search"
-                  className="form-control form-control-sm d-inline-block w-auto ms-2"
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Type to search"
-                />
-              </label>
-            </div>
-          </div>
-          <table className="table table-striped">
+          {/* <table className="table table-striped">
             <thead className="table-dark">
               <tr>
                 <th>Name</th>
@@ -163,7 +214,7 @@ const CustomerList = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
         </div>
       </div>
     </div>

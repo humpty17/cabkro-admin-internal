@@ -2,16 +2,21 @@ import { Workbook } from 'exceljs';
 import { saveAs } from "file-saver";
 import React from 'react'
 import { FaFileExport } from 'react-icons/fa'
+import { ACTION } from '../ConstStates';
 
 const ExportButtton = ({columns, data, fileName}) => {
   const exportToExcel = async () => {
     // Create a new workbook
+    debugger
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet(fileName);
   
+    // Filter out the "Action" column (use 'dataKey' or 'label')
+    const filteredColumns = columns.filter((col) => col.dataKey !== ACTION);
+  
     // Add headers dynamically
-    const headers = columns.map((col) => ({
-      header: col.label, // Use 'header' instead of 'label'
+    const headers = filteredColumns.map((col) => ({
+      header: col.label, // Use 'label' for header text
       key: col.dataKey,  // Use 'dataKey' to match your column keys
       width: 20,         // Set a default width or customize it
     }));
@@ -20,7 +25,7 @@ const ExportButtton = ({columns, data, fileName}) => {
     // Add data rows dynamically
     data.forEach((row) => {
       const rowData = {};
-      columns.forEach((col) => {
+      filteredColumns.forEach((col) => {
         rowData[col.dataKey] = row[col.dataKey]; // Use 'dataKey' for accessing row data
       });
       worksheet.addRow(rowData);
@@ -38,7 +43,7 @@ const ExportButtton = ({columns, data, fileName}) => {
   
     // Save the file using FileSaver
     saveAs(new Blob([buffer]), `${fileName}.xlsx`);
-  };
+  };  
   
   return (
     <button className="btn btn-success " onClick={exportToExcel}>
