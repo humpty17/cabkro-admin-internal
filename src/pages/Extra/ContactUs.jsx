@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, UPDATEDATAERROR } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
 import { LoginContext } from "../../store/login-context";
 import { LoadingContext } from "../../store/loading-context";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
@@ -25,7 +25,7 @@ function ContactUs() {
       width: 200,
     },
     {
-      label: "senderName",
+      label: "Name",
       dataKey: "senderName",
       width: 200,
     },
@@ -40,14 +40,14 @@ function ContactUs() {
       width: 200,
     },
     {
-      label: "replyMessage",
+      label: "Message",
       dataKey: "replyMessage",
       width: 150,
     },
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
+      width: WIDTH,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit

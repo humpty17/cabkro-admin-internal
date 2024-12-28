@@ -5,7 +5,7 @@ import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTa
 import { callApi, getCurrentDateTime } from '../../General/GeneralMethod';
 import { LoadingContext } from '../../store/loading-context';
 import ExportButtton from '../../General/Buttons/ExportButtton';
-import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, UPDATEDATAERROR, USERADMINLIST } from '../../General/ConstStates';
+import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { CurrentPageContext } from '../../store/pages-context';
 
@@ -40,7 +40,7 @@ const UserAdminList = () => {
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
+      width: WIDTH,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit

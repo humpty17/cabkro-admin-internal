@@ -11,43 +11,43 @@ import { LoginContext } from '../../store/login-context';
 import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
 import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
-import { ACTION } from '../../General/ConstStates';
+import { ACTION, WIDTH } from '../../General/ConstStates';
 import { FaTrash } from 'react-icons/fa';
 
 const AddBookingPackage = () => {
   const columns = [
     {
-      label: "PackageName",
+      label: "Name",
       dataKey: "packageName",
-      width: 300,
+      width: 200,
     },
     {
       label: "Description",
       dataKey: "description",
-      width: 300,
+      width: 200,
     },
     {
       label: "Price",
       dataKey: "basePrice",
-      width: 150,
+      width: 200,
     },
     {
-      label: "VehicleType",
+      label: "Type",
       dataKey: "vehicleType",
-      width: 250,
+      width: 200,
     },
     {
-      label: "VehicleFuelType",
+      label: "Fuel Type",
       dataKey: "vehicleFuelType",
-      width: 250,
+      width: 200,
     },
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
+      width: WIDTH,
       cellRenderer: ({ rowData }) => (
         <div>
-          <FaTrash
+          <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
             // onClick={() => handleDelete(rowData)}
           />

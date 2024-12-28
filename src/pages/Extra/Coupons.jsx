@@ -14,6 +14,7 @@ import {
   FETCHDATAERROR,
   SAVEDATAERROR,
   UPDATEDATAERROR,
+  WIDTH,
 } from "../../General/ConstStates";
 import NumberInput from "../../General/Input/NumberInput";
 import TypeInput from "../../General/Input/TypeInput";
@@ -49,7 +50,7 @@ const Coupons = () => {
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
+      width: WIDTH,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit

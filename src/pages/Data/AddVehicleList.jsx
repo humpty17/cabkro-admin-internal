@@ -23,32 +23,32 @@ const AddVehicleList = () => {
   // Table data state
   const columns = [
     {
-      label: "VehicleBrand",
+      label: "Brand",
       dataKey: "vehicleBrand",
-      width: 200,
+      width: 150,
     },
     {
-      label: "vehicleType",
+      label: "Type",
       dataKey: "vehicleType",
-      width: 200,
+      width: 150,
     },
     {
-      label: "vehicleModelName",
+      label: "Model Name",
       dataKey: "vehicleModelName",
-      width: 200,
+      width: 150,
     },
     {
-      label: "vehiclesSeats",
+      label: "Seats",
       dataKey: "vehiclesSeats",
       width: 100,
     },
     {
-      label: "vehicleFuelType",
+      label: "Fuel Type",
       dataKey: "vehicleFuelType",
-      width: 200,
+      width: 150,
     },
     {
-      label: "vehicleColour",
+      label: "Colour",
       dataKey: "vehicleColour",
       width: 150,
     },
@@ -58,7 +58,7 @@ const AddVehicleList = () => {
       width: 150,
       cellRenderer: ({ rowData }) => (
         <div>
-          <FaTrash
+          <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleDeleteVehicle(rowData)}
           />

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiEdit, FiEdit2, FiTrash2 } from "react-icons/fi";
 import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR, WIDTH } from "../../General/ConstStates";
 import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 
@@ -41,7 +41,7 @@ const CustomerList = () => {
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
+      width: WIDTH,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit

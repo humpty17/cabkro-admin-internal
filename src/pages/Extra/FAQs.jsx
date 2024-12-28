@@ -10,7 +10,7 @@ import {
 } from "../../General/GeneralMethod";
 import TypeInput from "../../General/Input/TypeInput";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, SAVEDATAERROR, UPDATEDATAERROR } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, SAVEDATAERROR, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
 import { FaTrash } from "react-icons/fa";
 
 const FAQs = () => {
@@ -46,7 +46,7 @@ const FAQs = () => {
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
+      width: WIDTH,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit

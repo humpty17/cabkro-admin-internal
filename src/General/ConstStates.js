@@ -49,3 +49,4 @@ export const UPDATEDATAERROR = "Error while updating data"
 
 //ACTION COLUMN HEADING
 export const ACTION = "Action"
+export const WIDTH = 50

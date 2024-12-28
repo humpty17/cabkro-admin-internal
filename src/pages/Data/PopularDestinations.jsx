@@ -19,6 +19,7 @@ import {
   APICALLFAIL,
   APINULLERROR,
   DELETEDATAERROR,
+  WIDTH,
 } from "../../General/ConstStates";
 
 const PopularDestinations = () => {
@@ -26,132 +27,132 @@ const PopularDestinations = () => {
     {
       label: "Name",
       dataKey: "packageName",
-      width: 300,
+      width: 200,
     },
     {
       label: "Description",
       dataKey: "description",
-      width: 300,
+      width: 200,
     },
     {
       label: "Pickup City",
       dataKey: "pickupCity",
-      width: 150,
+      width: 200,
     },
     {
       label: "Destination City",
       dataKey: "destinationCity",
-      width: 250,
+      width: 200,
     },
     {
       label: "Min Distance",
       dataKey: "minDistance",
-      width: 250,
+      width: 200,
     },
     {
       label: "Max Distance",
       dataKey: "maxDistance",
-      width: 250,
+      width: 200,
     },
     {
       label: "Base Price",
       dataKey: "basePrice",
-      width: 250,
+      width: 200,
     },
     {
       label: "Discount Rate",
       dataKey: "discountRate",
-      width: 250,
+      width: 200,
     },
     {
       label: "Discount Amt",
       dataKey: "discountAmount",
-      width: 250,
+      width: 200,
     },
     {
       label: "Vehicle Type",
       dataKey: "vehicleType",
-      width: 250,
+      width: 200,
     },
     {
       label: "Vehicle Fuel Type",
       dataKey: "vehicleFuelType",
-      width: 250,
+      width: 200,
     },
     {
       label: "Vehicle Model Name",
       dataKey: "vehicleModelName",
-      width: 250,
+      width: 200,
     },
     {
       label: "Vehicle Seater Count",
       dataKey: "vehicleSeaterCount",
-      width: 250,
+      width: 200,
     },
     {
       label: "PickUp Address",
       dataKey: "pickupAddress",
-      width: 250,
+      width: 200,
     },
     {
       label: "Destination Address",
       dataKey: "destinationAddress",
-      width: 250,
+      width: 200,
     },
     {
       label: "Time Duration Hrs",
       dataKey: "timeDurationHours",
-      width: 250,
+      width: 200,
     },
     {
       label: "Day Count",
       dataKey: "dayCount",
-      width: 250,
+      width: 200,
     },
     {
       label: "Offer Price",
       dataKey: "offerPrice",
-      width: 250,
+      width: 200,
     },
     {
       label: "Rental Days",
       dataKey: "rentaldays",
-      width: 250,
+      width: 200,
     },
     {
       label: "Plus Member",
       dataKey: "plusMember",
-      width: 250,
+      width: 200,
     },
     {
       label: "GST Rate",
       dataKey: "gstRate",
-      width: 250,
+      width: 200,
     },
     {
       label: "GST Amt",
       dataKey: "gstAmount",
-      width: 250,
+      width: 200,
     },
     {
       label: "Offer Description",
       dataKey: "offerDescription",
-      width: 250,
+      width: 200,
     },
     {
       label: "Extra Service",
       dataKey: "extraService",
-      width: 250,
+      width: 200,
     },
     {
       label: "Other 2",
       dataKey: "other2",
-      width: 250,
+      width: 200,
     },
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
+      width: WIDTH,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiTrash2
