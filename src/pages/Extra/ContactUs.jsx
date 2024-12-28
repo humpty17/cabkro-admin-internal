@@ -10,6 +10,7 @@ import { LoadingContext } from "../../store/loading-context";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import TypeInput from "../../General/Input/TypeInput";
+import SubmitButton from "../../General/Buttons/SubmitButton";
 
 function ContactUs() {
   const columns = [
@@ -52,7 +53,7 @@ function ContactUs() {
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => handleEditContact()}
+            onClick={() => {setIsEditMode(true);setModalData(rowData)}}
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           />
@@ -79,18 +80,19 @@ function ContactUs() {
     replyBy: 0,
   };
 
-  const otherData = {
-    createdDate: getCurrentDateTime(),
-    modifyDate: getCurrentDateTime(),
-    userId: user ? user.userId : 0,
-    isActive: true,
-    isDeleted: false,
-  };
+  // const otherData = {
+  //   createdDate: getCurrentDateTime(),
+  //   modifyDate: getCurrentDateTime(),
+  //   userId: user ? user.userId : 0,
+  //   isActive: true,
+  //   isDeleted: false,
+  // };
 
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const [modalData, setModalData] = useState(initialState);
   const [contactData, setContactData] = useState([])
   const [searchFilters, setSearchFilters] = useState(initialState);
+  const [isEditMode, setIsEditMode] = useState(false)
   const rowGetter = ({ index }) => contactData[index];
 
     const ContactList = async () => {
@@ -134,7 +136,7 @@ function ContactUs() {
               {...modalData},
               {}
             );
-            console.log(response);
+            // console.log(response);
             
             stopLoading();
             if(response!==null && response!==undefined){
@@ -142,6 +144,7 @@ function ContactUs() {
                 NotificationManager.success(response?.data?.message || "Contact updated successfully");
                 ContactList();
                 setModalData(initialState)
+                setIsEditMode(false)
               }
               else{
                 NotificationManager.error(response?.data?.message || UPDATEDATAERROR)
@@ -348,9 +351,7 @@ function ContactUs() {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
-                Send message
-              </button>
+              <SubmitButton buttonName={isEditMode ? "Update" : "Submit"} handleClick={handleEditContact} />
             </div>
           </div>
         </div>

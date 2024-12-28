@@ -15,7 +15,7 @@ import ResetButton from "../../General/Buttons/ResetButton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
 import { AdminContext } from "../../store/admin-context";
 
-const AddUserForm = () => {
+const AddUserForm = ({userData}) => {
 
   const InitialState = {
     userFirstName :'',
@@ -27,7 +27,7 @@ const AddUserForm = () => {
     gender: 0
   };
   const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [addData, setAddData] = useState(InitialState);
+  const [addData, setAddData] = useState(userData === undefined ? InitialState: userData);
   const {icon, type, handleToggleData} = useContext(AdminContext)
   
   const handleChange = (e) =>{
@@ -64,7 +64,14 @@ const AddUserForm = () => {
     if(!validation()) return
     startLoading();
     debugger
-    
+    //add user
+    if(userData===undefined){
+
+    }
+    //update user
+    else{
+
+    }
     try {
       const response = await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/RegisterAdminUser`, {...addData}, {});
       stopLoading();
