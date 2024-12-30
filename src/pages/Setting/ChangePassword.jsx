@@ -50,9 +50,7 @@ const ChangePassword = () => {
   const submitChangePassword = async(e) =>{
     e.preventDefault()
       startLoading();
-      
       try {
-        debugger
         const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Auth/ChangePassword?UserId=${newPassword.userId}&Password=${newPassword.password}`,{},{});
         stopLoading();
         if (response !== null && response !== undefined) {
