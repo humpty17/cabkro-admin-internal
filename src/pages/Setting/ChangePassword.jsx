@@ -6,6 +6,7 @@ import PasswordInput from "../../General/Input/PasswordInput";
 import FormLabel from "../../General/Label/FormLabel";
 import { callApi } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
+import { log10 } from "chart.js/helpers";
 
 const ChangePassword = () => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
@@ -14,12 +15,44 @@ const ChangePassword = () => {
     userId : '',
     password : ''
   })
- console.log(newPassword.password);
+  const [getUser, setGetUser] = useState([])
+  console.log(getUser);
+  
+  const handleUserList = async() =>{
+    startLoading();
+        try {
+          const response = await callApi(
+            "get",
+            `${process.env.REACT_APP_API_URL_ADMIN}Auth/GetAdminUserList`,
+            {},
+            {}
+          );
+          stopLoading();
+          if (response !== null && response !== undefined) {
+            if (response.data.code === 200) {
+              setGetUser(response.data.data);
+            } else {
+              NotificationManager.error(response.data.message);
+            }
+          } else {
+            console.error("API returned an invalid response:", response);
+            NotificationManager.warning(response.data.message);
+          }
+        } catch (error) {
+          console.error("API call failed:", error);
+        }
+      };
+    
+      useEffect(() => {
+        handleUserList();
+      }, []);
  
   const submitChangePassword = async(e) =>{
     e.preventDefault()
       startLoading();
+      
       try {
+        debugger
         const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Auth/ChangePassword?UserId=${newPassword.userId}&Password=${newPassword.password}`,{},{});
         stopLoading();
         if (response !== null && response !== undefined) {
@@ -60,27 +93,38 @@ const ChangePassword = () => {
                       <form onSubmit={submitChangePassword}>
                         <div className="mb-3 row">
                           <label className="col-form-label col-sm-3 text-sm-end">
-                           Select User
+                            Select User
                           </label>
                           <div className="col-sm-8">
-                            <select className="form-select" name="userId" onChange={handleChangePassword}>
+                            <select
+                              className="form-select"
+                              name="userId"
+                              onChange={handleChangePassword}
+                            >
                               <option>Select</option>
-                              <option value="1">1</option>
+                              {getUser.map((item, index) => (
+                                <option
+                                  key={item.userId}
+                                  value={item.userId}
+                                >
+                                  {item.userFirstName}
+                                </option>
+                              ))}
                               {/* Add options dynamically as needed */}
                             </select>
                           </div>
                         </div>
                         <div className="mb-3 row">
-                        <FormLabel label={"New Password"} />
+                          <FormLabel label={"New Password"} />
                           <div className="col-sm-8 input-group_1">
                             <PasswordInput
-                                type={type}
-                                inputName={"password"}
-                                placeholderName={"Enter new password"}
-                                valueName={newPassword.password}
-                                onChangeName={handleChangePassword}
-                              />
-                              <span
+                              type={type}
+                              inputName={"password"}
+                              placeholderName={"Enter new password"}
+                              valueName={newPassword.password}
+                              onChangeName={handleChangePassword}
+                            />
+                            <span
                               className="input-group-text"
                               onClick={handleToggleData}
                             >
