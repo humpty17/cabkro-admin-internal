@@ -78,31 +78,31 @@ const AddBookingPackage = () => {
     "vehicleFuelType": "",
     "vehicleModelName": "",
     "vehicleSeaterCount": 0,
-    "pickupAddress": "",
-    "destinationAddress": "",
-    "pickupLatLong": 0,
-    "destinationLatLong": 0,
-    "timeDurationHours": 0,
-    "dayCount": 0,
-    "specificDay": 0,
-    "specificDate": 0,
-    "offerPrice": 0,
-    "rentalHours": 0,
-    "rentaldays": 0,
-    "plusMember": 0,
+    // "pickupAd  dress": "",
+    // "destinationAddress": "",
+    // "pickupLatLong": 0,
+    // "destinationLatLong": 0,
+    // "timeDurationHours": 0,
+    // "dayCount": 0,
+    // "specificDay": 0,
+    // "specificDate": 0,
+    // "offerPrice": 0,
+    // "rentalHours": 0,
+    // "rentaldays": 0,
+    // "plusMember": 0,
     "gstRate": 0,
     "gstAmount": 0,
     "offerDescription": "",
-    "breakFast": false,
-    "lunch": false,
-    "dinner": false,
+    // "breakFast": false,
+    // "lunch": false,
+    // "dinner": false,
     "extraService": "",
     // "createdDate": getCurrentDateTime(),
     // "modifyDate": getCurrentDateTime(),
     // "userId": 0,
     // "isActive": true,
     // "isDeleted": false,
-    "other1": 0,
+    // "other1": 0,
     "other2": "",
     "totalAmount": 0,
     "luggageAllowed": "",
@@ -215,7 +215,7 @@ const AddBookingPackage = () => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Add Booking Packages</h1>
+            <h1 className="h3 mb-3">Booking Packages</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">
@@ -226,6 +226,7 @@ const AddBookingPackage = () => {
                         <UploadExcelButton
                           setPreviewData={setPreviewData}
                           otherData={otherData}
+                          buttonName={"Upload Booking Packages"}
                         />
                       ) : null}
                       {isShowPreview === false ? (

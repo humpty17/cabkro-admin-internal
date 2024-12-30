@@ -6,7 +6,7 @@ export const headerRenderer = ({ dataKey, label, tableSearchFilters, handleFilte
       <div className="ReactVirtualized__Table__headerTruncatedText">
         {label}
       </div>
-      {label !== ACTION ? (
+      {label !== ACTION && dataKey !== 'srNo'? (
         <input
           type="text"
           placeholder={`Search`}

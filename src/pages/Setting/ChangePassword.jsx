@@ -56,7 +56,8 @@ const ChangePassword = () => {
         if (response !== null && response !== undefined) {
           if (response.data.code === 200) {
             //console.log(bookingData)
-            setNewPassword(response.data.data)
+            setNewPassword({ userId : '',
+              password : ''})
           } else {
             NotificationManager.error(response.data.message);
           }

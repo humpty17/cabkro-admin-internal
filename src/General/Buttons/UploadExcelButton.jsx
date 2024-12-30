@@ -4,7 +4,7 @@ import axios from "axios";
 import { FiPlus } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
 
-const UploadExcelButton = ({setPreviewData, otherData}) => {
+const UploadExcelButton = ({setPreviewData, otherData, buttonName}) => {
   const [fileName, setFileName] = useState("No file chosen");
 
   const handleFileChange = async (event) => {
@@ -67,7 +67,7 @@ const UploadExcelButton = ({setPreviewData, otherData}) => {
       <input type="file" accept=".xlsx, .xls" id="actual-btn" onChange={handleFileChange} hidden/>
       <label htmlFor="actual-btn" className="btn btn-primary mx-1" >
         <FiPlus className="align-middle me-2" />
-        Upload Package List
+        {buttonName}
       </label>
     </>
   );

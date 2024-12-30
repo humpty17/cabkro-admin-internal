@@ -15,8 +15,9 @@ const VirtualizedTable = ({
   tableSearchFilters
 }) => {
   const rowGetter = ({ index }) => tableData[index];
+
   const totalColumnWidth = columns.reduce((total, column) => total + (column.width || 100), 0);
-  console.log(columns.reduce((total, column) => total + (column.width || 100), 0));
+  //console.log(columns.reduce((total, column) => total + (column.width || 100), 0));
   
   return (
     <div style={{ width: "100%", height: height || "350px",overflowY: "hidden" }}>

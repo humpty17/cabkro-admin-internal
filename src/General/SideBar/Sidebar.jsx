@@ -72,12 +72,12 @@ const Sidebar = () => {
               
             </a>
           </li>
-          <li className="sidebar-item">
+          {/* <li className="sidebar-item">
             <a className="sidebar-link" onClick={() =>handleItemClick(BOOKINGPACKAGELIST)}>
               <FiList className="align-middle" />
               <SidebarName name={'Booking Packages List'}/>
             </a>
-          </li>
+          </li> */}
 
           <li className="sidebar-header">Bookings</li>
           <li className="sidebar-item">

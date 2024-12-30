@@ -1,27 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FiPlus, FiDownload, FiTrash2, FiEdit } from "react-icons/fi";
-import { FaFileExport, FaTrash } from "react-icons/fa";
-import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
-import { LoadingContext } from "../../store/loading-context";
+import { FiTrash2 } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
+import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
+import DownloadExcelButton from "../../General/Buttons/DownloadExcelButton";
+import SubmitExcelButton from "../../General/Buttons/SubmitExcelButton";
+import UploadExcelButton from "../../General/Buttons/UploadExcelButton";
+import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import {
   ACTION,
   APICALLFAIL,
   APINULLERROR,
   DELETEDATAERROR,
   FETCHDATAERROR,
+  SRNO,
+  SRNOKEY,
+  SRNOWIDTH,
 } from "../../General/ConstStates";
-import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
-import UploadExcelButton from "../../General/Buttons/UploadExcelButton";
-import DownloadExcelButton from "../../General/Buttons/DownloadExcelButton";
-import ExportButtton from "../../General/Buttons/ExportButtton";
-import SubmitExcelButton from "../../General/Buttons/SubmitExcelButton";
-import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
+import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
+import { LoadingContext } from "../../store/loading-context";
 import { LoginContext } from "../../store/login-context";
+import Swal from "sweetalert2";
 
 const AddVehicleList = () => {
   // Table data state
   const columns = [
+    {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1
+    },
     {
       label: "Brand",
       dataKey: "vehicleBrand",
@@ -38,13 +46,18 @@ const AddVehicleList = () => {
       width: 150,
     },
     {
-      label: "Seats",
-      dataKey: "vehiclesSeats",
-      width: 100,
-    },
-    {
       label: "Fuel Type",
       dataKey: "vehicleFuelType",
+      width: 150,
+    },
+    {
+      label: "Seats",
+      dataKey: "vehiclesSeats",
+      width: 150,
+    },
+    {
+      label: "Looking",
+      dataKey: "vehicleLooking",
       width: 150,
     },
     {
@@ -55,12 +68,12 @@ const AddVehicleList = () => {
     {
       label: ACTION,
       dataKey: ACTION,
-      width: 150,
-      cellRenderer: ({ rowData }) => (
+      width: 100,
+      cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-            onClick={() => handleDeleteVehicle(rowData)}
+            onClick={() => handleDeleteAction(rowData, rowIndex)}
           />
         </div>
       ),
@@ -69,13 +82,11 @@ const AddVehicleList = () => {
 
   const { user } = useContext(LoginContext);
   const initialVehicle = {
-    vid: 0,
     vehicleBrand: "",
     vehicleType: "",
     vehicleModelName: "",
     vehicleFuelType: "",
     vehiclesSeats: 0,
-    other1: 0,
     vehicleLooking: "",
     vehicleColour: "",
   };
@@ -86,6 +97,7 @@ const AddVehicleList = () => {
     userId: user ? user.userId : 0,
     isActive: true,
     isDeleted: false,
+    other1:0
   };
 
   const { startLoading, stopLoading } = useContext(LoadingContext);
@@ -104,7 +116,6 @@ const AddVehicleList = () => {
         {}
       );
 
-      stopLoading();
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           setAddVehicleData(response?.data?.data || []);
@@ -116,9 +127,11 @@ const AddVehicleList = () => {
         NotificationManager.error(APINULLERROR);
       }
     } catch (error) {
-      stopLoading();
       console.error("API call failed:", error);
       NotificationManager.error(APICALLFAIL, error);
+    }
+    finally{
+      stopLoading();
     }
   };
   useEffect(() => {
@@ -126,20 +139,44 @@ const AddVehicleList = () => {
   }, []);
 
   // Function to delete a row
-  const handleDeleteVehicle = async (rowData) => {
+  const handleDeleteAction = (rowData, rowIndex) => {
+    
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        if(isShowPreview){
+          handleDeleteFromPreview(rowIndex)
+        }
+        else{
+          handleDeleteVehicle(rowData)
+        }
+        
+      }
+    });
+    
+  };
+
+  //DELETE VEHICLE FROM LIST
+  const handleDeleteVehicle = async (rowData)=>{
     const { vid } = rowData;
     startLoading();
     try {
       //debugger
       const response = await callApi(
-        "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetVehicleListById/${vid}`,
+        "delete",
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/DeleteVehicleList/${vid}`,
         { ...rowData, isActive: false },
         {}
       );
       // console.log(response);
 
-      stopLoading();
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           NotificationManager.success(
@@ -154,11 +191,19 @@ const AddVehicleList = () => {
         NotificationManager.error(APINULLERROR);
       }
     } catch (error) {
-      stopLoading();
+      
       console.error(APICALLFAIL, error);
       NotificationManager.error(APICALLFAIL, error);
     }
-  };
+    finally{
+      stopLoading();
+    }
+  }
+
+  //DELETE VEHICLE FROM PREVIEW
+  const handleDeleteFromPreview = async (rowIndex)=>{
+      setPreviewBookingData(previewBookingData.splice(rowIndex, 1))
+  }
 
   const submitExcelData = async () => {
     if (previewBookingData.length === 0) {
@@ -182,8 +227,8 @@ const AddVehicleList = () => {
           NotificationManager.error(response.data.message);
         }
       } else {
-        console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message);
+        console.error(APINULLERROR, response);
+        NotificationManager.warning(APINULLERROR);
       }
     } catch (err) {
       stopLoading();
@@ -211,7 +256,7 @@ const AddVehicleList = () => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Add Vehicle List</h1>
+            <h1 className="h3 mb-3">Vehicle List</h1>
 
             <div className="card">
               {/* Card Header */}
@@ -222,6 +267,7 @@ const AddVehicleList = () => {
                     <UploadExcelButton
                       setPreviewData={setPreviewData}
                       otherData={otherData}
+                      buttonName={"Upload Vehicle List"}
                     />
                   ) : null}
                   {isShowPreview === false ? (

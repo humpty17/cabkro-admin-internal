@@ -19,11 +19,21 @@ import {
   APICALLFAIL,
   APINULLERROR,
   DELETEDATAERROR,
+  SRNO,
+  SRNOKEY,
+  SRNOWIDTH,
+  UPDATEDATAERROR,
   WIDTH,
 } from "../../General/ConstStates";
 
 const PopularDestinations = () => {
   const columns = [
+    {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1
+    },
     {
       label: "Name",
       dataKey: "packageName",
@@ -123,6 +133,7 @@ const PopularDestinations = () => {
       label: "Plus Member",
       dataKey: "plusMember",
       width: 200,
+      cellRenderer: ({ rowData }) => rowData["plusMember"] ?  "Yes" : "No"
     },
     {
       label: "GST Rate",
@@ -140,6 +151,24 @@ const PopularDestinations = () => {
       width: 200,
     },
     {
+      label: "BreakFast",
+      dataKey: "breakFast",
+      width: 200,
+      cellRenderer: ({ rowData }) => rowData["breakFast"] ?  "Yes" : "No"
+    },
+    {
+      label: "Lunch",
+      dataKey: "lunch",
+      width: 200,
+      cellRenderer: ({ rowData }) => rowData["lunch"] ?  "Yes" : "No"
+    },
+    {
+      label: "Dinner",
+      dataKey: "dinner",
+      width: 200,
+      cellRenderer: ({ rowData }) => rowData["dinner"] ?  "Yes" : "No"
+    },
+    {
       label: "Extra Service",
       dataKey: "extraService",
       width: 200,
@@ -153,11 +182,11 @@ const PopularDestinations = () => {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
-      cellRenderer: ({ rowData }) => (
+      cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-            onClick={() => handleDeleteDestination(rowData)}
+            onClick={() => handleDeleteDestination(rowData, rowIndex)}
           />
         </div>
       ),
@@ -212,6 +241,7 @@ const PopularDestinations = () => {
     userId: user ? user.userId : 0,
     isActive: true,
     isDeleted: false,
+    
   };
 
   const { startLoading, stopLoading } = useContext(LoadingContext);
@@ -265,55 +295,69 @@ const PopularDestinations = () => {
         previewBookingData,
         {}
       );
-      stopLoading();
+      // stopLoading();
       if (response !== null && response !== undefined) {
-        if (response.data.code === 200) {
-          NotificationManager.success(response.data.message);
+        if (response?.data?.code === 200) {
+          NotificationManager.success(response?.data?.message || "Destination uploaded successfully");
           handleReset();
         } else {
-          NotificationManager.error(response.data.message);
+          NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
         }
       } else {
         console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message);
+        NotificationManager.warning(APINULLERROR);
       }
     } catch (err) {
-      stopLoading();
+      // stopLoading();
+      NotificationManager.warning(APINULLERROR);
+    }
+    finally{
+      stopLoading()
     }
   };
 
-  const handleDeleteDestination = async (rowData) => {
-    const { packageID } = rowData;
-
-    startLoading();
-    try {
-      //debugger
-      const response = await callApi(
-        "DELETE",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/DeletePopularDestination/${packageID}`,
-        {},
-        {}
-      );
-      // console.log(response);
-
-      stopLoading();
-      if (response !== null && response !== undefined) {
-        if (response?.data?.code === 200) {
-          NotificationManager.success(
-            response?.data?.message || "Destination deleted successfully"
-          );
-          getPopularDestination();
-        } else {
-          NotificationManager.error(response?.data?.message || DELETEDATAERROR);
-        }
-      } else {
-        NotificationManager.error(APINULLERROR);
-      }
-    } catch (error) {
-      stopLoading();
-      console.error(APICALLFAIL, error);
-      NotificationManager.error(APICALLFAIL, error);
+  const handleDeleteDestination = async (rowData, rowIndex) => {
+    if(isShowPreview){
+      setPreviewBookingData(previewBookingData.splice(rowIndex,1))
     }
+    else{
+      const { packageID } = rowData;
+
+      startLoading();
+      try {
+        //debugger
+        const response = await callApi(
+          "DELETE",
+          `${process.env.REACT_APP_API_URL_ADMIN}Data/DeletePopularDestination/${packageID}`,
+          {},
+          {}
+        );
+        // console.log(response);
+
+        
+        if (response !== null && response !== undefined) {
+          if (response?.data?.code === 200) {
+            NotificationManager.success(
+              response?.data?.message || "Destination deleted successfully"
+            );
+            getPopularDestination();
+          } else {
+            NotificationManager.error(response?.data?.message || DELETEDATAERROR);
+          }
+        } else {
+          NotificationManager.error(APINULLERROR);
+        }
+      } catch (error) {
+       
+        console.error(APICALLFAIL, error);
+        NotificationManager.error(APICALLFAIL, error);
+      }
+      finally{
+        stopLoading()
+      }
+
+    }
+    
   };
 
   const setPreviewData = (data) => {
@@ -349,6 +393,7 @@ const PopularDestinations = () => {
                         <UploadExcelButton
                           setPreviewData={setPreviewData}
                           otherData={otherData}
+                          buttonName={"Update Popular Destinations"}
                         />
                       ) : null}
                       {isShowPreview === false ? (

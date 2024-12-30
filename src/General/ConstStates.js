@@ -49,4 +49,11 @@ export const UPDATEDATAERROR = "Error while updating data"
 
 //ACTION COLUMN HEADING
 export const ACTION = "Action"
+//SERIAL NO DATA KEY
+export const SRNOKEY = "srNo"
+
+//SERIAL NO COLUMN NAME
+export const SRNO = "Sr No"
+//SERIAL NO WIDTH
+export const SRNOWIDTH = 50
 export const WIDTH = 50
