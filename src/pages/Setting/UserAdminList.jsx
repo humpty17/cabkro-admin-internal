@@ -5,13 +5,19 @@ import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTa
 import { callApi, getCurrentDateTime } from '../../General/GeneralMethod';
 import { LoadingContext } from '../../store/loading-context';
 import ExportButtton from '../../General/Buttons/ExportButtton';
-import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
+import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { CurrentPageContext } from '../../store/pages-context';
 
 
 const UserAdminList = () => {
   const columns = [
+    {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+    },
     {
       label: "First Name",
       dataKey: "userFirstName",
@@ -38,6 +44,13 @@ const UserAdminList = () => {
       width: 150,
     },
     {
+      label: "Gender",
+      dataKey: "gender",
+      width: 150,
+      cellRenderer: ({ rowData }) =>
+        rowData["gender"] === 2 ? "Female" : "Male",
+    },
+    {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
@@ -46,11 +59,14 @@ const UserAdminList = () => {
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => {handleRedirect(ADDUSERFORM); handleUserEdit()}}
+            onClick={() => {
+              handleRedirect(ADDUSERFORM);
+              handleUserEdit();
+            }}
           />
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-             onClick={() => handleUserAdminDelete(rowData)}
+            onClick={() => handleUserAdminDelete(rowData)}
           />
         </div>
       ),
@@ -100,7 +116,6 @@ const UserAdminList = () => {
   const [searchFilters, setSearchFilters]= useState(filterState)
   const [addAdmin, setAddAdmin] = useState(InitialUserAdmin)
   const rowGetter = ({ index }) => user[index];
-  console.log(user);
   
 
   const userList = async() =>{
@@ -110,7 +125,6 @@ const UserAdminList = () => {
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-          console.log(user);
           setUser(response.data.data)
         } else {
           NotificationManager.error(response.data.message);
@@ -171,7 +185,6 @@ const UserAdminList = () => {
        { ...user },
        {}
      );
-     console.log(response.data.data);
      
      stopLoading();
      if (response !== null && response !== undefined) {

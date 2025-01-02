@@ -11,7 +11,7 @@ import { LoginContext } from '../../store/login-context';
 import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
 import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
-import { ACTION, WIDTH } from '../../General/ConstStates';
+import { ACTION, UPDATEDATAERROR, WIDTH } from '../../General/ConstStates';
 import { FaTrash } from 'react-icons/fa';
 
 const AddBookingPackage = () => {
@@ -183,7 +183,7 @@ const AddBookingPackage = () => {
          NotificationManager.success(response.data.message)
          handleReset()
         } else {
-          NotificationManager.error(response.data.message);
+           NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
         }
       } else {
         console.error("API returned an invalid response:", response);
@@ -219,7 +219,8 @@ const AddBookingPackage = () => {
             <div className="row">
               <div className="col-12">
                 <div className="card">
-                  <div className="card-header row">
+                  <div className="card-header">
+                  <div className='row'>
                     <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
                     <div className="mb-3 text-end col-7">
                       {isShowPreview === false ? (
@@ -246,6 +247,7 @@ const AddBookingPackage = () => {
                         ></CancelExcelButton>
                       ) : null}
                     </div>
+                  </div>
                   </div>
                   <div className="card-body">
                     <div className="row dt-row">

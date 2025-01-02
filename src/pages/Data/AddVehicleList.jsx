@@ -202,7 +202,9 @@ const AddVehicleList = () => {
 
   //DELETE VEHICLE FROM PREVIEW
   const handleDeleteFromPreview = async (rowIndex)=>{
-      setPreviewBookingData(previewBookingData.splice(rowIndex, 1))
+    const updatedData = [...previewBookingData];
+    updatedData.splice(rowIndex, 1);
+    setPreviewBookingData(updatedData);
   }
 
   const submitExcelData = async () => {
@@ -260,7 +262,8 @@ const AddVehicleList = () => {
 
             <div className="card">
               {/* Card Header */}
-              <div className="card-header row">
+              <div className="card-header">
+                <div className="row">
                 <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
                 <div className="mb-3 text-end col-7">
                   {isShowPreview === false ? (
@@ -286,6 +289,7 @@ const AddVehicleList = () => {
                       handleCancelClick={handleCancelClick}
                     ></CancelExcelButton>
                   ) : null}
+                </div>
                 </div>
               </div>
 

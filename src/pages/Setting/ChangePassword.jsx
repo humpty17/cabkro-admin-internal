@@ -7,76 +7,92 @@ import FormLabel from "../../General/Label/FormLabel";
 import { callApi } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
 import { log10 } from "chart.js/helpers";
+import { APINULLERROR, UPDATEDATAERROR } from "../../General/ConstStates";
 
 const ChangePassword = () => {
-  const {startLoading, stopLoading} = useContext(LoadingContext)
-  const {icon, type, handleToggleData} = useContext(AdminContext)
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+  const { icon, type, handleToggleData } = useContext(AdminContext);
   const [newPassword, setNewPassword] = useState({
-    userId : '',
-    password : ''
-  })
-  const [getUser, setGetUser] = useState([])
+    userId: "",
+    password: "",
+  });
+  const [getUser, setGetUser] = useState([]);
   console.log(getUser);
-  
-  const handleUserList = async() =>{
+
+  const handleUserList = async () => {
     startLoading();
-        try {
-          const response = await callApi(
-            "get",
-            `${process.env.REACT_APP_API_URL_ADMIN}Auth/GetAdminUserList`,
-            {},
-            {}
-          );
-          stopLoading();
-          if (response !== null && response !== undefined) {
-            if (response.data.code === 200) {
-              setGetUser(response.data.data);
-            } else {
-              NotificationManager.error(response.data.message);
-            }
-          } else {
-            console.error("API returned an invalid response:", response);
-            NotificationManager.warning(response.data.message);
-          }
-        } catch (error) {
-          console.error("API call failed:", error);
-        }
-      };
-    
-      useEffect(() => {
-        handleUserList();
-      }, []);
- 
-  const submitChangePassword = async(e) =>{
-    e.preventDefault()
-      startLoading();
-      try {
-        const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Auth/ChangePassword?UserId=${newPassword.userId}&Password=${newPassword.password}`,{},{});
-        stopLoading();
-        if (response !== null && response !== undefined) {
-          if (response.data.code === 200) {
-            //console.log(bookingData)
-            setNewPassword({ userId : '',
-              password : ''})
-          } else {
-            NotificationManager.error(response.data.message);
-          }
+    try {
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL_ADMIN}Auth/GetAdminUserList`,
+        {},
+        {}
+      );
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response.data.code === 200) {
+          setGetUser(response.data.data);
         } else {
-          console.error("API returned an invalid response:", response);
-          NotificationManager.warning(response.data.message);
+          NotificationManager.error(response.data.message);
         }
-      } catch (error) {
-        console.error("API call failed:", error);
-      } 
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.warning(response.data.message);
+      }
+    } catch (error) {
+      console.error("API call failed:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleUserList();
+  }, []);
+
+  const validation = () => {
+      
+      if(newPassword.userId === '' || newPassword.password === ''){
+        NotificationManager.warning("Enter required fields")
+        return false
+      }
+      return true
     }
 
-  const handleChangePassword = (e) =>{
+  const submitChangePassword = async (e) => {
+    e.preventDefault();
+    if(!validation()) return
+    startLoading();
+    debugger
+    try {
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL_ADMIN}Auth/ChangePassword?UserId=${newPassword.userId}&Password=${newPassword.password}`,
+        {},
+        {}
+      );
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response.data.code === 200) {
+          NotificationManager.success(response?.data?.message || "Destination uploaded successfully");
+          setNewPassword({ userId: "", password: "" });
+        } else {
+           NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
+        }
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.warning(response.data.message);
+      }
+    } catch (error) {
+     NotificationManager.warning(APINULLERROR);
+    }
+  };
+
+  const handleChangePassword = (e) => {
     setNewPassword({
       ...newPassword,
-      [e.target.name] : e.target.value
-    })
+      [e.target.name]: e.target.value,
+    });
     //console.log(e.target.value);
-  }
+  };
 
   return (
     <div className="wrapper">
@@ -102,10 +118,7 @@ const ChangePassword = () => {
                             >
                               <option>Select</option>
                               {getUser.map((item, index) => (
-                                <option
-                                  key={item.userId}
-                                  value={item.userId}
-                                >
+                                <option key={item.userId} value={item.userId}>
                                   {item.userFirstName}
                                 </option>
                               ))}

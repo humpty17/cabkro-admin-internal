@@ -13,6 +13,9 @@ import {
   DELETEDATAERROR,
   FETCHDATAERROR,
   SAVEDATAERROR,
+  SRNO,
+  SRNOKEY,
+  SRNOWIDTH,
   UPDATEDATAERROR,
   WIDTH,
 } from "../../General/ConstStates";
@@ -22,6 +25,12 @@ import { FaTrash } from "react-icons/fa";
 
 const Coupons = () => {
   const columns = [
+    {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+    },
     {
       label: "Coupon Code",
       dataKey: "couponCode",
@@ -56,7 +65,10 @@ const Coupons = () => {
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => {setIsEditMode(true);setAddCouponData(rowData)}}
+            onClick={() => {
+              setIsEditMode(true);
+              setAddCouponData(rowData);
+            }}
           />
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
@@ -67,13 +79,13 @@ const Coupons = () => {
     },
   ];
 
-  const couponState = {
-    couponCode: "",
-    discountAmount: 0,
-    discountPercent: 0,
-    appliedDate: "",
-    isValid: true,
-  };
+  // const couponState = {
+  //   couponCode: "",
+  //   discountAmount: 0,
+  //   discountPercent: 0,
+  //   appliedDate: "",
+  //   isValid: true,
+  // };
 
   const initialState = {
     appliedCouponID: 0,
@@ -85,7 +97,7 @@ const Coupons = () => {
     expirationDate: getCurrentDateTime(),
   };
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  const [searchFilters, setSearchFilters] = useState(couponState);
+  const [searchFilters, setSearchFilters] = useState(initialState);
   const [couponListData, setCouponListData] = useState([]);
   const [addCouponData, setAddCouponData] = useState(initialState);
   const [isEditMode, setIsEditMode] = useState(false)

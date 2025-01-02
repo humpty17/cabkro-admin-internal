@@ -265,7 +265,6 @@ const PopularDestinations = () => {
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
           setGetDestination(response.data.data);
-          console.log(response);
         } else {
           NotificationManager.error(response.data.message);
         }
@@ -283,6 +282,7 @@ const PopularDestinations = () => {
   }, []);
 
   const submitExcelData = async () => {
+    debugger
     if (previewBookingData.length === 0) {
       NotificationManager.warning("No data available for upload.");
       return;
@@ -292,10 +292,10 @@ const PopularDestinations = () => {
       const response = await callApi(
         "post",
         `${process.env.REACT_APP_API_URL_ADMIN}Data/AddOrUpdatePopularDestinations`,
-        previewBookingData,
+        {previewBookingData},
         {}
       );
-      // stopLoading();
+      console.log(response);
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           NotificationManager.success(response?.data?.message || "Destination uploaded successfully");
@@ -318,23 +318,20 @@ const PopularDestinations = () => {
 
   const handleDeleteDestination = async (rowData, rowIndex) => {
     if(isShowPreview){
-      setPreviewBookingData(previewBookingData.splice(rowIndex,1))
+      const updatedData = [...previewBookingData];
+      updatedData.splice(rowIndex, 1);
+      setPreviewBookingData(updatedData);
     }
     else{
       const { packageID } = rowData;
-
       startLoading();
       try {
-        //debugger
         const response = await callApi(
           "DELETE",
           `${process.env.REACT_APP_API_URL_ADMIN}Data/DeletePopularDestination/${packageID}`,
           {},
           {}
         );
-        // console.log(response);
-
-        
         if (response !== null && response !== undefined) {
           if (response?.data?.code === 200) {
             NotificationManager.success(
@@ -348,16 +345,13 @@ const PopularDestinations = () => {
           NotificationManager.error(APINULLERROR);
         }
       } catch (error) {
-       
         console.error(APICALLFAIL, error);
         NotificationManager.error(APICALLFAIL, error);
       }
       finally{
         stopLoading()
       }
-
-    }
-    
+    }  
   };
 
   const setPreviewData = (data) => {

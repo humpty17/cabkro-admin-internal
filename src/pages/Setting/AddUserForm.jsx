@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import "react-notifications/lib/notifications.css";
-import { EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
+import { APINULLERROR, EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import DateInput from "../../General/Input/DateInput";
 import EmailInput from "../../General/Input/EmailInput";
@@ -44,7 +44,7 @@ const AddUserForm = ({userData}) => {
   }
   const validation = () => {
     
-    if(addData.userFirstName === '' || addData.userLastName === '' || addData.dob === '' || addData.gender === '' || addData.userEmail === '' || addData.password === '' || addData.phoneNo === ''){
+    if(addData.userFirstName === '' || addData.userLastName === '' || addData.dob === '' || !addData.gender  || addData.userEmail === '' || addData.password === '' || addData.phoneNo === ''){
       NotificationManager.warning("Enter required fields")
       return false
     }
@@ -79,7 +79,7 @@ const AddUserForm = ({userData}) => {
       if (response && response.data) {  // Check for response and response.data
         if (response.data.code === 200) {
           //console.log(response.data.data);
-          NotificationManager.success(response.data.message)
+          NotificationManager.success(response?.data?.message || "Destination uploaded successfully");
         } else {
           console.error("API Error:", response.data.code, response.data);
           NotificationManager.error(response.data.message)
@@ -90,6 +90,7 @@ const AddUserForm = ({userData}) => {
       }
     } catch (error) {
       console.error("API call failed:", error);
+      NotificationManager.warning(APINULLERROR);
     }
   };
 
