@@ -288,11 +288,17 @@ const PopularDestinations = () => {
       return;
     }
     startLoading();
+    previewBookingData.forEach((data,index)=>{
+      data.breakFast.toLowerCase() === "true" ? data.breakFast = true : data.breakFast = false
+      data.lunch.toLowerCase() === "true" ? data.lunch = true : data.lunch = false
+      data.dinner.toLowerCase() === "true" ? data.dinner = true : data.dinner = false
+      
+    })
     try {
       const response = await callApi(
         "post",
         `${process.env.REACT_APP_API_URL_ADMIN}Data/AddOrUpdatePopularDestinations`,
-        {previewBookingData},
+        [...previewBookingData],
         {}
       );
       console.log(response);
