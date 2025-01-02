@@ -30,6 +30,9 @@ export const SMTP = "SMTPDetails"
 export const COUPONS = "Coupons"
 export const CONTACTUS = "ContactUs"
 
+//Driver Section
+export const ADDAGENCY = "AddAgency"
+
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;
 export const EMAILREGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
@@ -57,3 +60,9 @@ export const SRNO = "Sr No"
 //SERIAL NO WIDTH
 export const SRNOWIDTH = 50
 export const WIDTH = 50
+
+export const ApiHeaders = {
+  UserType: 1,
+  "Content-Type": "application/json",
+};
+

@@ -5,6 +5,7 @@ import Navbar from "./General/Components/Navbar";
 import PopularDestinations from "./pages/Data/PopularDestinations";
 import { CurrentPageContext } from "./store/pages-context";
 import {
+  ADDAGENCY,
   ADDBOOKINGPACKAGE,
   ADDCUSTOMER,
   ADDUSERFORM,
@@ -42,6 +43,7 @@ import Coupons from "./pages/Extra/Coupons";
 import ContactUs from "./pages/Extra/ContactUs";
 import UserProfile from "./pages/Setting/UserProfile";
 import ChangePassword from "./pages/Setting/ChangePassword";
+import AgencyDetails from "./pages/Driver/Components/AgencyDetails";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -79,6 +81,9 @@ const Home = () => {
             {currentPage === SMTP && <SMTPDetails/>}
             {currentPage === COUPONS && <Coupons/>}
             {currentPage === CONTACTUS && <ContactUs/>}
+
+            {/* Driver section */}
+            {currentPage === ADDAGENCY && <AgencyDetails></AgencyDetails>}
           </div>
         </div>
       )}
