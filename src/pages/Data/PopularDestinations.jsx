@@ -25,6 +25,7 @@ import {
   UPDATEDATAERROR,
   WIDTH,
 } from "../../General/ConstStates";
+import Swal from "sweetalert2";
 
 const PopularDestinations = () => {
   const columns = [
@@ -186,7 +187,7 @@ const PopularDestinations = () => {
         <div>
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-            onClick={() => handleDeleteDestination(rowData, rowIndex)}
+            onClick={() => handleDeleteAction(rowData, rowIndex)}
           />
         </div>
       ),
@@ -291,8 +292,7 @@ const PopularDestinations = () => {
     previewBookingData.forEach((data,index)=>{
       data.breakFast.toLowerCase() === "true" ? data.breakFast = true : data.breakFast = false
       data.lunch.toLowerCase() === "true" ? data.lunch = true : data.lunch = false
-      data.dinner.toLowerCase() === "true" ? data.dinner = true : data.dinner = false
-      
+      data.dinner.toLowerCase() === "true" ? data.dinner = true : data.dinner = false 
     })
     try {
       const response = await callApi(
@@ -322,13 +322,38 @@ const PopularDestinations = () => {
     }
   };
 
-  const handleDeleteDestination = async (rowData, rowIndex) => {
-    if(isShowPreview){
-      const updatedData = [...previewBookingData];
+  // Function to delete a row
+  const handleDeleteAction = (rowData, rowIndex) => {
+      debugger
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        if(isShowPreview){
+          handleDeletePreviewDestination(rowIndex)
+        }
+        else{
+          handleDeleteDestination(rowData)
+        }
+      }
+    });
+  };
+
+  //DELETE VEHICLE FROM PREVIEW
+  const handleDeletePreviewDestination = (rowIndex) =>{
+    const updatedData = [...previewBookingData];
       updatedData.splice(rowIndex, 1);
       setPreviewBookingData(updatedData);
-    }
-    else{
+  }
+
+  //DELETE VEHICLE FROM LIST
+  const handleDeleteDestination = async (rowData) => {
       const { packageID } = rowData;
       startLoading();
       try {
@@ -357,8 +382,9 @@ const PopularDestinations = () => {
       finally{
         stopLoading()
       }
-    }  
   };
+
+    
 
   const setPreviewData = (data) => {
     setIsShowPreview(true);

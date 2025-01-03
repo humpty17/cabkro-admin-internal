@@ -160,7 +160,6 @@ const AddVehicleList = () => {
         
       }
     });
-    
   };
 
   //DELETE VEHICLE FROM LIST
@@ -213,6 +212,11 @@ const AddVehicleList = () => {
       return;
     }
     startLoading();
+    // previewBookingData.forEach((data,index)=>{
+    //   data.breakFast.toLowerCase() === "true" ? data.breakFast = true : data.breakFast = false
+    //   data.lunch.toLowerCase() === "true" ? data.lunch = true : data.lunch = false
+    //   data.dinner.toLowerCase() === "true" ? data.dinner = true : data.dinner = false 
+    // })
     try {
       const response = await callApi(
         "post",
