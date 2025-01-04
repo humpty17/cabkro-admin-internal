@@ -42,6 +42,146 @@ const AddBookingPackage = () => {
       width: 200,
     },
     {
+      label: "Min Distance",
+      dataKey: "minDistance",
+      width: 200,
+    },
+    {
+      label: "Max Distance",
+      dataKey: "maxDistance",
+      width: 200,
+    },
+    {
+      label: "Rate/Km",
+      dataKey: "ratePerKM",
+      width: 200,
+    },
+    {
+      label: "Price",
+      dataKey: "basePrice",
+      width: 200,
+    },
+    {
+      label: "Rate",
+      dataKey: "discountRate",
+      width: 200,
+    },
+    {
+      label: "Amount",
+      dataKey: "discountAmount",
+      width: 200,
+    },
+    {
+      label: "Type",
+      dataKey: "vehicleType",
+      width: 200,
+    },
+    {
+      label: "Fuel Type",
+      dataKey: "vehicleFuelType",
+      width: 200,
+    },
+    {
+      label: "Model Name",
+      dataKey: "vehicleModelName",
+      width: 200,
+    },
+    {
+      label: "Seater Count",
+      dataKey: "vehicleSeaterCount",
+      width: 200,
+    },
+    {
+      label: "GST Rate",
+      dataKey: "gstRate",
+      width: 200,
+    },
+    {
+      label: "GST Amount",
+      dataKey: "gstAmount",
+      width: 200,
+    },
+    {
+      label: "Offer Description",
+      dataKey: "offerDescription",
+      width: 200,
+    },
+    {
+      label: "Service",
+      dataKey: "extraService",
+      width: 200,
+    },
+    {
+      label: "Other",
+      dataKey: "other2",
+      width: 200,
+    },
+    {
+      label: "Total Amount",
+      dataKey: "totalAmount",
+      width: 200,
+    },
+    {
+      label: "Luggage Allowed",
+      dataKey: "luggageAllowed",
+      width: 200,
+    },
+    {
+      label: "Percentage",
+      dataKey: "advancePercentage",
+      width: 200,
+    },
+    {
+      label: "Toll Tax",
+      dataKey: "tollTaxType",
+      width: 200,
+    },
+    {
+      label: "Toll Tax Amount",
+      dataKey: "tollTaxAmount",
+      width: 200,
+    },
+    {
+      label: "Pet Animal",
+      dataKey: "petAnimal",
+      width: 200,
+    },
+    {
+      label: "Pet Animal Amount",
+      dataKey: "petAnimalAmount",
+      width: 200,
+    },
+    {
+      label: "Extra Luggage",
+      dataKey: "extraLuggage",
+      width: 200,
+    },
+    {
+      label: "Extra Luggage Amount",
+      dataKey: "extraLuggageAmount",
+      width: 200,
+    },
+    {
+      label: "Driver Charges Type",
+      dataKey: "driverChargesType",
+      width: 200,
+    },
+    {
+      label: "Driver Charges Amount",
+      dataKey: "driverChargesAmount",
+      width: 200,
+    },
+    {
+      label: "Night Charges",
+      dataKey: "nightChargesType",
+      width: 200,
+    },
+    {
+      label: "Night Charges  Amount",
+      dataKey: "nightChargesAmount",
+      width: 200,
+    },
+    {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,

@@ -2,6 +2,7 @@ import React from 'react'
 
 const TypeInput = ({inputName, placeholderName, valueName, onChangeName}) => {
   return (
+    <div className="col-sm-8">
     <input
       type="text"
       name={inputName}
@@ -10,6 +11,7 @@ const TypeInput = ({inputName, placeholderName, valueName, onChangeName}) => {
       value={valueName}
       onChange={onChangeName}
     />
+    </div>
   );
 }
 

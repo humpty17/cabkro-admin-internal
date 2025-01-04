@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 const EmailInput = ({inputName, placeholderName, valueName, onChangeName}) => {
   return (
+    <div className="col-sm-8">
     <input
       type="email"
       name={inputName}
@@ -10,6 +11,7 @@ const EmailInput = ({inputName, placeholderName, valueName, onChangeName}) => {
       value={valueName}
       onChange={onChangeName}
     />
+    </div>
   );
 }
 
