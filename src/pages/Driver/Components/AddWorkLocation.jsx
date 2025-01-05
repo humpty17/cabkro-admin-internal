@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import FormLabel from "../../../General/Label/FormLabel";
 import TypeInput from "../../../General/Input/TypeInput";
 
-const AddWorkLocation = () => {
+const AddWorkLocation = ({agencyDetails}) => {
   const [location1, setLocation1] = useState("");
   const [location2, setLocation2] = useState("");
   const [location3, setLocation3] = useState("");
+
+  const disableInputFields = agencyDetails?.userId === 0 ? true : false
+
   return (
     <div className="row">
       <div className="col-6 col-xl-6">
@@ -23,6 +26,7 @@ const AddWorkLocation = () => {
                 placeholderName={"search location"}
                 valueName={location1}
                 onChangeName={(e) => setLocation1(e.target.value)}
+                isDisabled={disableInputFields}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -34,6 +38,7 @@ const AddWorkLocation = () => {
                 placeholderName={"search location"}
                 valueName={location2}
                 onChangeName={(e) => setLocation2(e.target.value)}
+                isDisabled={disableInputFields}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -45,6 +50,7 @@ const AddWorkLocation = () => {
                 placeholderName={"search location"}
                 valueName={location3}
                 onChangeName={(e) => setLocation2(e.target.value)}
+                isDisabled={disableInputFields}
               ></TypeInput>
             </div>
             <div className="mb-3 row">

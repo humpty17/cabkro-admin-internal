@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TypeInput = ({inputName, placeholderName, valueName, onChangeName}) => {
+const TypeInput = ({inputName, placeholderName, valueName, onChangeName, isDisabled = false}) => {
   return (
     <div className="col-sm-8">
     <input
@@ -10,6 +10,7 @@ const TypeInput = ({inputName, placeholderName, valueName, onChangeName}) => {
       placeholder={placeholderName}
       value={valueName}
       onChange={onChangeName}
+      disabled={isDisabled}
     />
     </div>
   );
