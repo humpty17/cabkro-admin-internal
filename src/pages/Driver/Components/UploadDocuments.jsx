@@ -3,7 +3,7 @@ import FormLabel from "../../../General/Label/FormLabel";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import FileInput from "../../../General/Input/FileInput";
 
-const UploadDocuments = ({ agencyDetails, handleFileUpload }) => {
+const UploadDocuments = ({ agencyDetails, handleChooseFile }) => {
 
   const disableInputFields = agencyDetails?.userId === 0 ? true : false
   
@@ -17,17 +17,17 @@ const UploadDocuments = ({ agencyDetails, handleFileUpload }) => {
           <form>
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card front"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleFileUpload(e, "AdharFrontImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleChooseFile={(e)=>handleChooseFile(e, "AdharFrontImage")} isDisabled={disableInputFields}></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card back"}></FormLabel>
               {/* <label className="col-form-label col-sm-3 text-sm-end">Aadhar card back</label> */}
-              <FileInput handleFileUpload={(e)=>handleFileUpload(e,"AdharBackImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleChooseFile={(e)=>handleChooseFile(e,"AdharBackImage")} isDisabled={disableInputFields}></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Pan card"}></FormLabel>
               {/* <label className="col-form-label col-sm-3 text-sm-end">Pan card</label> */}
-              <FileInput handleFileUpload={(e)=>handleFileUpload(e,"PanImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleChooseFile={(e)=>handleChooseFile(e,"PanImage")} isDisabled={disableInputFields}></FileInput>
             </div>
             <div className="mb-3 row">
               <div className="col-sm-12 ms-sm-auto">
