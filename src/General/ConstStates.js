@@ -66,3 +66,9 @@ export const ApiHeaders = {
   "Content-Type": "application/json",
 };
 
+export const ApiHeadersMultipart = {
+  UserType: 1,
+  "Content-Type": "application/json",
+};
+
+
