@@ -11,8 +11,9 @@ import { LoginContext } from '../../store/login-context';
 import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
 import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
-import { ACTION, UPDATEDATAERROR, WIDTH } from '../../General/ConstStates';
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, UPDATEDATAERROR, WIDTH } from '../../General/ConstStates';
 import { FaTrash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 const AddBookingPackage = () => {
   const columns = [
@@ -189,7 +190,7 @@ const AddBookingPackage = () => {
         <div>
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-            // onClick={() => handleDelete(rowData)}
+            onClick={() => handleDeleteAction(rowData, rowIndex)}
           />
         </div>
       ),
@@ -275,13 +276,6 @@ const AddBookingPackage = () => {
   const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : bookingData[index];
  // console.log(bookingData);
 
-  const handleFilterChange = (dataKey, value) => {
-    setSearchFilters((prevFilters) => ({
-      ...prevFilters,
-      [dataKey]: value,
-    }));
-  };
-
   const bookingList = async() =>{
     startLoading();
     try {
@@ -307,7 +301,74 @@ const AddBookingPackage = () => {
     bookingList()
   },[])
 
+  // Function to delete a row
+    const handleDeleteAction = (rowData, rowIndex) => {
+      debugger;
+      console.log(rowIndex);
+      
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          if (isShowPreview) {
+            handleDeleteFromPreview(rowIndex);
+          } else {
+            handleDeleteBookingPackage(rowData);
+          }
+        }
+      });
+    };
+
+  //DELETE VEHICLE FROM LIST
+    const handleDeleteBookingPackage = async (rowData)=>{
+      const { packageID } = rowData;
+      startLoading();
+      try {
+        debugger
+        const response = await callApi(
+          "delete",
+          `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateBookingPackages/${packageID}`,
+          { ...rowData, isActive: false },
+          {}
+        );
+        // console.log(response);
   
+        if (response !== null && response !== undefined) {
+          if (response?.data?.code === 200) {
+            NotificationManager.success(
+              response?.data?.message || "Booking package deleted successfully"
+            );
+            bookingList();
+            // setIsActive(false)
+          } else {
+            NotificationManager.error(response?.data?.message || DELETEDATAERROR);
+          }
+        } else {
+          NotificationManager.error(APINULLERROR);
+        }
+      } catch (error) {
+        
+        console.error(APICALLFAIL, error);
+        NotificationManager.error(APICALLFAIL, error);
+      }
+      finally{
+        stopLoading();
+      }
+    }
+  
+    //DELETE VEHICLE FROM PREVIEW
+    const handleDeleteFromPreview = async (rowIndex)=>{
+      debugger
+      const updatedData = [...previewBookingData];
+      updatedData.splice(rowIndex, 1);
+      setPreviewBookingData(updatedData);
+    }
 
   const submitExcelData = async ()=>{
     if(previewBookingData.length === 0){
