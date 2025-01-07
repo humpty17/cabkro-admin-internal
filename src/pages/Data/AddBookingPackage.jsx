@@ -186,7 +186,7 @@ const AddBookingPackage = () => {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
-      cellRenderer: ({ rowData }) => (
+      cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
