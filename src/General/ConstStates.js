@@ -32,6 +32,7 @@ export const CONTACTUS = "ContactUs"
 
 //Driver Section
 export const ADDAGENCY = "AddAgency"
+export const AGENCYLIST = "AgencyList"
 
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;
@@ -62,12 +63,12 @@ export const SRNOWIDTH = 50
 export const WIDTH = 50
 
 export const ApiHeaders = {
-  UserType: 1,
+  UserType: "1",
   "Content-Type": "application/json",
 };
 
 export const ApiHeadersMultipart = {
-  UserType: 1,
+  UserType: "1",
   "Content-Type": "application/json",
 };
 

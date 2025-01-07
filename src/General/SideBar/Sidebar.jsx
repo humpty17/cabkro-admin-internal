@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
+import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 
@@ -142,6 +142,12 @@ const Sidebar = () => {
             <a className="sidebar-link" onClick={()=>handleItemClick(ADDAGENCY)}>
               <FiUserPlus className="align-middle" />
               <span className="align-middle">Add Agency</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className="sidebar-link" onClick={()=>handleItemClick(AGENCYLIST)}>
+            <FiList className="align-middle" />
+              <span className="align-middle">Agency List</span>
             </a>
           </li>
           <li className="sidebar-item">

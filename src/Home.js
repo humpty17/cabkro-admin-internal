@@ -1,15 +1,12 @@
-import React, { useContext } from "react";
-import Sidebar from "./General/SideBar/Sidebar";
-import Dashboard from "./pages/Dashboard";
+import React, { useContext, useState } from "react";
 import Navbar from "./General/Components/Navbar";
-import PopularDestinations from "./pages/Data/PopularDestinations";
-import { CurrentPageContext } from "./store/pages-context";
 import {
   ADDAGENCY,
   ADDBOOKINGPACKAGE,
   ADDCUSTOMER,
   ADDUSERFORM,
   ADDVEHICLELIST,
+  AGENCYLIST,
   BOOKINGPACKAGELIST,
   CHANGEPASSWORD,
   CONTACTUS,
@@ -22,32 +19,37 @@ import {
   PROFILE,
   REGISTERPAGE,
   SMTP,
-  USERADMINLIST,
+  USERADMINLIST
 } from "./General/ConstStates";
+import Sidebar from "./General/SideBar/Sidebar";
+import Dashboard from "./pages/Dashboard";
+import PopularDestinations from "./pages/Data/PopularDestinations";
+import { CurrentPageContext } from "./store/pages-context";
 
 import Register from "./General/Register/Register";
 import Login from "./Login/Login";
-import AddUserForm from "./pages/Setting/AddUserForm";
-import LoginContextProvider, { LoginContext } from "./store/login-context";
-import UserAdminList from "./pages/Setting/UserAdminList";
-import AddBookingPackage from "./pages/Data/AddBookingPackage";
 import AddCustomer from "./pages/Customer/AddCustomer";
-import Profile from "./pages/Setting/Profile/Profile";
+import CustomerList from "./pages/Customer/CustomerList";
+import AddBookingPackage from "./pages/Data/AddBookingPackage";
 import AddVehicleList from "./pages/Data/AddVehicleList";
 import BookingPackageList from "./pages/Data/BookingPackageList";
-import CustomerList from "./pages/Customer/CustomerList";
-import Faqs from "./pages/Extra/FAQs";
+import AgencyDetails from "./pages/Driver/AgencyDetails";
+import ContactUs from "./pages/Extra/ContactUs";
+import Coupons from "./pages/Extra/Coupons";
 import FAQs from "./pages/Extra/FAQs";
 import SMTPDetails from "./pages/Extra/SMTPDetails";
-import Coupons from "./pages/Extra/Coupons";
-import ContactUs from "./pages/Extra/ContactUs";
-import UserProfile from "./pages/Setting/UserProfile";
+import AddUserForm from "./pages/Setting/AddUserForm";
 import ChangePassword from "./pages/Setting/ChangePassword";
-import AgencyDetails from "./pages/Driver/Components/AgencyDetails";
+import UserAdminList from "./pages/Setting/UserAdminList";
+import UserProfile from "./pages/Setting/UserProfile";
+import { LoginContext } from "./store/login-context";
+import AgencyList from "./pages/Driver/AgencyList";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
   const {user} = useContext(LoginContext)
+
+  const [editData, setEditData] = useState({})
   //console.log("user in home", user, currentPage)
   return (
     <>
@@ -83,7 +85,9 @@ const Home = () => {
             {currentPage === CONTACTUS && <ContactUs/>}
 
             {/* Driver section */}
-            {currentPage === ADDAGENCY && <AgencyDetails></AgencyDetails>}
+            {currentPage === ADDAGENCY && <AgencyDetails setEditData={setEditData} editData={editData}></AgencyDetails>}
+            {currentPage === AGENCYLIST && <AgencyList setEditData={setEditData} editData={editData}></AgencyList>}
+
           </div>
         </div>
       )}

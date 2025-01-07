@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import FormLabel from "../../../General/Label/FormLabel";
 import TypeInput from "../../../General/Input/TypeInput";
+import SubmitButton from "../../../General/Buttons/SubmitButton";
 
-const AddWorkLocation = ({agencyDetails}) => {
-  const [location1, setLocation1] = useState("");
-  const [location2, setLocation2] = useState("");
-  const [location3, setLocation3] = useState("");
+const AddWorkLocation = ({agencyDetails,handleInputChange,handleAgencySubmit}) => {
+ 
 
-  const disableInputFields = agencyDetails?.userId === 0 ? true : false
+  const disableInputFields = agencyDetails?.carOwnerId === 0 ? true : false
 
   return (
     <div className="row">
@@ -22,10 +21,10 @@ const AddWorkLocation = ({agencyDetails}) => {
               {/* <label className="col-form-label col-sm-3 text-sm-end">Location 1</label> */}
 
               <TypeInput
-                inputName={""}
+                inputName={"workLocation1"}
                 placeholderName={"search location"}
-                valueName={location1}
-                onChangeName={(e) => setLocation1(e.target.value)}
+                valueName={agencyDetails.workLocation1}
+                onChangeName={handleInputChange}
                 isDisabled={disableInputFields}
               ></TypeInput>
             </div>
@@ -34,10 +33,10 @@ const AddWorkLocation = ({agencyDetails}) => {
               {/* <label className="col-form-label col-sm-3 text-sm-end">Location 2</label> */}
 
               <TypeInput
-                inputName={""}
+                inputName={"workLocation2"}
                 placeholderName={"search location"}
-                valueName={location2}
-                onChangeName={(e) => setLocation2(e.target.value)}
+                valueName={agencyDetails.workLocation2}
+                onChangeName={handleInputChange}
                 isDisabled={disableInputFields}
               ></TypeInput>
             </div>
@@ -46,18 +45,16 @@ const AddWorkLocation = ({agencyDetails}) => {
               {/* <label className="col-form-label col-sm-3 text-sm-end">Location 3</label> */}
 
               <TypeInput
-                inputName={""}
+                inputName={"workLocation3"}
                 placeholderName={"search location"}
-                valueName={location3}
-                onChangeName={(e) => setLocation2(e.target.value)}
+                valueName={agencyDetails.workLocation3}
+                onChangeName={handleInputChange}
                 isDisabled={disableInputFields}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
+              <SubmitButton buttonName={"Submit"} isDisabled={disableInputFields} handleClick={handleAgencySubmit}></SubmitButton>
               </div>
             </div>
           </div>
