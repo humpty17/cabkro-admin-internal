@@ -10,6 +10,7 @@ import SidebarName from "./SidebarName";
 import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, APPROVEDAGENCY, APPROVEDDRIVER, APPROVEDVEHICLE, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
+import { CiLogin } from "react-icons/ci";
 
 const Sidebar = () => {
   const {sidebarOpen} = useContext(AdminContext)
@@ -164,7 +165,7 @@ const Sidebar = () => {
           </li>
           <li className="sidebar-item">
             <a className="sidebar-link" onClick={()=>handleItemClick(APPROVEDDRIVER)}>
-              <FiCheckCircle className="align-middle" />
+              <CiLogin className="align-middle"/>
               <span className="align-middle">Approve Driver</span>
             </a>
           </li>
