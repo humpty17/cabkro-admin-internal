@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
+import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, APPROVEDAGENCY, APPROVEDDRIVER, APPROVEDVEHICLE, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 
@@ -151,9 +151,21 @@ const Sidebar = () => {
             </a>
           </li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="#">
+            <a className="sidebar-link" onClick={()=>handleItemClick(APPROVEDAGENCY)}>
               <FiCheckCircle className="align-middle" />
               <span className="align-middle">Approve Agency</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className="sidebar-link" onClick={()=>handleItemClick(APPROVEDVEHICLE)}>
+              <FiCheckCircle className="align-middle" />
+              <span className="align-middle">Approve Vehicle</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className="sidebar-link" onClick={()=>handleItemClick(APPROVEDDRIVER)}>
+              <FiCheckCircle className="align-middle" />
+              <span className="align-middle">Approve Driver</span>
             </a>
           </li>
           <li className="sidebar-item">

@@ -1,25 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../../store/loading-context";
+import { ACTION, APICALLFAIL, APINULLERROR, SRNO, SRNOKEY, SRNOWIDTH, WIDTH } from "../../General/ConstStates";
+import { FiEdit } from "react-icons/fi";
+import { AiFillEye } from "react-icons/ai";
 import { NotificationManager } from "react-notifications";
-import {
-  ACTION,
-  ADDAGENCY,
-  APICALLFAIL,
-  APINULLERROR,
-  SRNO,
-  SRNOKEY,
-  SRNOWIDTH,
-  WIDTH,
-} from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
-import { FiEdit, FiEyeOff, FiTrash2 } from "react-icons/fi";
-import { CurrentPageContext } from "../../store/pages-context";
-import { AiFillEye } from "react-icons/ai";
 
-const AgencyList = ({ setEditData, editData }) => {
-  const { startLoading, stopLoading } = useContext(LoadingContext);
-  const { handlePageClick } = useContext(CurrentPageContext);
+const ApprovedAgency = () => {
   const columns = [
     {
       label: SRNO,
@@ -28,13 +16,13 @@ const AgencyList = ({ setEditData, editData }) => {
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
-      label: "Agency Name",
-      dataKey: "carOwnerAgencyName",
+      label: "Car Owner Name",
+      dataKey: "carOwnerName",
       width: 220,
     },
     {
-      label: "Owner Name",
-      dataKey: "carOwnerName",
+      label: "Car Owner Agency Name",
+      dataKey: "carOwnerAgencyName",
       width: 220,
     },
 
@@ -54,21 +42,6 @@ const AgencyList = ({ setEditData, editData }) => {
       width: 220,
     },
     {
-      label: "Work Location 1",
-      dataKey: "workLocation1",
-      width: 220,
-    },
-    {
-      label: "Work Location 2",
-      dataKey: "workLocation2",
-      width: 220,
-    },
-    {
-      label: "Work Location 3",
-      dataKey: "workLocation3",
-      width: 220,
-    },
-    {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
@@ -78,9 +51,9 @@ const AgencyList = ({ setEditData, editData }) => {
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
-              handleEdit(rowData);
-              setEditData(rowData);
-              handlePageClick(ADDAGENCY);
+              // handleEdit(rowData);
+              // setEditData(rowData);
+              // handlePageClick(ADDAGENCY);
               // handleRedirect(ADDUSERFORM);
               // handleUserEdit();
             }}
@@ -93,25 +66,25 @@ const AgencyList = ({ setEditData, editData }) => {
       ),
     },
   ];
-
-  const [agencyList, setAgencyList] = useState([]);
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+  const [approvedAgencyList, setApprovedAgencyList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
-  
-  const fetchAgencyList = async () => {
+
+  const fetchApprovedAgencyList = async () => {
     startLoading();
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllOwnersListAdmin/true/false`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllOwnersListAdmin/false/true`,
         {},
         {}
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setAgencyList([...response?.data?.data]);
+          setApprovedAgencyList([...response?.data?.data]);
         } else {
           NotificationManager.error(response?.data?.message || APINULLERROR);
-          setAgencyList([]);
+          setApprovedAgencyList([]);
         }
       } else {
         NotificationManager.error(APINULLERROR);
@@ -125,16 +98,15 @@ const AgencyList = ({ setEditData, editData }) => {
   };
 
   useEffect(() => {
-    fetchAgencyList();
+    fetchApprovedAgencyList();
   }, []);
 
-  const handleEdit = () => {};
   return (
     <div className="wrapper">
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Agency List</h1>
+            <h1 className="h3 mb-3">Approved Agency List</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">
@@ -151,7 +123,7 @@ const AgencyList = ({ setEditData, editData }) => {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={agencyList}
+                            tableData={approvedAgencyList}
                             tableSearchFilters={searchFilters}
                             columns={columns}
                           />
@@ -169,4 +141,4 @@ const AgencyList = ({ setEditData, editData }) => {
   );
 };
 
-export default AgencyList;
+export default ApprovedAgency;

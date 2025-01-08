@@ -7,6 +7,9 @@ import {
   ADDUSERFORM,
   ADDVEHICLELIST,
   AGENCYLIST,
+  APPROVEDAGENCY,
+  APPROVEDDRIVER,
+  APPROVEDVEHICLE,
   BOOKINGPACKAGELIST,
   CHANGEPASSWORD,
   CONTACTUS,
@@ -19,7 +22,7 @@ import {
   PROFILE,
   REGISTERPAGE,
   SMTP,
-  USERADMINLIST
+  USERADMINLIST,
 } from "./General/ConstStates";
 import Sidebar from "./General/SideBar/Sidebar";
 import Dashboard from "./pages/Dashboard";
@@ -44,53 +47,72 @@ import UserAdminList from "./pages/Setting/UserAdminList";
 import UserProfile from "./pages/Setting/UserProfile";
 import { LoginContext } from "./store/login-context";
 import AgencyList from "./pages/Driver/AgencyList";
+import ApprovedAgency from "./pages/Driver/ApprovedAgency";
+import ApprovedVehicle from "./pages/Driver/ApprovedVehicle";
+import ApprovedDriver from "./pages/Driver/ApprovedDriver";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
-  const {user} = useContext(LoginContext)
+  const { user } = useContext(LoginContext);
 
-  const [editData, setEditData] = useState({})
+  const [editData, setEditData] = useState({});
   //console.log("user in home", user, currentPage)
   return (
     <>
       {currentPage === LOGINPAGE && user === null && <Login />}
       {currentPage === REGISTERPAGE && user === null && <Register />}
-      {currentPage !== LOGINPAGE && currentPage !== REGISTERPAGE && user !== null && (
-        <div className="wrapper">
-          <Sidebar />
-          <div className="main">
-            <Navbar />
-            {currentPage === DASHBOARDPAGE && <Dashboard />}
+      {currentPage !== LOGINPAGE &&
+        currentPage !== REGISTERPAGE &&
+        user !== null && (
+          <div className="wrapper">
+            <Sidebar />
+            <div className="main">
+              <Navbar />
+              {currentPage === DASHBOARDPAGE && <Dashboard />}
 
-            {/* data section */}
-            {currentPage === POPULARDESTINATIONPAGE && <PopularDestinations/>}
-            {currentPage === ADDBOOKINGPACKAGE && <AddBookingPackage/>}
-            {currentPage === ADDVEHICLELIST && <AddVehicleList/>}
-            {currentPage === BOOKINGPACKAGELIST && <BookingPackageList/>}
+              {/* data section */}
+              {currentPage === POPULARDESTINATIONPAGE && (
+                <PopularDestinations />
+              )}
+              {currentPage === ADDBOOKINGPACKAGE && <AddBookingPackage />}
+              {currentPage === ADDVEHICLELIST && <AddVehicleList />}
+              {currentPage === BOOKINGPACKAGELIST && <BookingPackageList />}
 
-            {/* setting section */}
-            {currentPage === ADDUSERFORM && <AddUserForm/>}
-            {currentPage === USERADMINLIST && <UserAdminList/>}
-            {currentPage === PROFILE && <UserProfile/>}
-            {currentPage === CHANGEPASSWORD && <ChangePassword/>}
+              {/* setting section */}
+              {currentPage === ADDUSERFORM && <AddUserForm />}
+              {currentPage === USERADMINLIST && <UserAdminList />}
+              {currentPage === PROFILE && <UserProfile />}
+              {currentPage === CHANGEPASSWORD && <ChangePassword />}
 
-            {/* customer section  */}
-            {currentPage === ADDCUSTOMER && <AddCustomer/>}
-            {currentPage === CUSTOMERLIST && <CustomerList/>}
+              {/* customer section  */}
+              {currentPage === ADDCUSTOMER && <AddCustomer />}
+              {currentPage === CUSTOMERLIST && <CustomerList />}
 
-            {/* Extra section */}
-            {currentPage === FAQS && <FAQs/>}
-            {currentPage === SMTP && <SMTPDetails/>}
-            {currentPage === COUPONS && <Coupons/>}
-            {currentPage === CONTACTUS && <ContactUs/>}
+              {/* Extra section */}
+              {currentPage === FAQS && <FAQs />}
+              {currentPage === SMTP && <SMTPDetails />}
+              {currentPage === COUPONS && <Coupons />}
+              {currentPage === CONTACTUS && <ContactUs />}
 
-            {/* Driver section */}
-            {currentPage === ADDAGENCY && <AgencyDetails setEditData={setEditData} editData={editData}></AgencyDetails>}
-            {currentPage === AGENCYLIST && <AgencyList setEditData={setEditData} editData={editData}></AgencyList>}
-
+              {/* Driver section */}
+              {currentPage === ADDAGENCY && (
+                <AgencyDetails
+                  setEditData={setEditData}
+                  editData={editData}
+                ></AgencyDetails>
+              )}
+              {currentPage === AGENCYLIST && (
+                <AgencyList
+                  setEditData={setEditData}
+                  editData={editData}
+                ></AgencyList>
+              )}
+              {currentPage === APPROVEDAGENCY && <ApprovedAgency />}
+              {currentPage === APPROVEDVEHICLE && <ApprovedVehicle />}
+              {currentPage === APPROVEDDRIVER && <ApprovedDriver />}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </>
   );
 };

@@ -1,25 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import { LoadingContext } from "../../store/loading-context";
-import { NotificationManager } from "react-notifications";
-import {
-  ACTION,
-  ADDAGENCY,
-  APICALLFAIL,
-  APINULLERROR,
-  SRNO,
-  SRNOKEY,
-  SRNOWIDTH,
-  WIDTH,
-} from "../../General/ConstStates";
-import { callApi } from "../../General/GeneralMethod";
-import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
-import { FiEdit, FiEyeOff, FiTrash2 } from "react-icons/fi";
-import { CurrentPageContext } from "../../store/pages-context";
-import { AiFillEye } from "react-icons/ai";
+import React, { useContext, useEffect, useState } from 'react'
+import { ACTION, APICALLFAIL, APINULLERROR, SRNO, SRNOKEY, SRNOWIDTH, WIDTH } from '../../General/ConstStates';
+import { FiEdit } from 'react-icons/fi';
+import { AiFillEye } from 'react-icons/ai';
+import { LoadingContext } from '../../store/loading-context';
+import { callApi } from '../../General/GeneralMethod';
+import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
+import { NotificationManager } from 'react-notifications';
 
-const AgencyList = ({ setEditData, editData }) => {
-  const { startLoading, stopLoading } = useContext(LoadingContext);
-  const { handlePageClick } = useContext(CurrentPageContext);
+const ApprovedVehicle = () => {
   const columns = [
     {
       label: SRNO,
@@ -28,13 +16,13 @@ const AgencyList = ({ setEditData, editData }) => {
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
-      label: "Agency Name",
-      dataKey: "carOwnerAgencyName",
+      label: "Vehicle Number",
+      dataKey: "vehicleNumber",
       width: 220,
     },
     {
-      label: "Owner Name",
-      dataKey: "carOwnerName",
+      label: "Fuel Type",
+      dataKey: "vehicleFuelType",
       width: 220,
     },
 
@@ -49,23 +37,18 @@ const AgencyList = ({ setEditData, editData }) => {
       width: 220,
     },
     {
-      label: "PAN No",
-      dataKey: "panNo",
+      label: "Model Name",
+      dataKey: "vehicleModelName",
       width: 220,
     },
     {
-      label: "Work Location 1",
-      dataKey: "workLocation1",
+      label: "Company Name",
+      dataKey: "vehicleCompanyName",
       width: 220,
     },
     {
-      label: "Work Location 2",
-      dataKey: "workLocation2",
-      width: 220,
-    },
-    {
-      label: "Work Location 3",
-      dataKey: "workLocation3",
+      label: "Seater Count",
+      dataKey: "vehicleSeaterCount",
       width: 220,
     },
     {
@@ -78,9 +61,9 @@ const AgencyList = ({ setEditData, editData }) => {
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
-              handleEdit(rowData);
-              setEditData(rowData);
-              handlePageClick(ADDAGENCY);
+              // handleEdit(rowData);
+              // setEditData(rowData);
+              // handlePageClick(ADDAGENCY);
               // handleRedirect(ADDUSERFORM);
               // handleUserEdit();
             }}
@@ -93,25 +76,25 @@ const AgencyList = ({ setEditData, editData }) => {
       ),
     },
   ];
-
-  const [agencyList, setAgencyList] = useState([]);
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+  const [approvedVehicleList, setApprovedVehicleList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
-  
-  const fetchAgencyList = async () => {
+
+  const fetchApprovedVehicleList = async () => {
     startLoading();
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllOwnersListAdmin/true/false`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllVehicleListAdmin/false/true`,
         {},
         {}
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setAgencyList([...response?.data?.data]);
+          setApprovedVehicleList([...response?.data?.data]);
         } else {
           NotificationManager.error(response?.data?.message || APINULLERROR);
-          setAgencyList([]);
+          setApprovedVehicleList([]);
         }
       } else {
         NotificationManager.error(APINULLERROR);
@@ -125,16 +108,15 @@ const AgencyList = ({ setEditData, editData }) => {
   };
 
   useEffect(() => {
-    fetchAgencyList();
+    fetchApprovedVehicleList();
   }, []);
 
-  const handleEdit = () => {};
   return (
     <div className="wrapper">
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Agency List</h1>
+            <h1 className="h3 mb-3">Approved Vehicle List</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">
@@ -151,7 +133,7 @@ const AgencyList = ({ setEditData, editData }) => {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={agencyList}
+                            tableData={approvedVehicleList}
                             tableSearchFilters={searchFilters}
                             columns={columns}
                           />
@@ -169,4 +151,4 @@ const AgencyList = ({ setEditData, editData }) => {
   );
 };
 
-export default AgencyList;
+export default ApprovedVehicle
