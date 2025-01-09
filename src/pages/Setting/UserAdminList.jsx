@@ -42,7 +42,10 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
       label: "Date of Birth",
       dataKey: "dob",
       width: 150,
-      cellRenderer: ({ rowData }) => rowData["dob"].split("T")[0],
+      cellRenderer: ({ rowData }) => {
+        const [year, month, day] = rowData["dob"].split("T")[0].split("-");
+        return `${day}/${month}/${year.slice(-2)}`;
+      }
     },
     {
       label: "Gender",
