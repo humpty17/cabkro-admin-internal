@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import "react-notifications/lib/notifications.css";
-import { APINULLERROR, EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
+import { APINULLERROR, EMAILREGEX, PHONENOREGEX, USERADMINLIST } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import DateInput from "../../General/Input/DateInput";
 import EmailInput from "../../General/Input/EmailInput";
@@ -14,9 +14,11 @@ import { LoadingContext } from "../../store/loading-context";
 import ResetButton from "../../General/Buttons/ResetButton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
 import { AdminContext } from "../../store/admin-context";
+import { log10 } from "chart.js/helpers";
+import { CurrentPageContext } from "../../store/pages-context";
 
-const AddUserForm = ({userData}) => {
-
+const AddUserForm = ({editData, setEditData}) => {
+const {handlePageClick} = useContext(CurrentPageContext)
   const InitialState = {
     userFirstName :'',
     userLastName : '',
@@ -26,8 +28,14 @@ const AddUserForm = ({userData}) => {
     dob : '',
     gender: 0
   };
+
+  useEffect(()=>{
+    if(Object.keys(editData).length > 0){
+      setAddData({...editData, dob: editData.dob.split('T')[0], gender: editData.gender.toString()})
+    }
+  },[editData])
   const {startLoading, stopLoading} = useContext(LoadingContext)
-  const [addData, setAddData] = useState(userData === undefined ? InitialState: userData);
+  const [addData, setAddData] = useState(InitialState);
   const {icon, type, handleToggleData} = useContext(AdminContext)
   
   const handleChange = (e) =>{
@@ -64,22 +72,17 @@ const AddUserForm = ({userData}) => {
     if(!validation()) return
     startLoading();
     debugger
-    //add user
-    if(userData===undefined){
-
-    }
-    //update user
-    else{
-
-    }
     try {
-      const response = await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/RegisterAdminUser`, {...addData}, {});
+      
+      const response = addData.userId === 0 ? await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/RegisterAdminUser`, {...addData}, {}) : await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/UpdateAdminUser`, {...addData}, {});
       stopLoading();
 
       if (response && response.data) {  // Check for response and response.data
         if (response.data.code === 200) {
           //console.log(response.data.data);
           NotificationManager.success(response?.data?.message || "Destination uploaded successfully");
+          setEditData({})
+          handlePageClick(USERADMINLIST)
         } else {
           console.error("API Error:", response.data.code, response.data);
           NotificationManager.error(response.data.message)
@@ -96,13 +99,16 @@ const AddUserForm = ({userData}) => {
 
   const handleReset = () =>{
     setAddData({...InitialState})
+    setEditData({})
   }
+  console.log(editData);
+  
   return (
     <div className="wrapper">
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Add User</h1>
+            <h1 className="h3 mb-3">{Object.keys(editData).length > 0 ? 'Update User' : 'Add User'}</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card-body">
@@ -165,7 +171,7 @@ const AddUserForm = ({userData}) => {
                                 type={type}
                                 inputName={"password"}
                                 placeholderName={"Password"}
-                                valueName={addData.password}
+                                valueName={addData.password}    
                                 onChangeName={handleChange}
                               />
                               <span

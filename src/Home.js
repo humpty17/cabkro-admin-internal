@@ -56,6 +56,7 @@ const Home = () => {
   const { user } = useContext(LoginContext);
 
   const [editData, setEditData] = useState({});
+  // const [isEdit, setIsEdit] = useState(false)
   //console.log("user in home", user, currentPage)
   return (
     <>
@@ -79,8 +80,22 @@ const Home = () => {
               {currentPage === BOOKINGPACKAGELIST && <BookingPackageList />}
 
               {/* setting section */}
-              {currentPage === ADDUSERFORM && <AddUserForm />}
-              {currentPage === USERADMINLIST && <UserAdminList />}
+              {currentPage === ADDUSERFORM && (
+                <AddUserForm
+                  setEditData={setEditData}
+                  editData={editData}
+                  // setIsEdit={setIsEdit}
+                  // isEdit={isEdit}
+                />
+              )}
+              {currentPage === USERADMINLIST && (
+                <UserAdminList
+                  setEditData={setEditData}
+                  editData={editData}
+                  // setIsEdit={setIsEdit}
+                  // isEdit={isEdit}
+                />
+              )}
               {currentPage === PROFILE && <UserProfile />}
               {currentPage === CHANGEPASSWORD && <ChangePassword />}
 

@@ -10,7 +10,7 @@ import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { CurrentPageContext } from '../../store/pages-context';
 
 
-const UserAdminList = () => {
+const UserAdminList = ({setEditData, setIsEdit}) => {
   const columns = [
     {
       label: SRNO,
@@ -42,6 +42,7 @@ const UserAdminList = () => {
       label: "Date of Birth",
       dataKey: "dob",
       width: 150,
+      cellRenderer: ({ rowData }) => rowData["dob"].split("T")[0],
     },
     {
       label: "Gender",
@@ -60,8 +61,10 @@ const UserAdminList = () => {
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
-              handleRedirect(ADDUSERFORM);
-              handleUserEdit();
+              handlePageClick(ADDUSERFORM);
+              //handleUserEdit(rowData);
+              setEditData(rowData);
+              // setIsEdit(true);
             }}
           />
           <FiTrash2
@@ -72,7 +75,7 @@ const UserAdminList = () => {
       ),
     },
   ];
-
+  
  const filterState = {
    userFirstName: "",
    userLastName: "",
@@ -190,8 +193,9 @@ const UserAdminList = () => {
      if (response !== null && response !== undefined) {
        if (response?.data?.code === 200) {
          NotificationManager.success(
-           response?.data?.message || "FAQ updated successfully"
+           response?.data?.message || "User admin updated successfully"
          );
+         setIsEdit(false);
          userList();
          setAddAdmin(response.data.data)
        } else {
@@ -206,10 +210,6 @@ const UserAdminList = () => {
      NotificationManager.response(APICALLFAIL, error);
    }
  };
-
- const handleRedirect = (pageName)=>{
-  handlePageClick(pageName)
-}
 
   return (
     <div className="wrapper">
