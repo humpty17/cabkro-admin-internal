@@ -1,41 +1,74 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FiEdit, FiEdit2, FiTrash2 } from "react-icons/fi";
-import { callApi } from "../../General/GeneralMethod";
+import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR, WIDTH } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, WIDTH } from "../../General/ConstStates";
 import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
+import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 
 const CustomerList = () => {
   const columns = [
     {
-      label: "Name",
-      dataKey: "name",
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+    },
+    {
+      label: "First Name",
+      dataKey: "userFirstName",
       width: 200,
     },
     {
-      label: "Position",
-      dataKey: "position",
+      label: "Last Name",
+      dataKey: "userLastName",
       width: 200,
     },
     {
-      label: "Office",
-      dataKey: "office",
+      label: "Phone Number",
+      dataKey: "phoneNo",
       width: 200,
     },
     {
-      label: "Age",
-      dataKey: "age",
-      width: 100,
+      label: "Email",
+      dataKey: "userEmail",
+      width: 200,
     },
     {
-      label: "Start Date",
-      dataKey: "startDate",
+      label: "Gender",
+      dataKey: "gender",
       width: 150,
+      cellRenderer: ({ rowData }) =>
+        rowData["gender"] === 2 ? "Female" : "Male",
     },
     {
-      label: "Salary",
-      dataKey: "salary",
+      label: "Date of Birth",
+      dataKey: "dob",
+      width: 200,
+      cellRenderer: ({ rowData }) => {
+        const [year, month, day] = rowData["dob"].split("T")[0].split("-");
+        return `${day}/${month}/${year.slice(-2)}`;
+      },
+    },
+    {
+      label: "Location",
+      dataKey: "homeLocation",
+      width: 200,
+    },
+    {
+      label: "Work Location",
+      dataKey: "workLocation",
+      width: 200,
+    },
+    {
+      label: "Payment Method",
+      dataKey: "paymentMethod",
+      width: 200,
+    },
+    {
+      label: "Code",
+      dataKey: "referCode",
       width: 200,
     },
     {
@@ -57,8 +90,39 @@ const CustomerList = () => {
       ),
     },
   ];
+
+  const InitialCustomer = {
+    userId: 0,
+    userFirstName: "",
+    userLastName: "",
+    phoneNo: "",
+    userEmail: "",
+    password: "",
+    gender: 1,
+    dob: getCurrentDateTime(),
+    emergencyContactNo: "",
+    homeLocation: "",
+    workLocation: "",
+    paymentMethod: "",
+    status: true,
+    createdDate: getCurrentDateTime(),
+    modifyDate: getCurrentDateTime(),
+    isDeleted: false,
+    deletedReason: null,
+    referCode: "",
+    lastLoginDate: getCurrentDateTime(),
+    isAdult: true,
+    noOfRide: 0,
+    isCouponCode: null,
+    other1: null,
+    other2: null,
+    userImage: "",
+    acceptTermsCondition: true,
+  };
+  
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  const [customerData, setCustomerData] = useState([])
+  const [customerData, setCustomerData] = useState([]);
+  const [searchFilters, setSearchFilters] = useState(InitialCustomer)
 
   const handleExport = () => {
     alert("Data exported successfully!");
@@ -152,7 +216,7 @@ const CustomerList = () => {
         try {
           const response = await callApi(
             "get",
-            `${process.env.REACT_APP_API_URL_ADMIN}api/Extras/GetAllContactUs`,
+            `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllCustomerDetails`,
             {},
             {}
           );
@@ -183,7 +247,11 @@ const CustomerList = () => {
       <h1 className="h3 mb-3">Customer List</h1>
       <div className="card">
         <div className="card-header d-flex justify-content-end">
-          <ExportButtton/>
+          <ExportButtton
+            columns={columns}
+            fileName={"Customer_List"}
+            data={customerData}
+          />
         </div>
         <div className="card-body">
           {/* <table className="table table-striped">
@@ -215,6 +283,13 @@ const CustomerList = () => {
               ))}
             </tbody>
           </table> */}
+          <div className="col-sm-12">
+            <VirtualizedTable
+              tableData={customerData}
+              tableSearchFilters={searchFilters}
+              columns={columns}
+            />
+          </div>
         </div>
       </div>
     </div>

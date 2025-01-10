@@ -225,14 +225,23 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
                 <div className="card">
                   <div className="card-header">
                     <div className="mb-3 text-end">
-                      <ExportButtton columns={columns} fileName={"User_Admin_List"} data={user}/>
+                      <ExportButtton
+                        columns={columns}
+                        fileName={"User_Admin_List"}
+                        data={user}
+                      />
                     </div>
                   </div>
                   <div className="card-body">
                     <div className="dataTables_wrapper">
                       <div className="row">
                         <div className="col-sm-12">
-                          <VirtualizedTable tableData={user} tableSearchFilters={searchFilters} columns={columns} rowGetter={rowGetter}/>
+                          <VirtualizedTable
+                            tableData={user}
+                            tableSearchFilters={searchFilters}
+                            columns={columns}
+                            rowGetter={rowGetter}
+                          />
                         </div>
                       </div>
                     </div>

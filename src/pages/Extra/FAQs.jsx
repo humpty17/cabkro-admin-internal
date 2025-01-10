@@ -63,13 +63,6 @@ const FAQs = () => {
     },
   ];
 
-  const faqState = {
-    question: "",
-    answer: "",
-    created_at: "",
-   
-  };
-
   const initialFaq = {
     id: 0,
     question: "",
@@ -87,7 +80,7 @@ const FAQs = () => {
 
   const [addFaq, setAddFaq] = useState(initialFaq);
   const [faqList, setFaqList] = useState([]);
-  const [searchFilters, setSearchFilters] = useState(faqState)
+  const [searchFilters, setSearchFilters] = useState(initialFaq)
   const [isEditMode, setIsEditMode] = useState(false)
   
 
