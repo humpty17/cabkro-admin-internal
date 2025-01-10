@@ -65,9 +65,7 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
               handlePageClick(ADDUSERFORM);
-              //handleUserEdit(rowData);
               setEditData(rowData);
-              // setIsEdit(true);
             }}
           />
           <FiTrash2
@@ -182,37 +180,37 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
       }
  }
 
- const handleUserEdit = async () => {
-   startLoading();
-   try {
-     const response = await callApi(
-       "post",
-       `${process.env.REACT_APP_API_URL_ADMIN}Auth/UpdateAdminUser`,
-       { ...user },
-       {}
-     );
+//  const handleUserEdit = async () => {
+//    startLoading();
+//    try {
+//      const response = await callApi(
+//        "post",
+//        `${process.env.REACT_APP_API_URL_ADMIN}Auth/UpdateAdminUser`,
+//        { ...user },
+//        {}
+//      );
      
-     stopLoading();
-     if (response !== null && response !== undefined) {
-       if (response?.data?.code === 200) {
-         NotificationManager.success(
-           response?.data?.message || "User admin updated successfully"
-         );
-         setIsEdit(false);
-         userList();
-         setAddAdmin(response.data.data)
-       } else {
-         NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
-       }
-     } else {
-       NotificationManager.error(APINULLERROR);
-     }
-   } catch (error) {
-     stopLoading();
-     console.error(APICALLFAIL, error);
-     NotificationManager.response(APICALLFAIL, error);
-   }
- };
+//      stopLoading();
+//      if (response !== null && response !== undefined) {
+//        if (response?.data?.code === 200) {
+//          NotificationManager.success(
+//            response?.data?.message || "User admin updated successfully"
+//          );
+//          setIsEdit(false);
+//          userList();
+//          setAddAdmin(response.data.data)
+//        } else {
+//          NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
+//        }
+//      } else {
+//        NotificationManager.error(APINULLERROR);
+//      }
+//    } catch (error) {
+//      stopLoading();
+//      console.error(APICALLFAIL, error);
+//      NotificationManager.response(APICALLFAIL, error);
+//    }
+//  };
 
   return (
     <div className="wrapper">

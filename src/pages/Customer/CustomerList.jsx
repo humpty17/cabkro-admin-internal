@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiEdit, FiEdit2, FiTrash2 } from "react-icons/fi";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, FETCHDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, WIDTH } from "../../General/ConstStates";
+import { ACTION, ADDCUSTOMER, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, WIDTH } from "../../General/ConstStates";
 import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
+import Swal from "sweetalert2";
+import { CurrentPageContext } from "../../store/pages-context";
 
-const CustomerList = () => {
+const CustomerList = ({editData, setEditData}) => {
   const columns = [
     {
       label: SRNO,
@@ -80,11 +82,14 @@ const CustomerList = () => {
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            // onClick={() => handleEditContact(rowData)}
+            onClick={() => {
+              handlePageClick(ADDCUSTOMER);
+              setEditData(rowData);
+            }}
           />
           <FiTrash2
             style={{ cursor: "pointer", color: "red" }}
-            // onClick={() => handleDeleteContact(rowData)}
+            onClick={() => handleDeleteAction(rowData)}
           />
         </div>
       ),
@@ -121,14 +126,9 @@ const CustomerList = () => {
   };
   
   const { startLoading, stopLoading } = useContext(LoadingContext);
+  const {handlePageClick} =useContext(CurrentPageContext)
   const [customerData, setCustomerData] = useState([]);
-  const [searchFilters, setSearchFilters] = useState(InitialCustomer)
-
-  const handleExport = () => {
-    alert("Data exported successfully!");
-  };
-
-  // const customers = [
+  const [searchFilters, setSearchFilters] = useState([])
   //   {
   //     name: "Airi Satou",
   //     position: "Accountant",
@@ -241,6 +241,54 @@ const CustomerList = () => {
       useEffect(() => {
         customerListData();
       }, []);
+
+      // Function to delete a row
+        const handleDeleteAction = (rowData, rowIndex) => {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then(async(result) => {
+            if (result.isConfirmed) {
+              handleDeleteContact(rowData);
+            }
+          });
+        };
+
+      const handleDeleteContact = async (rowData) => {
+        // debugger
+        startLoading();
+        try {
+          const response = await callApi(
+            "get",
+            `${process.env.REACT_APP_API_URL}api/Auth/DeleteUser?UserId=${rowData.userId}`,
+            {},
+            {}
+          );
+          stopLoading();
+          if (response !== null && response !== undefined) {
+            if (response?.data?.code === 200) {
+              NotificationManager.success(
+                response?.data?.message || "Customer deleted successfully"
+              );
+              startLoading();
+              customerListData();
+            } else {
+              NotificationManager.error(response?.data?.message || DELETEDATAERROR);
+            }
+          } else {
+            NotificationManager.error(APINULLERROR);
+          }
+        } catch (error) {
+          stopLoading();
+          console.error(APICALLFAIL, error);
+          NotificationManager.error(APICALLFAIL, error);
+        }
+      }
 
   return (
     <div className="container mt-4">

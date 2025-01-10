@@ -81,27 +81,21 @@ const Home = () => {
 
               {/* setting section */}
               {currentPage === ADDUSERFORM && (
-                <AddUserForm
-                  setEditData={setEditData}
-                  editData={editData}
-                  // setIsEdit={setIsEdit}
-                  // isEdit={isEdit}
-                />
+                <AddUserForm setEditData={setEditData} editData={editData} />
               )}
               {currentPage === USERADMINLIST && (
-                <UserAdminList
-                  setEditData={setEditData}
-                  editData={editData}
-                  // setIsEdit={setIsEdit}
-                  // isEdit={isEdit}
-                />
+                <UserAdminList setEditData={setEditData} editData={editData} />
               )}
               {currentPage === PROFILE && <UserProfile />}
               {currentPage === CHANGEPASSWORD && <ChangePassword />}
 
               {/* customer section  */}
-              {currentPage === ADDCUSTOMER && <AddCustomer />}
-              {currentPage === CUSTOMERLIST && <CustomerList />}
+              {currentPage === ADDCUSTOMER && (
+                <AddCustomer setEditData={setEditData} editData={editData} />
+              )}
+              {currentPage === CUSTOMERLIST && (
+                <CustomerList setEditData={setEditData} editData={editData} />
+              )}
 
               {/* Extra section */}
               {currentPage === FAQS && <FAQs />}

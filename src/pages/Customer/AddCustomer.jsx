@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import "react-notifications/lib/notifications.css";
-import { ApiHeader, DEFAULTDATE, EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
+import { ApiHeader, APINULLERROR, CUSTOMERLIST, DEFAULTDATE, EMAILREGEX, PHONENOREGEX } from "../../General/ConstStates";
 import { callApi, getCurrentDate, getCurrentDateTime } from "../../General/GeneralMethod";
 import DateInput from "../../General/Input/DateInput";
 import EmailInput from "../../General/Input/EmailInput";
@@ -13,8 +13,9 @@ import FormLabel from "../../General/Label/FormLabel";
 import { LoadingContext } from "../../store/loading-context";
 import SubmitButton from "../../General/Buttons/SubmitButton";
 import ResetButton from "../../General/Buttons/ResetButton";
+import { CurrentPageContext } from "../../store/pages-context";
 
-const AddCustomer = () => {
+const AddCustomer = ({editData, setEditData}) => {
   const InitialState = {
     
     "userFirstName": "",
@@ -57,6 +58,7 @@ const AddCustomer = () => {
   };
 
   const {startLoading, stopLoading} = useContext(LoadingContext)
+  const {handlePageClick} =useContext(CurrentPageContext)
   const [addCustomer, setAddCustomer] = useState(InitialState);
 
   const handleChange = (e) =>{
@@ -96,32 +98,59 @@ const AddCustomer = () => {
       startLoading();
       //console.log(addCustomer)
       try {
-        const response = await callApi("post", `${process.env.REACT_APP_API_URL}api/Auth/RegisterUser`, {...addCustomer}, {...ApiHeader});
+        const response =
+          addCustomer.userId === 0
+            ? await callApi(
+                "post",
+                `${process.env.REACT_APP_API_URL}api/Auth/RegisterUser`,
+                { ...addCustomer },
+                { ...ApiHeader }
+              )
+            : await callApi(
+                "post",
+                `${process.env.REACT_APP_API_URL}api/Auth/UpdateUser`,
+                { ...addCustomer },
+                { ...ApiHeader }
+              );
         stopLoading();
-  
+
         if (response && response.data) {
-          stopLoading()  // Check for response and response.data
+          stopLoading(); // Check for response and response.data
           if (response.data.code === 200) {
-            handleReset()
             //console.log(response.data.data);
-            NotificationManager.success(response.data.message)
+            NotificationManager.success(response.data.message);
+            setEditData({});
+            handlePageClick(CUSTOMERLIST);
           } else {
             console.error("API Error:", response.data.code, response.data);
-            NotificationManager.error(response.data.message)
+            NotificationManager.error(response.data.message);
           }
         } else {
-          stopLoading()
+          stopLoading();
           console.error("API returned an invalid response:", response);
-          NotificationManager.warning(response.data.message)
+          NotificationManager.warning(response.data.message);
         }
       } catch (error) {
         console.error("API call failed:", error);
+        NotificationManager.warning(APINULLERROR);
       }
     };
 
   const handleReset = () =>{
     setAddCustomer({...InitialState})
+    setEditData({})
   }
+
+  useEffect(() => {
+    if (Object.keys(editData).length > 0) {
+      setAddCustomer({
+        ...editData,
+        dob: editData.dob.split("T")[0],
+        gender: editData.gender.toString(),
+      });
+    }
+  }, [editData]);
+    
   return (
     <div className="wrapper">
       <div className="main">
@@ -225,16 +254,7 @@ const AddCustomer = () => {
                                     Female
                                   </span>
                                 </label>
-                                {/* <label className="form-check">
-                                  <input
-                                    name="radio-3"
-                                    type="radio"
-                                    value='option3'
-                                    className="form-check-input"
-                                    disabled
-                                  />
-                                  <span className="form-check-label">Other</span>
-                                </label> */}
+                                
                               </div>
                             </div>
                           </fieldset>
@@ -242,7 +262,7 @@ const AddCustomer = () => {
                           <div className="mb-3 row">
                             <div className="col-sm-9 ms-sm-auto">
                             <ResetButton onHandleClick={handleReset}/>
-                              <SubmitButton/>
+                              <SubmitButton buttonName={"Submit"}/>
                             </div>
                           </div>
                         </form>
