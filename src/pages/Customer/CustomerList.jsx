@@ -9,7 +9,7 @@ import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTa
 import Swal from "sweetalert2";
 import { CurrentPageContext } from "../../store/pages-context";
 
-const CustomerList = ({editData, setEditData}) => {
+const CustomerList = ({ editData, setEditData }) => {
   const columns = [
     {
       label: SRNO,
@@ -124,9 +124,9 @@ const CustomerList = ({editData, setEditData}) => {
     userImage: "",
     acceptTermsCondition: true,
   };
-  
+
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  const {handlePageClick} =useContext(CurrentPageContext)
+  const { handlePageClick } = useContext(CurrentPageContext)
   const [customerData, setCustomerData] = useState([]);
   const [searchFilters, setSearchFilters] = useState([])
   //   {
@@ -212,83 +212,83 @@ const CustomerList = ({editData, setEditData}) => {
   // ];
 
   const customerListData = async () => {
-        startLoading();
-        try {
-          const response = await callApi(
-            "get",
-            `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllCustomerDetails`,
-            {},
-            {}
-          );
-    
-          stopLoading();
-          if (response !== null && response !== undefined) {
-            if (response?.data?.code === 200) {
-              setCustomerData(response?.data?.data || []);
-            } else {
-              NotificationManager.error(response?.data?.message || FETCHDATAERROR);
-            }
-          } else {
-            console.error("API returned an invalid response:", response);
-            NotificationManager.error(APINULLERROR);
-          }
-        } catch (error) {
-          stopLoading();
-          console.error("API call failed:", error);
-          NotificationManager.error(APICALLFAIL, error);
-        }
-      };
-      useEffect(() => {
-        customerListData();
-      }, []);
+    startLoading();
+    try {
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllCustomerDetails`,
+        {},
+        {}
+      );
 
-      // Function to delete a row
-        const handleDeleteAction = (rowData, rowIndex) => {
-          Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then(async(result) => {
-            if (result.isConfirmed) {
-              handleDeleteContact(rowData);
-            }
-          });
-        };
-
-      const handleDeleteContact = async (rowData) => {
-        // debugger
-        startLoading();
-        try {
-          const response = await callApi(
-            "get",
-            `${process.env.REACT_APP_API_URL}api/Auth/DeleteUser?UserId=${rowData.userId}`,
-            {},
-            {}
-          );
-          stopLoading();
-          if (response !== null && response !== undefined) {
-            if (response?.data?.code === 200) {
-              NotificationManager.success(
-                response?.data?.message || "Customer deleted successfully"
-              );
-              startLoading();
-              customerListData();
-            } else {
-              NotificationManager.error(response?.data?.message || DELETEDATAERROR);
-            }
-          } else {
-            NotificationManager.error(APINULLERROR);
-          }
-        } catch (error) {
-          stopLoading();
-          console.error(APICALLFAIL, error);
-          NotificationManager.error(APICALLFAIL, error);
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response?.data?.code === 200) {
+          setCustomerData(response?.data?.data || []);
+        } else {
+          NotificationManager.error(response?.data?.message || FETCHDATAERROR);
         }
+      } else {
+        console.error("API returned an invalid response:", response);
+        NotificationManager.error(APINULLERROR);
       }
+    } catch (error) {
+      stopLoading();
+      console.error("API call failed:", error);
+      NotificationManager.error(APICALLFAIL, error);
+    }
+  };
+  useEffect(() => {
+    customerListData();
+  }, []);
+
+  // Function to delete a row
+  const handleDeleteAction = (rowData, rowIndex) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        handleDeleteContact(rowData);
+      }
+    });
+  };
+
+  const handleDeleteContact = async (rowData) => {
+    // debugger
+    startLoading();
+    try {
+      const response = await callApi(
+        "get",
+        `${process.env.REACT_APP_API_URL}api/Auth/DeleteUser?UserId=${rowData.userId}`,
+        {},
+        {}
+      );
+      stopLoading();
+      if (response !== null && response !== undefined) {
+        if (response?.data?.code === 200) {
+          NotificationManager.success(
+            response?.data?.message || "Customer deleted successfully"
+          );
+          startLoading();
+          customerListData();
+        } else {
+          NotificationManager.error(response?.data?.message || DELETEDATAERROR);
+        }
+      } else {
+        NotificationManager.error(APINULLERROR);
+      }
+    } catch (error) {
+      stopLoading();
+      console.error(APICALLFAIL, error);
+      NotificationManager.error(APICALLFAIL, error);
+    }
+  }
 
   return (
     <div className="container mt-4">

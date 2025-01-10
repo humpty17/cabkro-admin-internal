@@ -143,10 +143,13 @@ const AddCustomer = ({editData, setEditData}) => {
 
   useEffect(() => {
     if (Object.keys(editData).length > 0) {
+      console.log(editData)
       setAddCustomer({
         ...editData,
         dob: editData.dob.split("T")[0],
         gender: editData.gender.toString(),
+        phoneNo:editData.phoneNo.replace("+91",""),
+        acceptTermsCondition: editData.acceptTermsCondition === true ? 1 : 0 
       });
     }
   }, [editData]);
