@@ -33,9 +33,13 @@ export const CONTACTUS = "ContactUs"
 //Driver Section
 export const ADDAGENCY = "AddAgency"
 export const AGENCYLIST = "AgencyList"
+
 export const APPROVEDAGENCY = "ApprovedAgency"
 export const APPROVEDVEHICLE = "ApprovedVehicle"
 export const APPROVEDDRIVER = "ApprovedDriver"
+
+export const UPDATEAGENCYALLDETAILS = "UpdateAgencyAllDetails"
+
 
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;

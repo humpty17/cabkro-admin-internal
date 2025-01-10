@@ -22,6 +22,7 @@ import {
   PROFILE,
   REGISTERPAGE,
   SMTP,
+  UPDATEAGENCYALLDETAILS,
   USERADMINLIST,
 } from "./General/ConstStates";
 import Sidebar from "./General/SideBar/Sidebar";
@@ -50,6 +51,7 @@ import AgencyList from "./pages/Driver/AgencyList";
 import ApprovedAgency from "./pages/Driver/ApprovedAgency";
 import ApprovedVehicle from "./pages/Driver/ApprovedVehicle";
 import ApprovedDriver from "./pages/Driver/ApprovedDriver";
+import UpdateAgencyAllDetails from "./pages/Driver/Components/UpdateAgencyAllDetails";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -119,6 +121,9 @@ const Home = () => {
               {currentPage === APPROVEDAGENCY && <ApprovedAgency />}
               {currentPage === APPROVEDVEHICLE && <ApprovedVehicle />}
               {currentPage === APPROVEDDRIVER && <ApprovedDriver />}
+
+              {currentPage === UPDATEAGENCYALLDETAILS && <UpdateAgencyAllDetails setEditData={setEditData}
+                  editData={editData}></UpdateAgencyAllDetails>}
             </div>
           </div>
         )}

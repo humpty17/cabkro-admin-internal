@@ -31,9 +31,9 @@ const UploadDocuments = ({ agencyDetails, handleChooseFile }) => {
             </div>
             <div className="mb-3 row">
               <div className="col-sm-12 ms-sm-auto">
-                <SubmitButton buttonName={"Upload Aadhar front"} isDisabled={disableInputFields}></SubmitButton>
+                {/* <SubmitButton buttonName={"Upload Aadhar front"} isDisabled={disableInputFields}></SubmitButton>
                 <SubmitButton buttonName={"Upload Aadhar back"} isDisabled={disableInputFields}></SubmitButton>
-                <SubmitButton buttonName={"Upload Pan"} isDisabled={disableInputFields}></SubmitButton>
+                <SubmitButton buttonName={"Upload Pan"} isDisabled={disableInputFields}></SubmitButton> */}
               </div>
             </div>
           </form>

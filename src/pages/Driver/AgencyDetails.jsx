@@ -21,6 +21,7 @@ import { LoadingContext } from "../../store/loading-context";
 import AddWorkLocation from "./Components/AddWorkLocation";
 import UploadDocuments from "./Components/UploadDocuments";
 import { CurrentPageContext } from "../../store/pages-context";
+import AgencyDetailsCard from "./Components/AgencyDetailsCard";
 
 const AgencyDetails = ({setEditData, editData}) => {
   const agencyObject = {
@@ -115,74 +116,42 @@ const AgencyDetails = ({setEditData, editData}) => {
   const handleAgencySubmit = async (event) => {
     event.preventDefault();
     // Handle form submission logic
-    console.log(agencyDetails);
+    console.log(agencyDetails,agencyDetails.carOwnerId );
     if (!validateAgencyDetails()) return
-    startLoading();
-    const formData = {
-      "userId": 0,
-      "userFirstName": agencyDetails.carOwnerName,
-      "userLastName": "",
-      "carOwnerAgencyName": agencyDetails.carOwnerAgencyName,
-      "phoneNo": agencyDetails.phoneNumber,
-      "userEmail": agencyDetails.email,
-      "password": agencyDetails.password,
-      "gender": 0,
-      "dob": DEFAULTDATE,
-      "emergencyContactNo": "",
-      "homeLocation": "",
-      "workLocation": "",
-      "workLocation1": "",
-      "workLocation2": "",
-      "workLocation3": "",
-      "workLocation1Latitude": 0,
-      "workLocation1Longitude": 0,
-      "workLocation2Latitude": 0,
-      "workLocation2Longitude": 0,
-      "workLocation3Latitude": 0,
-      "workLocation3Longitude": 0,
-      "paymentMethod": "",
-      "status": true,
-      "createdDate": getCurrentDateTime(),
-      "modifyDate": getCurrentDateTime(),
-      "isDeleted": false,
-      "deletedReason": "",
-      "referCode": "",
-      "lastLoginDate": DEFAULTDATE,
-      "isAdult": true,
-      "noOfRide": 0,
-      "isCouponCode": "",
-      "other1": 0,
-      "other2": "",
-      "panNo": agencyDetails.panNo,
-      "userImage": "",
-      "userType": 1,
-      "acceptTermsCondition": agencyDetails.acceptTermsCondition
-    }
-    
-    try {
-      const response = await callApi(
-        "post",
-        `${process.env.REACT_APP_API_URL}api/Auth/RegisterUser`,
-        { ...formData },
-        { ...ApiHeaders }
-      );
-
-      if (response) {
-        if (response?.data?.code === 200) {
-          //GET AGENCY DETAILS BY ID
-          fetchCarOwnerDetails(response?.data?.data?.userId)
-          
+    //ADD AGENCY
+    if(agencyDetails.carOwnerId === 0){
+      try {
+        const response = await callApi(
+          "post",
+          `${process.env.REACT_APP_API_URL_ADMIN}Data/AddCarOwner`,
+          { ...agencyDetails },
+          {}
+        );
+  
+        if (response) {
+          if (response?.data?.code === 200) {
+            //GET AGENCY DETAILS BY ID
+            fetchCarOwnerDetails(response?.data?.data?.carOwnerId)
+            
+          }
+        } else {
+          NotificationManager.error(response?.data?.message || APINULLERROR);
+          stopLoading();
         }
-      } else {
-        NotificationManager.error(response?.data?.message || APINULLERROR);
+      } catch (err) {
+        NotificationManager.error(APICALLFAIL);
         stopLoading();
+      } finally {
+        // stopLoading()
       }
-    } catch (err) {
-      NotificationManager.error(APICALLFAIL);
-      stopLoading();
-    } finally {
-      
     }
+    //EDIT
+    else{
+      handleUpdateAgencyDetails()
+    }
+  
+  
+   
   };
 
   const fetchCarOwnerDetails = async(carOwnerId)=>{
@@ -303,99 +272,7 @@ const AgencyDetails = ({setEditData, editData}) => {
             <h1 className="h3 mb-3">Add Agency</h1>
 
             <div className="row">
-              <div className="col-6 col-xl-6">
-                <div className="card">
-                  <div className="card-header">
-                    <h5 className="card-title mb-0">Agency details</h5>
-                  </div>
-                  <div className="card-body">
-                    <form onSubmit={handleAgencySubmit}>
-                      <div className="mb-3 row">
-                        <FormLabel label={"Agency Name"}></FormLabel>
-                        <TypeInput
-                          inputName={"carOwnerAgencyName"}
-                          placeholderName={"Agency Name"}
-                          valueName={agencyDetails.carOwnerAgencyName}
-                          onChangeName={handleInputChange}
-                        ></TypeInput>
-                      </div>
-                      <div className="mb-3 row">
-                        <FormLabel label={"Owner Name"}></FormLabel>
-                        <TypeInput
-                          inputName={"carOwnerName"}
-                          placeholderName={"Owner Name"}
-                          valueName={agencyDetails.carOwnerName}
-                          onChangeName={handleInputChange}
-                        ></TypeInput>
-                      </div>
-                      <div className="mb-3 row">
-                        <FormLabel label={"Phone No."}></FormLabel>
-                        <NumberInput
-                          inputName={"phoneNumber"}
-                          placeholderName={"Phone No."}
-                          valueName={agencyDetails.phoneNumber}
-                          onChangeName={handleInputChange}
-                        ></NumberInput>
-                      </div>
-                      <div className="mb-3 row">
-                        <FormLabel label={"Email"}></FormLabel>
-                        <EmailInput
-                          inputName={"email"}
-                          placeholderName={"Email"}
-                          valueName={agencyDetails.email}
-                          onChangeName={handleInputChange}
-                        ></EmailInput>
-                      </div>
-                      <div className="mb-3 row">
-                        <FormLabel label={"Pan No"}></FormLabel>
-                        <TypeInput
-                          inputName={"panNo"}
-                          placeholderName={"Pan No"}
-                          valueName={agencyDetails.panNo}
-                          onChangeName={handleInputChange}
-                        ></TypeInput>
-                      </div>
-                      <div className="mb-3 row">
-                        <FormLabel label={"Password"}></FormLabel>
-                        <PasswordInput
-                          inputName={"password"}
-                          placeholderName={"Password"}
-                          valueName={agencyDetails.password}
-                          onChangeName={handleInputChange}
-                        ></PasswordInput>
-                      </div>
-
-                      <div className="mb-3">
-                        <label className="form-label">
-                          <input
-                            type="checkbox"
-                            name={"acceptTermsCondition"}
-                            className="form-check-input"
-                            checked={agencyDetails.acceptTermsCondition === 1 ? true : false}
-                            onChange={handleInputChange}
-                          />
-                          <span className="form-check-label">
-                            I have read and agree with{" "}
-                            <a href="#">terms & conditions</a>
-                          </span>
-                        </label>
-                      </div>
-
-                      <div className="mb-3 row">
-                        <div className="col-sm-9 ms-sm-auto">
-                          <SubmitButton
-                            buttonName={"Submit"}
-                            handleClick={handleAgencySubmit}
-                          ></SubmitButton>
-                          {/* <button type="submit" className="btn btn-primary"> */}
-                          {/* Submit */}
-                          {/* </button> */}
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
+                <AgencyDetailsCard agencyDetails={agencyDetails} handleInputChange={handleInputChange} handleAgencySubmit={handleAgencySubmit} ></AgencyDetailsCard>
               <UploadDocuments agencyDetails={agencyDetails} handleChooseFile={handleChooseFile}  />
             </div>
 
