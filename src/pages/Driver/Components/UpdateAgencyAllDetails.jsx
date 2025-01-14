@@ -69,7 +69,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     "panNo": "",
     "policeVarification": "",
     "available": true,
-    "approveStatus": true,
+    "approveStatus": false,
     "isActive": true,
     "createdDate": getCurrentDateTime(),
     "modifyDate": getCurrentDateTime(),
@@ -108,6 +108,45 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
         if (response?.data?.code === 200) {
           NotificationManager.success(response?.data?.message || "Vehicle updated successfully")
           fetchAgencyDetails()
+        }
+        else{
+          stopLoading()
+          NotificationManager.error(response?.data?.message || "Error while processing")
+        }
+      }
+      else {
+        NotificationManager.error(APINULLERROR)
+        stopLoading()
+      }
+    }
+    catch (err) {
+      NotificationManager.error(APICALLFAIL)
+      stopLoading()
+    }
+    finally {
+
+    }
+
+  }
+
+  const handleDriverSubmit = async (driverData) => {
+   
+    if (driverData.driverId === 0) {
+      driverData["carOwnerId"] = agencyAllDetails?.carOwnerDetails?.carOwnerId
+    }
+    startLoading()
+    try {
+      const response = driverData.driverId === 0 ? await callApi("post", `${process.env.REACT_APP_API_URL}api/Drivers/AddDriver`, { ...driverData }, { ...ApiHeaders }) : await callApi("put", `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateDriver/${driverData.driverId}`, { ...driverData }, {})
+
+      console.log(response)
+      if (response) {
+        if (response?.data?.code === 200) {
+          NotificationManager.success(response?.data?.message || "Driver updated successfully")
+          fetchAgencyDetails()
+        }
+        else{
+          stopLoading()
+          NotificationManager.error(response?.data?.message || "Error while processing")
         }
       }
       else {
@@ -183,7 +222,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
 
                 <div className="row">
                   {[...Array(3)].map((data, index) => (
-                    <DriverDetailsCard cardNo={index + 1} driverDetails={agencyAllDetails?.driverDetails?.[index] ? agencyAllDetails?.driverDetails?.[index] : driverObject}></DriverDetailsCard>
+                    <DriverDetailsCard cardNo={index + 1} driverObject={agencyAllDetails?.driverDetails?.[index] ? agencyAllDetails?.driverDetails?.[index] : driverObject} handleDriverSubmit={handleDriverSubmit}></DriverDetailsCard>
                   ))}
                 </div>
               </div>
