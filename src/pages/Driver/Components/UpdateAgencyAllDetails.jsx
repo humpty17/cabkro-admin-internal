@@ -198,7 +198,8 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
 
                 <div className="row">
                   <AgencyDetailsCard
-                    agencyDetails={agencyAllDetails?.carOwnerDetails}
+                    agencyObject={agencyAllDetails?.carOwnerDetails}
+
                   // handleInputChange={handleInputChange}
                   // handleAgencySubmit={handleAgencySubmit}
                   ></AgencyDetailsCard>
@@ -209,7 +210,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
                 </div>
 
                 <AddWorkLocation
-                  agencyDetails={agencyAllDetails?.carOwnerDetails}
+                  agencyObject={agencyAllDetails?.carOwnerDetails}
                 // handleAgencySubmit={handleUpdateAgencyDetails}
                 // handleInputChange={handleInputChange}
                 />

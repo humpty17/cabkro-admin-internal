@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import FileInput from "../../../General/Input/FileInput";
 import NumberInput from "../../../General/Input/NumberInput";
@@ -13,6 +13,10 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
   const disableInputFields = vehicleObject.vehicleId === 0 ? true : false
 
   const [vehicleDetails, setVehicleDetails] = useState({...vehicleObject})
+
+  useEffect(()=>{
+    setVehicleDetails({...vehicleObject})
+  },[vehicleObject])
   const handleInputChange = (e)=>{
     setVehicleDetails({...vehicleDetails, [e.target.name]:e.target.value})
   }

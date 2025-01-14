@@ -1,12 +1,61 @@
-import React from "react";
-import FormLabel from "../../../General/Label/FormLabel";
-import SubmitButton from "../../../General/Buttons/SubmitButton";
+import React, { useContext } from "react";
 import FileInput from "../../../General/Input/FileInput";
+import FormLabel from "../../../General/Label/FormLabel";
+import axios from "axios";
+import { LoadingContext } from "../../../store/loading-context";
+import { NotificationManager } from "react-notifications";
+import { APICALLFAIL, APINULLERROR } from "../../../General/ConstStates";
 
-const UploadDocuments = ({ agencyDetails, handleChooseFile }) => {
-
+const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails }) => {
+  const {startLoading, stopLoading} = useContext(LoadingContext)
   const disableInputFields = agencyDetails?.carOwnerId === 0 ? true : false
   
+  const handleChooseFile = async (event, type) => {
+    debugger
+    console.log("handle choose file")
+    startLoading();
+    const file = event.target.files[0];
+    console.log(file)
+    console.log(type)
+    const fileFormData = new FormData();
+      fileFormData.append("file", file);
+      fileFormData.append("FileName", type);
+      fileFormData.append("PhoneNo", agencyDetails.phoneNumber);
+      fileFormData.append("CarOwnerId", agencyDetails.carOwnerId);
+    
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_API_URL + "api/Drivers/UploadFile",
+        fileFormData,
+        {
+          headers: {
+            UserType: "1",
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response) {
+        console.log(response.data.code === 200)
+        if (response?.data?.code === 200) {
+          //setAgencyAllDetails({ ...agencyAllDetails, [type]: response?.data?.data });
+          // NotificationManager.success(
+          //   response?.data?.message || "File uploaded successfully"
+          // );
+          fetchCarOwnerDetails(agencyDetails.carOwnerId)
+        }
+        else{
+          NotificationManager.error(response?.data?.message || APINULLERROR);
+        }
+      } else {
+        NotificationManager.error(response?.data?.message || APINULLERROR);
+      }
+    } catch (err) {
+      NotificationManager.error(APICALLFAIL);
+    } finally {
+      stopLoading();
+    }
+  };
+
   return (
     <div className="col-6 col-xl-6">
       <div className="card">

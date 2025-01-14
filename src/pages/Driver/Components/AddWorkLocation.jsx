@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormLabel from "../../../General/Label/FormLabel";
 import TypeInput from "../../../General/Input/TypeInput";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 
-const AddWorkLocation = ({agencyDetails,handleInputChange,handleAgencySubmit}) => {
+const AddWorkLocation = ({agencyObject,handleAgencySubmit}) => {
  
 
-  const disableInputFields = agencyDetails?.carOwnerId === 0 ? true : false
+  const disableInputFields = agencyObject?.carOwnerId === 0 ? true : false
+
+  const [agencyDetails, setAgencyDetails] = useState({...agencyObject})
+
+  useEffect(()=>{
+      setAgencyDetails({...agencyObject})
+    },[agencyObject])
+
+  const handleInputChange = (e) => {
+    setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e)=>{
+    e.preventDefault()
+    handleAgencySubmit(agencyDetails)
+  }
 
   return (
     <div className="row">
@@ -54,7 +69,7 @@ const AddWorkLocation = ({agencyDetails,handleInputChange,handleAgencySubmit}) =
             </div>
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">
-              <SubmitButton buttonName={"Submit"} isDisabled={disableInputFields} handleClick={handleAgencySubmit}></SubmitButton>
+              <SubmitButton buttonName={disableInputFields ? "Submit" : "Update"} isDisabled={disableInputFields} handleClick={handleSubmit}></SubmitButton>
               </div>
             </div>
           </div>

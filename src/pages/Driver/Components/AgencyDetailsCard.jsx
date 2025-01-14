@@ -1,11 +1,56 @@
+import { useEffect, useState } from "react";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import EmailInput from "../../../General/Input/EmailInput";
 import NumberInput from "../../../General/Input/NumberInput";
 import PasswordInput from "../../../General/Input/PasswordInput";
 import TypeInput from "../../../General/Input/TypeInput";
 import FormLabel from "../../../General/Label/FormLabel";
+import { NotificationManager } from "react-notifications";
+import { EMAILREGEX, PHONENOREGEX } from "../../../General/ConstStates";
 
-const AgencyDetailsCard = ({agencyDetails, handleInputChange,handleAgencySubmit}) => {
+const AgencyDetailsCard = ({agencyObject,handleAgencySubmit}) => {
+
+  const [agencyDetails, setAgencyDetails] = useState({...agencyObject})
+  console.log(agencyObject,agencyDetails)
+
+  useEffect(()=>{
+    setAgencyDetails({...agencyObject})
+  },[agencyObject])
+  const handleInputChange = (e) => {
+    if(e.target.name === "phoneNumber"){
+      if(e.target.value.length > 10){
+        return
+      }
+    }
+    if (e.target.name === "acceptTermsCondition") {
+      setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.checked ? 1 : 0 });
+    } else {
+      setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.value });
+    }
+  };
+
+  const validateAgencyDetails = () => {
+      if (agencyDetails.carOwnerName === '' || agencyDetails.carOwnerAgencyName === '' || agencyDetails.phoneNumber === '' || agencyDetails.email === '' || agencyDetails.panNo === '' || agencyDetails.password === '' ) {
+        NotificationManager.warning('Enter required fields')
+        return false
+      }
+      else if (!PHONENOREGEX.test(agencyDetails.phoneNumber)) {
+        NotificationManager.warning("Your phone number is not valid!")
+        return false
+      }
+      if (!EMAILREGEX.test(agencyDetails.email)) {
+        NotificationManager.warning("Your email is not valid!")
+        return false
+      }
+      return true
+    }
+
+  const handleSubmit = (e)=>{
+    e.preventDefault()
+    if(!validateAgencyDetails()) return
+
+    handleAgencySubmit(agencyDetails)
+  }
   return (
     <div className="col-6 col-xl-6">
     <div className="card">
@@ -13,13 +58,13 @@ const AgencyDetailsCard = ({agencyDetails, handleInputChange,handleAgencySubmit}
         <h5 className="card-title mb-0">Agency details</h5>
       </div>
       <div className="card-body">
-        <form onSubmit={handleAgencySubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="mb-3 row">
             <FormLabel label={"Agency Name"}></FormLabel>
             <TypeInput
               inputName={"carOwnerAgencyName"}
               placeholderName={"Agency Name"}
-              valueName={agencyDetails.carOwnerAgencyName}
+              valueName={agencyDetails?.carOwnerAgencyName}
               onChangeName={handleInputChange}
             ></TypeInput>
           </div>
@@ -89,7 +134,7 @@ const AgencyDetailsCard = ({agencyDetails, handleInputChange,handleAgencySubmit}
             <div className="col-sm-9 ms-sm-auto">
               <SubmitButton
                 buttonName={"Submit"}
-                handleClick={handleAgencySubmit}
+                handleClick={handleSubmit}
               ></SubmitButton>
               {/* <button type="submit" className="btn btn-primary"> */}
               {/* Submit */}

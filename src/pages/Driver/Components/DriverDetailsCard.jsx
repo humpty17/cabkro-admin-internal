@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import FileInput from "../../../General/Input/FileInput";
 import NumberInput from "../../../General/Input/NumberInput";
@@ -11,6 +11,9 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
 
   const disableInputFields = driverDetails.driverId === 0 ? true : false
 
+  useEffect(()=>{
+    setDriverDetails({...driverObject})
+  },[driverObject])
   const handleInputChange = (e)=>{
     if(e.target.name === "phoneNumber"){
       if(e.target.value.length > 10){
