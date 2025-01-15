@@ -1,18 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { FaFileExport, FaTrash } from "react-icons/fa";
-import { FiPlus, FiDownload, FiTrash2 } from "react-icons/fi";
-import { AutoSizer, Column, Table } from "react-virtualized";
-import "react-virtualized/styles.css";
-import { LoadingContext } from "../../store/loading-context";
-import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
-import { NotificationManager } from "react-notifications";
 import "bootstrap/dist/css/bootstrap.css";
-import { headerRenderer } from "../../General/Common/VitualizedTable/SearchHeaderRenderer";
-import UploadExcelButton from "../../General/Buttons/UploadExcelButton";
+import React, { useContext, useEffect, useState } from "react";
+import { FiTrash2 } from "react-icons/fi";
+import { NotificationManager } from "react-notifications";
+import "react-virtualized/styles.css";
+import Swal from "sweetalert2";
+import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
 import DownloadExcelButton from "../../General/Buttons/DownloadExcelButton";
 import SubmitExcelButton from "../../General/Buttons/SubmitExcelButton";
-import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
-import { LoginContext } from "../../store/login-context";
+import UploadExcelButton from "../../General/Buttons/UploadExcelButton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import {
   ACTION,
@@ -25,7 +20,10 @@ import {
   UPDATEDATAERROR,
   WIDTH,
 } from "../../General/ConstStates";
-import Swal from "sweetalert2";
+import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
+import { LoadingContext } from "../../store/loading-context";
+import { LoginContext } from "../../store/login-context";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const PopularDestinations = () => {
   const columns = [
@@ -193,6 +191,166 @@ const PopularDestinations = () => {
       ),
     },
   ];
+
+  const excelColumns = [
+    {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1
+    },
+    {
+      label: "packageID",
+      dataKey: "packageID",
+      width: 100,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1
+    },
+    {
+      label: "packageName",
+      dataKey: "packageName",
+      width: 200,
+    },
+    {
+      label: "description",
+      dataKey: "description",
+      width: 200,
+    },
+    {
+      label: "pickupCity",
+      dataKey: "pickupCity",
+      width: 200,
+    },
+    {
+      label: "destinationCity",
+      dataKey: "destinationCity",
+      width: 200,
+    },
+    {
+      label: "minDistance",
+      dataKey: "minDistance",
+      width: 200,
+    },
+    {
+      label: "maxDistance",
+      dataKey: "maxDistance",
+      width: 200,
+    },
+    {
+      label: "basePrice",
+      dataKey: "basePrice",
+      width: 200,
+    },
+    {
+      label: "discountRate",
+      dataKey: "discountRate",
+      width: 200,
+    },
+    {
+      label: "discountAmount",
+      dataKey: "discountAmount",
+      width: 200,
+    },
+    {
+      label: "vehicleType",
+      dataKey: "vehicleType",
+      width: 200,
+    },
+    {
+      label: "vehicleFuelType",
+      dataKey: "vehicleFuelType",
+      width: 200,
+    },
+    {
+      label: "vehicleModelName",
+      dataKey: "vehicleModelName",
+      width: 200,
+    },
+    {
+      label: "vehicleSeaterCount",
+      dataKey: "vehicleSeaterCount",
+      width: 200,
+    },
+    {
+      label: "pickupAddress",
+      dataKey: "pickupAddress",
+      width: 200,
+    },
+    {
+      label: "destinationAddress",
+      dataKey: "destinationAddress",
+      width: 200,
+    },
+    {
+      label: "timeDurationHours",
+      dataKey: "timeDurationHours",
+      width: 200,
+    },
+    {
+      label: "dayCount",
+      dataKey: "dayCount",
+      width: 200,
+    },
+    {
+      label: "offerPrice",
+      dataKey: "offerPrice",
+      width: 200,
+    },
+    {
+      label: "rentaldays",
+      dataKey: "rentaldays",
+      width: 200,
+    },
+    {
+      label: "plusMember",
+      dataKey: "plusMember",
+      width: 200,
+      cellRenderer: ({ rowData }) => rowData["plusMember"] ?  "Yes" : "No"
+    },
+    {
+      label: "gstRate",
+      dataKey: "gstRate",
+      width: 200,
+    },
+    {
+      label: "gstAmount",
+      dataKey: "gstAmount",
+      width: 200,
+    },
+    {
+      label: "offerDescription",
+      dataKey: "offerDescription",
+      width: 200,
+    },
+    {
+      label: "breakFast",
+      dataKey: "breakFast",
+      width: 200,
+      cellRenderer: ({ rowData }) => rowData["breakFast"] ?  "Yes" : "No"
+    },
+    {
+      label: "lunch",
+      dataKey: "lunch",
+      width: 200,
+      cellRenderer: ({ rowData }) => rowData["lunch"] ?  "Yes" : "No"
+    },
+    {
+      label: "dinner",
+      dataKey: "dinner",
+      width: 200,
+      cellRenderer: ({ rowData }) => rowData["dinner"] ?  "Yes" : "No"
+    },
+    {
+      label: "extraService",
+      dataKey: "extraService",
+      width: 200,
+    },
+    {
+      label: "other2",
+      dataKey: "other2",
+      width: 200,
+    },
+    
+  ];
   const { user } = useContext(LoginContext);
   const popularDataExcelHeader = {
     packageName: "",
@@ -237,7 +395,6 @@ const PopularDestinations = () => {
   };
 
   const otherData = {
-    createdDate: getCurrentDateTime(),
     modifyDate: getCurrentDateTime(),
     userId: user ? user.userId : 0,
     isActive: true,
@@ -262,19 +419,21 @@ const PopularDestinations = () => {
         {},
         {}
       );
-      stopLoading();
       if (response !== null && response !== undefined) {
-        if (response.data.code === 200) {
-          setGetDestination(response.data.data);
+        if (response?.data?.code === 200) {
+          setGetDestination([...response?.data?.data] || []);
         } else {
-          NotificationManager.error(response.data.message);
+          NotificationManager.error(response?.data?.message || "No records found");
         }
       } else {
-        console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message);
+        NotificationManager.warning(APINULLERROR);
       }
     } catch (error) {
       console.error("API call failed:", error);
+      NotificationManager.error(APICALLFAIL)
+    }
+    finally{
+      stopLoading()
     }
   };
 
@@ -301,7 +460,7 @@ const PopularDestinations = () => {
         [...previewBookingData],
         {}
       );
-      console.log(response);
+      //console.log(response);
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           NotificationManager.success(response?.data?.message || "Destination uploaded successfully");
@@ -315,7 +474,8 @@ const PopularDestinations = () => {
       }
     } catch (err) {
       // stopLoading();
-      NotificationManager.warning(APINULLERROR);
+      console.log(err)
+      NotificationManager.warning(APICALLFAIL);
     }
     finally{
       stopLoading()
@@ -377,7 +537,7 @@ const PopularDestinations = () => {
         }
       } catch (error) {
         console.error(APICALLFAIL, error);
-        NotificationManager.error(APICALLFAIL, error);
+        NotificationManager.error(APICALLFAIL);
       }
       finally{
         stopLoading()
@@ -413,21 +573,26 @@ const PopularDestinations = () => {
                 <div className="card">
                   <div className="card-header ">
                     <div className="row">
-                    <h2 className="col-5 font">{isShowPreview ? "Preview" : ""}</h2>
-                    <div className="mb-3 text-end col-7">
+                    <h2 className="col-3 font">{isShowPreview ? "Preview" : ""}</h2>
+                    <div className="mb-3 text-end col-9">
                       {isShowPreview === false ? (
                         <UploadExcelButton
                           setPreviewData={setPreviewData}
                           otherData={otherData}
-                          buttonName={"Update Popular Destinations"}
+                          buttonName={"Upload Popular Destinations"}
                         />
                       ) : null}
                       {isShowPreview === false ? (
                         <DownloadExcelButton
                           columns={Object.keys(popularDataExcelHeader)}
-                          fileName={"Destination_Package_Sample"}
+                          fileName={"Popular_Destinations_Sample"}
                         />
                       ) : null}
+                      {isShowPreview === false ? <ExportButtton
+                        columns={excelColumns}
+                        fileName={"Popular_Destinations_List"}
+                        data={getDestination}
+                      /> : null}
                       {isShowPreview === true ? (
                         <SubmitExcelButton
                           handleSubmitClick={submitExcelData}
