@@ -20,6 +20,7 @@ import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { LoginContext } from "../../store/login-context";
 import Swal from "sweetalert2";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const AddVehicleList = () => {
   // Table data state
@@ -220,14 +221,14 @@ const AddVehicleList = () => {
     try {
       const response = await callApi(
         "post",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/AddVehicleList`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/BulkAddVehicleList/BulkAddVehicleList`,
         previewBookingData,
         {}
       );
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-          NotificationManager.success(response.data.message);
+          NotificationManager.success(response?.data?.message);
           handleReset();
         } else {
           NotificationManager.error(response.data.message);
@@ -283,6 +284,11 @@ const AddVehicleList = () => {
                       fileName={"Add_Vehicle_Sample"}
                     />
                   ) : null}
+                  {isShowPreview === true ?  <ExportButtton
+                        columns={columns}
+                        fileName={"User_Admin_List"}
+                        data={user}
+                      />: null}
                   {isShowPreview === true ? (
                     <SubmitExcelButton
                       handleSubmitClick={submitExcelData}
