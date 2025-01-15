@@ -1,22 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FiPlus, FiDownload, FiTrash2 } from 'react-icons/fi'; // Feather Icons
-import { LoadingContext } from '../../store/loading-context';
+import { FiTrash2 } from 'react-icons/fi'; // Feather Icons
 import { NotificationManager } from 'react-notifications';
-import { callApi, getCurrentDateTime } from '../../General/GeneralMethod';
-import { Column, Table, AutoSizer} from "react-virtualized";
-import { headerRenderer } from '../../General/Common/VitualizedTable/SearchHeaderRenderer';
-import DownloadExcelButton from '../../General/Buttons/DownloadExcelButton';
-import UploadExcelButton from '../../General/Buttons/UploadExcelButton';
-import { LoginContext } from '../../store/login-context';
-import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
-import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
-import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, UPDATEDATAERROR, WIDTH } from '../../General/ConstStates';
-import { FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import CancelExcelButton from '../../General/Buttons/CancelExcelButton';
+import DownloadExcelButton from '../../General/Buttons/DownloadExcelButton';
+import SubmitExcelButton from '../../General/Buttons/SubmitExcelButton';
+import UploadExcelButton from '../../General/Buttons/UploadExcelButton';
+import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, UPDATEDATAERROR, WIDTH } from '../../General/ConstStates';
+import { callApi, getCurrentDateTime } from '../../General/GeneralMethod';
+import { LoadingContext } from '../../store/loading-context';
+import { LoginContext } from '../../store/login-context';
+import ExportButtton from '../../General/Buttons/ExportButtton';
 
 const AddBookingPackage = () => {
   const columns = [
+    {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+    },
     {
       label: "Name",
       dataKey: "packageName",
@@ -25,21 +29,6 @@ const AddBookingPackage = () => {
     {
       label: "Description",
       dataKey: "description",
-      width: 200,
-    },
-    {
-      label: "Price",
-      dataKey: "basePrice",
-      width: 200,
-    },
-    {
-      label: "Type",
-      dataKey: "vehicleType",
-      width: 200,
-    },
-    {
-      label: "Fuel Type",
-      dataKey: "vehicleFuelType",
       width: 200,
     },
     {
@@ -58,32 +47,34 @@ const AddBookingPackage = () => {
       width: 200,
     },
     {
-      label: "Price",
+      label: "Base Price",
       dataKey: "basePrice",
       width: 200,
     },
     {
-      label: "Rate",
+      label: "Discount Rate",
       dataKey: "discountRate",
       width: 200,
     },
     {
-      label: "Amount",
+      label: "Discount Amount",
       dataKey: "discountAmount",
       width: 200,
     },
     {
-      label: "Type",
+      label: "Vehicle Type",
       dataKey: "vehicleType",
       width: 200,
     },
+    
+   
     {
-      label: "Fuel Type",
+      label: "Vehicle Fuel Type",
       dataKey: "vehicleFuelType",
       width: 200,
     },
     {
-      label: "Model Name",
+      label: "Vehicle Model Name",
       dataKey: "vehicleModelName",
       width: 200,
     },
@@ -128,12 +119,12 @@ const AddBookingPackage = () => {
       width: 200,
     },
     {
-      label: "Percentage",
+      label: "Adv Percentage",
       dataKey: "advancePercentage",
       width: 200,
     },
     {
-      label: "Toll Tax",
+      label: "Toll Tax Type",
       dataKey: "tollTaxType",
       width: 200,
     },
@@ -173,7 +164,7 @@ const AddBookingPackage = () => {
       width: 200,
     },
     {
-      label: "Night Charges",
+      label: "Night Charges Type",
       dataKey: "nightChargesType",
       width: 200,
     },
@@ -197,6 +188,172 @@ const AddBookingPackage = () => {
     },
   ];
   
+  const excelColumns = [
+    {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+    },
+    {
+      label: "packageID",
+      dataKey: "packageID",
+      width: 200,
+    },
+    {
+      label: "packageName",
+      dataKey: "packageName",
+      width: 200,
+    },
+    {
+      label: "description",
+      dataKey: "description",
+      width: 200,
+    },
+    {
+      label: "minDistance",
+      dataKey: "minDistance",
+      width: 200,
+    },
+    {
+      label: "maxDistance",
+      dataKey: "maxDistance",
+      width: 200,
+    },
+    {
+      label: "ratePerKM",
+      dataKey: "ratePerKM",
+      width: 200,
+    },
+    {
+      label: "basePrice",
+      dataKey: "basePrice",
+      width: 200,
+    },
+    {
+      label: "discountRate",
+      dataKey: "discountRate",
+      width: 200,
+    },
+    {
+      label: "discountAmount",
+      dataKey: "discountAmount",
+      width: 200,
+    },
+    {
+      label: "vehicleType",
+      dataKey: "vehicleType",
+      width: 200,
+    },
+    
+   
+    {
+      label: "vehicleFuelType",
+      dataKey: "vehicleFuelType",
+      width: 200,
+    },
+    {
+      label: "vehicleModelName",
+      dataKey: "vehicleModelName",
+      width: 200,
+    },
+    {
+      label: "vehicleSeaterCount",
+      dataKey: "vehicleSeaterCount",
+      width: 200,
+    },
+    {
+      label: "gstRate",
+      dataKey: "gstRate",
+      width: 200,
+    },
+    {
+      label: "gstAmount",
+      dataKey: "gstAmount",
+      width: 200,
+    },
+    {
+      label: "offerDescription",
+      dataKey: "offerDescription",
+      width: 200,
+    },
+    {
+      label: "extraService",
+      dataKey: "extraService",
+      width: 200,
+    },
+    {
+      label: "other2",
+      dataKey: "other2",
+      width: 200,
+    },
+    {
+      label: "totalAmount",
+      dataKey: "totalAmount",
+      width: 200,
+    },
+    {
+      label: "luggageAllowed",
+      dataKey: "luggageAllowed",
+      width: 200,
+    },
+    {
+      label: "advancePercentage",
+      dataKey: "advancePercentage",
+      width: 200,
+    },
+    {
+      label: "tollTaxType",
+      dataKey: "tollTaxType",
+      width: 200,
+    },
+    {
+      label: "tollTaxAmount",
+      dataKey: "tollTaxAmount",
+      width: 200,
+    },
+    {
+      label: "petAnimal",
+      dataKey: "petAnimal",
+      width: 200,
+    },
+    {
+      label: "petAnimalAmount",
+      dataKey: "petAnimalAmount",
+      width: 200,
+    },
+    {
+      label: "extraLuggage",
+      dataKey: "extraLuggage",
+      width: 200,
+    },
+    {
+      label: "extraLuggageAmount",
+      dataKey: "extraLuggageAmount",
+      width: 200,
+    },
+    {
+      label: "driverChargesType",
+      dataKey: "driverChargesType",
+      width: 200,
+    },
+    {
+      label: "driverChargesAmount",
+      dataKey: "driverChargesAmount",
+      width: 200,
+    },
+    {
+      label: "nightChargesType",
+      dataKey: "nightChargesType",
+      width: 200,
+    },
+    {
+      label: "nightChargesAmount",
+      dataKey: "nightChargesAmount",
+      width: 200,
+    },
+    
+  ];
   const {user} = useContext(LoginContext)
   const filterState = {
     packageName : '',
@@ -280,21 +437,22 @@ const AddBookingPackage = () => {
     startLoading();
     try {
       const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Data/GetBookingPackages`,{},{});
-      stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-          //console.log(bookingData)
-          setBookingData(response.data.data)
+          setBookingData([...response?.data?.data] || [])
         } else {
           NotificationManager.error(response.data.message);
         }
       } else {
-        console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message);
+        NotificationManager.warning(APINULLERROR);
       }
     } catch (error) {
       console.error("API call failed:", error);
+      NotificationManager.error(APICALLFAIL)
     } 
+    finally{
+      stopLoading()
+    }
   }
 
   useEffect(() =>{
@@ -378,21 +536,24 @@ const AddBookingPackage = () => {
     startLoading()
     try{
       const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/AddBookingPackages`,previewBookingData,{});
-      stopLoading();
+      
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-         NotificationManager.success(response.data.message)
+         NotificationManager.success(response?.data?.message || "Data updated successfully")
          handleReset()
         } else {
            NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
         }
       } else {
         console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message);
+        NotificationManager.warning(APINULLERROR);
       }
     }
     catch(err){
-      stopLoading()
+      NotificationManager.error(APICALLFAIL)
+    }
+    finally{
+      stopLoading();
     }
   }
 
@@ -422,8 +583,8 @@ const AddBookingPackage = () => {
                 <div className="card">
                   <div className="card-header">
                   <div className='row'>
-                    <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
-                    <div className="mb-3 text-end col-7">
+                    <h2 className="col-3">{isShowPreview ? "Preview" : ""}</h2>
+                    <div className="mb-3 text-end col-9">
                       {isShowPreview === false ? (
                         <UploadExcelButton
                           setPreviewData={setPreviewData}
@@ -437,6 +598,9 @@ const AddBookingPackage = () => {
                           fileName={"Booking_Package_Sample"}
                         />
                       ) : null}
+                      {isShowPreview === false ?<ExportButtton columns={excelColumns}
+                        fileName={"Booking_Packages_List"}
+                        data={bookingData}></ExportButtton> : null}
                       {isShowPreview === true ? (
                         <SubmitExcelButton
                           handleSubmitClick={submitExcelData}
