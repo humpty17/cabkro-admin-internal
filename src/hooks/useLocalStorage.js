@@ -17,8 +17,8 @@ export const useLocalStorage = (keyName, defaultValue)=>{
     catch(err){
       //TODO : return notification
     }
-  })
-
+  })                                                                                               
+  console.log("storedValue", storedValue);
   const setValue = (newValue)=>{
     try {
       //console.log("inside here")
@@ -27,6 +27,8 @@ export const useLocalStorage = (keyName, defaultValue)=>{
       // console.log(err);
     }
     setStoredValue(newValue);
+    console.log("newValue", newValue);
+    
   }
 
   return [storedValue, setValue]

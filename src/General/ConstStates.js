@@ -79,4 +79,7 @@ export const ApiHeadersMultipart = {
   "Content-Type": "application/json",
 };
 
+export const EDIT = "Edit"
+export const APPROVE = "Approve"
+
 

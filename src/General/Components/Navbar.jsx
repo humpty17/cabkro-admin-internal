@@ -1,24 +1,40 @@
 import React, { useContext, useState } from "react";
 import { FiBell, FiAlertCircle, FiHome, FiUserPlus, FiSettings, FiHelpCircle, FiPieChart, FiUser } from "react-icons/fi";
 import { AdminContext } from "../../store/admin-context";
+import { CurrentPageContext } from "../../store/pages-context";
+import { LOGINPAGE } from "../ConstStates";
+import { LoginContext } from "../../store/login-context";
 
 
 const Navbar = () => {
-  const {sidebarOpen,handleSideClick} = useContext(AdminContext);
-  const [loginOpen, setLoginOpen] = useState(false)
-  const [notificationOpen, setNotificationOpen] = useState(false)
-
-  const handleLoginClick = () =>{
-    setLoginOpen(loginOpen => !loginOpen)
-  }
+  const { sidebarOpen, handleSideClick } = useContext(AdminContext);
+  const {currentPage, handlePageClick} =useContext(CurrentPageContext)
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const {logout} = useContext(LoginContext)
+  const handleLoginClick = () => {
+    setLoginOpen((loginOpen) => !loginOpen);
+  };
 
   const handleNotificationClick = () => {
-    setNotificationOpen(notificationOpen => !notificationOpen)
-  }
-  
+    setNotificationOpen((notificationOpen) => !notificationOpen);
+  };
+
+  // Add the handleLogout function
+  const handleLogout = () => {
+    // Clear user session or token
+    logout()
+    // Redirect to login page
+    handlePageClick(LOGINPAGE);
+  };
+
   return (
     <nav className="navbar navbar-expand navbar-light navbar-bg px-4 py-3">
-      <a className="sidebar-toggle js-sidebar-toggle" id="toggel" onClick={handleSideClick}>
+      <a
+        className="sidebar-toggle js-sidebar-toggle"
+        id="toggel"
+        onClick={handleSideClick}
+      >
         <i className="hamburger align-self-center"></i>
       </a>
 
@@ -26,13 +42,24 @@ const Navbar = () => {
         <ul className="navbar-nav navbar-align">
           {/* Notifications Dropdown */}
           <li className="nav-item dropdown">
-            <a className='nav-icon dropdown-toggle'  href="#" id="alertsDropdown" data-bs-toggle="dropdown" onClick={handleNotificationClick}>
+            <a
+              className="nav-icon dropdown-toggle"
+              href="#"
+              id="alertsDropdown"
+              data-bs-toggle="dropdown"
+              onClick={handleNotificationClick}
+            >
               <div className="position-relative">
                 <FiBell className="align-middle" />
                 <span className="indicator">4</span>
               </div>
             </a>
-            <div className={`dropdown-menu notification-icon dropdown-menu-lg dropdown-menu-end py-0 ${notificationOpen ? 'show' : ''} `} aria-labelledby="alertsDropdown">
+            <div
+              className={`dropdown-menu notification-icon dropdown-menu-lg dropdown-menu-end py-0 ${
+                notificationOpen ? "show" : ""
+              } `}
+              aria-labelledby="alertsDropdown"
+            >
               <div className="dropdown-menu-header">4 New Notifications</div>
               <div className="list-group">
                 <a href="#" className="list-group-item">
@@ -42,7 +69,9 @@ const Navbar = () => {
                     </div>
                     <div className="col-10">
                       <div className="text-dark">Update completed</div>
-                      <div className="text-muted small mt-1">Restart server 12 to complete the update.</div>
+                      <div className="text-muted small mt-1">
+                        Restart server 12 to complete the update.
+                      </div>
                       <div className="text-muted small mt-1">30m ago</div>
                     </div>
                   </div>
@@ -54,7 +83,9 @@ const Navbar = () => {
                     </div>
                     <div className="col-10">
                       <div className="text-dark">Lorem ipsum</div>
-                      <div className="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
+                      <div className="text-muted small mt-1">
+                        Aliquam ex eros, imperdiet vulputate hendrerit et.
+                      </div>
                       <div className="text-muted small mt-1">2h ago</div>
                     </div>
                   </div>
@@ -77,25 +108,42 @@ const Navbar = () => {
                     </div>
                     <div className="col-10">
                       <div className="text-dark">New connection</div>
-                      <div className="text-muted small mt-1">Christina accepted your request.</div>
+                      <div className="text-muted small mt-1">
+                        Christina accepted your request.
+                      </div>
                       <div className="text-muted small mt-1">14h ago</div>
                     </div>
                   </div>
                 </a>
               </div>
               <div className="dropdown-menu-footer">
-                <a href="#" className="text-muted">Show all notifications</a>
+                <a href="#" className="text-muted">
+                  Show all notifications
+                </a>
               </div>
             </div>
           </li>
 
           {/* User Dropdown */}
           <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle d-none d-sm-inline-block show" href="#" onClick={handleLoginClick} data-bs-toggle="dropdown">
-              <img src="img/avatars/avatar.jpg" className="avatar img-fluid rounded me-1" alt="Charles Hall" />
+            <a
+              className="nav-link dropdown-toggle d-none d-sm-inline-block show"
+              href="#"
+              onClick={handleLoginClick}
+              data-bs-toggle="dropdown"
+            >
+              <img
+                src="img/avatars/avatar.jpg"
+                className="avatar img-fluid rounded me-1"
+                alt="Charles Hall"
+              />
               <span className="text-dark">Charles Hall</span>
             </a>
-            <div className={`dropdown-menu dropdown-menu-end login ${loginOpen ? 'show' : ''}`} >
+            <div
+              className={`dropdown-menu dropdown-menu-end login ${
+                loginOpen ? "show" : ""
+              }`}
+            >
               <a className="dropdown-item" href="#">
                 <FiUser className="align-middle me-1" /> Profile
               </a>
@@ -110,7 +158,9 @@ const Navbar = () => {
                 <FiHelpCircle className="align-middle me-1" /> Help Center
               </a>
               <div className="dropdown-divider"></div>
-              <a className="dropdown-item" href="#">Log out</a>
+              <a className="dropdown-item" onClick={handleLogout}>
+                Log out
+              </a>
             </div>
           </li>
         </ul>

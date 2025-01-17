@@ -118,12 +118,18 @@ const Home = () => {
                   editData={editData}
                 ></AgencyList>
               )}
-              {currentPage === APPROVEDAGENCY && <ApprovedAgency />}
+              {currentPage === APPROVEDAGENCY && (
+                <ApprovedAgency setEditData={setEditData} editData={editData} />
+              )}
               {currentPage === APPROVEDVEHICLE && <ApprovedVehicle />}
               {currentPage === APPROVEDDRIVER && <ApprovedDriver />}
 
-              {currentPage === UPDATEAGENCYALLDETAILS && <UpdateAgencyAllDetails setEditData={setEditData}
-                  editData={editData}></UpdateAgencyAllDetails>}
+              {currentPage === UPDATEAGENCYALLDETAILS && (
+                <UpdateAgencyAllDetails
+                  setEditData={setEditData}
+                  editData={editData}
+                ></UpdateAgencyAllDetails>
+              )}
             </div>
           </div>
         )}

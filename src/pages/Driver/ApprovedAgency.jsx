@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, SRNO, SRNOKEY, SRNOWIDTH, WIDTH } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, APPROVE, SRNO, SRNOKEY, SRNOWIDTH, UPDATEAGENCYALLDETAILS, WIDTH } from "../../General/ConstStates";
 import { FiEdit } from "react-icons/fi";
 import { AiFillEye } from "react-icons/ai";
 import { NotificationManager } from "react-notifications";
 import { callApi } from "../../General/GeneralMethod";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
+import { CurrentPageContext } from "../../store/pages-context";
 
-const ApprovedAgency = () => {
+const ApprovedAgency = ({setEditData}) => {
   const columns = [
     {
       label: SRNO,
@@ -60,13 +61,14 @@ const ApprovedAgency = () => {
           />
           <AiFillEye
             style={{ cursor: "pointer", color: "red" }}
-            // onClick={() => handleDeleteAction(rowData, rowIndex)}
+             onClick={() => handleView(rowData)}
           />
         </div>
       ),
     },
   ];
   const { startLoading, stopLoading } = useContext(LoadingContext);
+  const { handlePageClick } = useContext(CurrentPageContext);
   const [approvedAgencyList, setApprovedAgencyList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
 
@@ -100,6 +102,32 @@ const ApprovedAgency = () => {
   useEffect(() => {
     fetchApprovedAgencyList();
   }, []);
+
+   const handleView = async (rowData) => {
+      startLoading();
+      try {
+        const response = await callApi(
+          "get",
+          `${process.env.REACT_APP_API_URL_ADMIN}Data/GetCarOwnerDetailsById/${rowData.carOwnerId}`,
+          {},
+          {}
+        );
+        if (response) {
+          if (response?.data?.code === 200) {
+            setEditData({op: APPROVE,  ...response?.data?.data });
+            handlePageClick(UPDATEAGENCYALLDETAILS);
+          } else {
+            NotificationManager.error("Could not view agency details");
+          }
+        } else {
+          NotificationManager.error(APINULLERROR);
+        }
+      } catch (err) {
+        NotificationManager.error(APICALLFAIL);
+      } finally {
+        stopLoading();
+      }
+    };
 
   return (
     <div className="wrapper">

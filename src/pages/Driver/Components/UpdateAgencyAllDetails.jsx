@@ -4,25 +4,12 @@ import UploadDocuments from "./UploadDocuments";
 import AddWorkLocation from "./AddWorkLocation";
 import VehicleDetailsCard from "./VehicleDetailsCard";
 import { callApi, getCurrentDateTime } from "../../../General/GeneralMethod";
-import { APICALLFAIL, ApiHeaders, APINULLERROR, DEFAULTDATE } from "../../../General/ConstStates";
+import { APICALLFAIL, ApiHeaders, APINULLERROR, DEFAULTDATE, EDIT } from "../../../General/ConstStates";
 import DriverDetailsCard from "./DriverDetailsCard";
 import { NotificationManager } from "react-notifications";
 import { LoadingContext } from "../../../store/loading-context";
 
 const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
-
-  const { startLoading, stopLoading } = useContext(LoadingContext)
-  useEffect(() => {
-    console.log(editData)
-    if (Object.keys(editData).length > 0) {
-
-      setAgencyAllDetails(editData);
-    }
-
-  }, [editData]);
-
-  const [agencyAllDetails, setAgencyAllDetails] = useState({});
-
   const vehicleInitialObject = {
     "vehicleId": 0,
     "carOwnerId": 0,
@@ -93,7 +80,19 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     "vehicleId3": 0,
     "otp": 0
   }
+  const { startLoading, stopLoading } = useContext(LoadingContext)
+  const [agencyAllDetails, setAgencyAllDetails] = useState({});
 
+  useEffect(() => {
+    console.log(editData)
+    if (Object.keys(editData).length > 0) {
+      console.log("edit data", editData)
+      setAgencyAllDetails(editData);
+    }
+
+  }, [editData]);
+  console.log(editData.approveStatus);
+  
   const handleVehicleSubmit = async (vehicleData) => {
     console.log(vehicleData)
     if (vehicleData.vehicleId === 0) {
@@ -107,7 +106,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
       if (response) {
         if (response?.data?.code === 200) {
           NotificationManager.success(response?.data?.message || "Vehicle updated successfully")
-          fetchAgencyDetails()
+          fetchCarOwnerDetails()
         }
         else{
           stopLoading()
@@ -142,7 +141,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
       if (response) {
         if (response?.data?.code === 200) {
           NotificationManager.success(response?.data?.message || "Driver updated successfully")
-          fetchAgencyDetails()
+          fetchCarOwnerDetails()
         }
         else{
           stopLoading()
@@ -164,7 +163,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
 
   }
 
-  const fetchAgencyDetails = async () => {
+  const fetchCarOwnerDetails = async () => {
     startLoading()
     try {
       const response = await callApi("get", `${process.env.REACT_APP_API_URL_ADMIN}Data/GetCarOwnerDetailsById/${agencyAllDetails?.carOwnerDetails.carOwnerId}`, {}, {})
@@ -187,6 +186,72 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
       stopLoading()
     }
   }
+
+  
+  const handleAgencySubmit = async (agencyDetails) => {
+    try {
+      const response =
+        agencyDetails.carOwnerId === 0
+          ? await callApi(
+              "post",
+              `${process.env.REACT_APP_API_URL_ADMIN}Data/AddCarOwner`,
+              { ...agencyDetails },
+              {}
+            )
+          : await callApi(
+              "put",
+              `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateCarOwner/${agencyDetails.carOwnerId}`,
+              { ...agencyDetails },
+              {}
+            );
+
+      if (response) {
+        if (response?.data?.code === 200) {
+          //GET AGENCY DETAILS BY ID
+          fetchCarOwnerDetails(response?.data?.data?.carOwnerId);
+        } else {
+          NotificationManager.error(response?.data?.message);
+          stopLoading();
+        }
+      } else {
+        NotificationManager.error(response?.data?.message || APINULLERROR);
+        stopLoading();
+      }
+    } catch (err) {
+      NotificationManager.error(APICALLFAIL);
+      stopLoading();
+    } finally {
+      // stopLoading()
+    }
+};
+
+const handleApproveAgency = async (agencyDetails) => {
+  debugger;
+  startLoading();
+  try {
+    const response = await callApi(
+      "put",
+      `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateCarOwner/${agencyDetails.carOwnerId}`,
+      {...agencyDetails},
+      {}
+    );
+    if (response) {
+      if (response?.data?.code === 200) {
+        //GET AGENCY DETAILS BY ID
+        fetchCarOwnerDetails(response?.data?.data?.carOwnerId);
+      } else {
+        NotificationManager.error("Could not view agency details");
+      }
+    } else {
+      NotificationManager.error(APINULLERROR);
+    }
+  } catch (err) {
+    NotificationManager.error(APICALLFAIL);
+  } finally {
+    stopLoading();
+  }
+};
+
   return (
     <>
       {Object.keys(agencyAllDetails).length > 0 ? (
@@ -199,31 +264,33 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
                 <div className="row">
                   <AgencyDetailsCard
                     agencyObject={agencyAllDetails?.carOwnerDetails}
-
-                  // handleInputChange={handleInputChange}
-                  // handleAgencySubmit={handleAgencySubmit}
+                    handleAgencySubmit={handleAgencySubmit} 
+                    handleApproveAgency={handleApproveAgency}
+                    op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}
                   ></AgencyDetailsCard>
                   <UploadDocuments
                     agencyDetails={agencyAllDetails?.carOwnerDetails}
-                  // handleChooseFile={handleChooseFile}
+                    fetchCarOwnerDetails={fetchCarOwnerDetails}
+                    op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}
                   />
                 </div>
 
                 <AddWorkLocation
                   agencyObject={agencyAllDetails?.carOwnerDetails}
-                // handleAgencySubmit={handleUpdateAgencyDetails}
-                // handleInputChange={handleInputChange}
+                  handleAgencySubmit={handleAgencySubmit}
+                  op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}
                 />
+
 
                 <div className="row">
                   {[...Array(3)].map((data, index) => (
-                    <VehicleDetailsCard cardNo={index + 1} vehicleObject={agencyAllDetails?.vehicleDetails?.[index] ? agencyAllDetails?.vehicleDetails?.[index] : vehicleInitialObject} handleVehicleSubmit={handleVehicleSubmit}></VehicleDetailsCard>
+                    <VehicleDetailsCard cardNo={index + 1} vehicleObject={agencyAllDetails?.vehicleDetails?.[index] ? agencyAllDetails?.vehicleDetails?.[index] : vehicleInitialObject} handleVehicleSubmit={handleVehicleSubmit} op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}></VehicleDetailsCard>
                   ))}
                 </div>
 
                 <div className="row">
                   {[...Array(3)].map((data, index) => (
-                    <DriverDetailsCard cardNo={index + 1} driverObject={agencyAllDetails?.driverDetails?.[index] ? agencyAllDetails?.driverDetails?.[index] : driverObject} handleDriverSubmit={handleDriverSubmit}></DriverDetailsCard>
+                    <DriverDetailsCard cardNo={index + 1} driverObject={agencyAllDetails?.driverDetails?.[index] ? agencyAllDetails?.driverDetails?.[index] : driverObject} handleDriverSubmit={handleDriverSubmit} op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}></DriverDetailsCard>
                   ))}
                 </div>
               </div>
