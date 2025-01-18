@@ -121,8 +121,15 @@ const Home = () => {
               {currentPage === APPROVEDAGENCY && (
                 <ApprovedAgency setEditData={setEditData} editData={editData} />
               )}
-              {currentPage === APPROVEDVEHICLE && <ApprovedVehicle />}
-              {currentPage === APPROVEDDRIVER && <ApprovedDriver />}
+              {currentPage === APPROVEDVEHICLE && (
+                <ApprovedVehicle
+                  setEditData={setEditData}
+                  editData={editData}
+                />
+              )}
+              {currentPage === APPROVEDDRIVER && (
+                <ApprovedDriver setEditData={setEditData} editData={editData} />
+              )}
 
               {currentPage === UPDATEAGENCYALLDETAILS && (
                 <UpdateAgencyAllDetails

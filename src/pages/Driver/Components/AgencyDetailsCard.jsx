@@ -14,7 +14,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
 
   const [agencyDetails, setAgencyDetails] = useState({...agencyObject})
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  console.log(agencyObject,agencyDetails)
+ // console.log(agencyObject,agencyDetails)
 
   useEffect(()=>{
     setAgencyDetails({...agencyObject})

@@ -5,8 +5,9 @@ import NumberInput from "../../../General/Input/NumberInput";
 import TypeInput from "../../../General/Input/TypeInput";
 import FormLabel from "../../../General/Label/FormLabel";
 import { NotificationManager } from "react-notifications";
+import { APPROVE } from "../../../General/ConstStates";
 
-const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChooseFile}) => {
+const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChooseFile, handleApproveDriver,op}) => {
   const [driverDetails, setDriverDetails] = useState({...driverObject})
 
   const disableInputFields = driverDetails.driverId === 0 ? true : false
@@ -36,6 +37,12 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
     if(!validate()) return
     handleDriverSubmit(driverDetails)
   }
+
+  const handleApprove = (e) => {
+    e.preventDefault()
+    if(!validate()) return
+    handleApproveDriver(driverDetails)
+  }
   return (
     <div className="col-6 col-xl-6">
       <div className="card">
@@ -51,7 +58,7 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
                 placeholderName={"Driver Name"}
                 valueName={driverDetails.driverName}
                 onChangeName={handleInputChange}
-                
+                isDisabled={op === APPROVE ? false : true}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -61,6 +68,7 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
                 placeholderName={"Driver Phone"}
                 valueName={driverDetails.phoneNumber}
                 onChangeName={handleInputChange}
+                isDisabled={op === APPROVE ? false : true}
               ></NumberInput>
             </div>
             <div className="mb-3 row">
@@ -70,7 +78,7 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
                 placeholderName={"Driver Name"}
                 valueName={driverDetails.approveStatus=== true ? "Approved" :  "Not Approved"}
                 onChangeName={handleInputChange}
-                isDisabled={true}
+                isDisabled={op === APPROVE ? false : true}
                 
               ></TypeInput>
             </div>
@@ -85,14 +93,18 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
             </div>
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">
-                <SubmitButton
-                   buttonName={disableInputFields ? "Submit" : "Update"}
-                  handleClick={handleSubmit}
-                  // isDisabled={agencyDetails.userId !== 0 ? true : false}
-                ></SubmitButton>
-                {/* <button type="submit" className="btn btn-primary"> */}
-                {/* Submit */}
-                {/* </button> */}
+                {op === APPROVE ? (
+                  <SubmitButton
+                    buttonName={"Approve"}
+                    handleClick={handleApprove}
+                  />
+                ) : (
+                  <SubmitButton
+                    buttonName={disableInputFields ? "Submit" : "Update"}
+                    handleClick={handleSubmit}
+                    // isDisabled={agencyDetails.userId !== 0 ? true : false}
+                  />
+                )}
               </div>
             </div>
           </form>

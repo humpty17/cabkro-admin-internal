@@ -5,11 +5,9 @@ import NumberInput from "../../../General/Input/NumberInput";
 import TypeInput from "../../../General/Input/TypeInput";
 import FormLabel from "../../../General/Label/FormLabel";
 import { NotificationManager } from "react-notifications";
+import { APPROVE } from "../../../General/ConstStates";
 
-const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleChooseFile}) => {
-
- 
-
+const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleChooseFile, handleApproveVehicle, op}) => {
   const disableInputFields = vehicleObject.vehicleId === 0 ? true : false
 
   const [vehicleDetails, setVehicleDetails] = useState({...vehicleObject})
@@ -32,7 +30,13 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
     e.preventDefault()
     if(!validate()) return
     handleVehicleSubmit(vehicleDetails)
-    
+  }
+
+  const handleApprove = (e) => {
+    debugger
+    e.preventDefault()
+    if(!validate()) return
+    handleApproveVehicle(vehicleDetails)
   }
   return (
     <div className="col-6 col-xl-6">
@@ -49,7 +53,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Vehicle Name"}
                 valueName={vehicleDetails.vehicleModelName}
                 onChangeName={handleInputChange}
-                
+                isDisabled={op === APPROVE ? false : true}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -59,6 +63,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Vehicle Type"}
                 valueName={vehicleDetails.vehicleType}
                 onChangeName={handleInputChange}
+                isDisabled={op === APPROVE ? false : true}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -68,6 +73,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Vehicle No."}
                 valueName={vehicleDetails.vehicleNumber}
                 onChangeName={handleInputChange}
+                isDisabled={op === APPROVE ? false : true}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -77,6 +83,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Fuel Type"}
                 valueName={vehicleDetails.vehicleFuelType}
                 onChangeName={handleInputChange}
+                isDisabled={op === APPROVE ? false : true}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -86,6 +93,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"No of Seat"}
                 valueName={vehicleDetails.vehicleSeaterCount}
                 onChangeName={handleInputChange}
+                isDisabled={op === APPROVE ? false : true}
               ></NumberInput>
             </div>
             <div className="mb-3 row">
@@ -93,34 +101,52 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
               <TypeInput
                 inputName={"approveStatus"}
                 placeholderName={"Approve Status"}
-                valueName={vehicleDetails.approveStatus === true ? "Approved" :  "Not Approved"}
+                valueName={
+                  vehicleDetails.approveStatus === true
+                    ? "Approved"
+                    : "Not Approved"
+                }
                 onChangeName={handleInputChange}
-                isDisabled={true}
+                isDisabled={op === APPROVE ? false : true}
               ></TypeInput>
             </div>
 
             <div className="mb-3 row">
               <FormLabel label={"Reg. Certi."}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "RCImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput
+                handleFileUpload={(e) => handleChooseFile(e, "RCImage")}
+                isDisabled={disableInputFields}
+              ></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Insurance"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "InsuranceImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput
+                handleFileUpload={(e) => handleChooseFile(e, "InsuranceImage")}
+                isDisabled={disableInputFields}
+              ></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Permit"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "VehiclePermit")} isDisabled={disableInputFields}></FileInput>
+              <FileInput
+                handleFileUpload={(e) => handleChooseFile(e, "VehiclePermit")}
+                isDisabled={disableInputFields}
+              ></FileInput>
             </div>
-            
 
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">
-                <SubmitButton
-                  buttonName={disableInputFields ? "Submit" : "Update"}
-                  handleClick={handleSubmit}
-                  // isDisabled={agencyDetails.userId !== 0 ? true : false}
-                ></SubmitButton>
-                
+                {op === APPROVE ? (
+                  <SubmitButton
+                    buttonName={"Approve"}
+                    handleClick={handleApprove}
+                  />
+                ) : (
+                  <SubmitButton
+                    buttonName={disableInputFields ? "Submit" : "Update"}
+                    handleClick={handleSubmit}
+                    // isDisabled={agencyDetails.userId !== 0 ? true : false}
+                  />
+                )}
               </div>
             </div>
           </form>
