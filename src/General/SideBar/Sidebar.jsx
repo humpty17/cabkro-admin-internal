@@ -158,9 +158,21 @@ const Sidebar = () => {
             </a>
           </li>
           <li className="sidebar-item">
+            <a className="sidebar-link" onClick={()=>handleItemClick(AGENCYLIST)}>
+            <FiList className="align-middle" />
+              <span className="align-middle">Vehicle List</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
             <a className="sidebar-link" onClick={()=>handleItemClick(APPROVEDVEHICLE)}>
               <FiCheckCircle className="align-middle" />
               <span className="align-middle">Approve Vehicle</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className="sidebar-link" onClick={()=>handleItemClick(AGENCYLIST)}>
+            <FiList className="align-middle" />
+              <span className="align-middle">Driver List</span>
             </a>
           </li>
           <li className="sidebar-item">
@@ -169,7 +181,7 @@ const Sidebar = () => {
               <span className="align-middle">Approve Driver</span>
             </a>
           </li>
-          <li className="sidebar-item">
+          {/* <li className="sidebar-item">
             <a className="sidebar-link" href="#">
               <FaTaxi className="align-middle me-2" />
               <span className="align-middle">Add Vehicle</span>
@@ -180,7 +192,7 @@ const Sidebar = () => {
               <FiCreditCard className="align-middle" />
               <span className="align-middle">Driver Wallet</span>
             </a>
-          </li>
+          </li> */}
 
           <li className="sidebar-header">Extra</li>
           <li className="sidebar-item">

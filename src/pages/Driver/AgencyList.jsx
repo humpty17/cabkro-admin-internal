@@ -101,7 +101,7 @@ const AgencyList = ({ setEditData, editData }) => {
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
-              setEditData(rowData);
+              setEditData({op:EDIT,...rowData});
               handlePageClick(ADDAGENCY);
             }}
           />

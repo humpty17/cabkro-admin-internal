@@ -4,9 +4,9 @@ import FormLabel from "../../../General/Label/FormLabel";
 import axios from "axios";
 import { LoadingContext } from "../../../store/loading-context";
 import { NotificationManager } from "react-notifications";
-import { APICALLFAIL, APINULLERROR } from "../../../General/ConstStates";
+import { APICALLFAIL, APINULLERROR, APPROVE } from "../../../General/ConstStates";
 
-const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails }) => {
+const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails ,op}) => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const disableInputFields = agencyDetails?.carOwnerId === 0 ? true : false
   
@@ -66,17 +66,17 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails }) => {
           <form>
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card front"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "AdharFrontImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "AdharFrontImage")} isDisabled={disableInputFields || op===APPROVE ? true : false}></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card back"}></FormLabel>
               {/* <label className="col-form-label col-sm-3 text-sm-end">Aadhar card back</label> */}
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e,"AdharBackImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleFileUpload={(e)=>handleChooseFile(e,"AdharBackImage")} isDisabled={disableInputFields  || op===APPROVE ? true : false} ></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Pan card"}></FormLabel>
               {/* <label className="col-form-label col-sm-3 text-sm-end">Pan card</label> */}
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e,"PanImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleFileUpload={(e)=>handleChooseFile(e,"PanImage")} isDisabled={disableInputFields  || op===APPROVE ? true : false}></FileInput>
             </div>
             <div className="mb-3 row">
               <div className="col-sm-12 ms-sm-auto">

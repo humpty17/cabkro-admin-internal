@@ -48,17 +48,7 @@ const ApprovedAgency = ({setEditData}) => {
       width: WIDTH,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
-          <FiEdit
-            className="me-3"
-            style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => {
-              // handleEdit(rowData);
-              // setEditData(rowData);
-              // handlePageClick(ADDAGENCY);
-              // handleRedirect(ADDUSERFORM);
-              // handleUserEdit();
-            }}
-          />
+          
           <AiFillEye
             style={{ cursor: "pointer", color: "red" }}
              onClick={() => handleView(rowData)}

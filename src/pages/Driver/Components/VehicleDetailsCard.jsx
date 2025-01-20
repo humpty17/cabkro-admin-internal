@@ -53,7 +53,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Vehicle Name"}
                 valueName={vehicleDetails.vehicleModelName}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true : false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -63,7 +63,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Vehicle Type"}
                 valueName={vehicleDetails.vehicleType}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true : false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -73,7 +73,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Vehicle No."}
                 valueName={vehicleDetails.vehicleNumber}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true : false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -83,7 +83,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"Fuel Type"}
                 valueName={vehicleDetails.vehicleFuelType}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true : false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -93,7 +93,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                 placeholderName={"No of Seat"}
                 valueName={vehicleDetails.vehicleSeaterCount}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true : false}
               ></NumberInput>
             </div>
             <div className="mb-3 row">
@@ -107,7 +107,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                     : "Not Approved"
                 }
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true : false}
               ></TypeInput>
             </div>
 
@@ -139,6 +139,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                   <SubmitButton
                     buttonName={"Approve"}
                     handleClick={handleApprove}
+                    isDisabled={vehicleDetails.vehicleId === 0 ? true : false}
                   />
                 ) : (
                   <SubmitButton

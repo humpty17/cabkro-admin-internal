@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import FormLabel from "../../../General/Label/FormLabel";
 import TypeInput from "../../../General/Input/TypeInput";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
+import { APPROVE } from "../../../General/ConstStates";
 
-const AddWorkLocation = ({agencyObject,handleAgencySubmit}) => {
+const AddWorkLocation = ({agencyObject,handleAgencySubmit,op}) => {
  
 
   const disableInputFields = agencyObject?.carOwnerId === 0 ? true : false
@@ -40,7 +41,7 @@ const AddWorkLocation = ({agencyObject,handleAgencySubmit}) => {
                 placeholderName={"search location"}
                 valueName={agencyDetails.workLocation1}
                 onChangeName={handleInputChange}
-                isDisabled={disableInputFields}
+                isDisabled={disableInputFields || op===APPROVE ? true : false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -52,7 +53,7 @@ const AddWorkLocation = ({agencyObject,handleAgencySubmit}) => {
                 placeholderName={"search location"}
                 valueName={agencyDetails.workLocation2}
                 onChangeName={handleInputChange}
-                isDisabled={disableInputFields}
+                isDisabled={disableInputFields  || op===APPROVE ? true : false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -64,12 +65,12 @@ const AddWorkLocation = ({agencyObject,handleAgencySubmit}) => {
                 placeholderName={"search location"}
                 valueName={agencyDetails.workLocation3}
                 onChangeName={handleInputChange}
-                isDisabled={disableInputFields}
+                isDisabled={disableInputFields  || op===APPROVE ? true : false} 
               ></TypeInput>
             </div>
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">
-              <SubmitButton buttonName={disableInputFields ? "Submit" : "Update"} isDisabled={disableInputFields} handleClick={handleSubmit}></SubmitButton>
+              { op===APPROVE ? null :<SubmitButton buttonName={disableInputFields ? "Submit" : "Update"} isDisabled={disableInputFields} handleClick={handleSubmit}></SubmitButton>}
               </div>
             </div>
           </div>

@@ -19,6 +19,10 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
   useEffect(()=>{
     setAgencyDetails({...agencyObject})
   },[agencyObject])
+
+  useEffect(()=>{
+    console.log("op changed", op)
+  },[op])
   const handleInputChange = (e) => {
     if(e.target.name === "phoneNumber"){
       if(e.target.value.length > 10){
@@ -77,7 +81,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
                 placeholderName={"Agency Name"}
                 valueName={agencyDetails?.carOwnerAgencyName}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true: false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -87,7 +91,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
                 placeholderName={"Owner Name"}
                 valueName={agencyDetails.carOwnerName}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true: false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">
@@ -97,7 +101,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
                 placeholderName={"Phone No."}
                 valueName={agencyDetails.phoneNumber}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true: false}
               ></NumberInput>
             </div>
             <div className="mb-3 row">
@@ -117,7 +121,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
                 placeholderName={"Pan No"}
                 valueName={agencyDetails.panNo}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? false : true}
+                isDisabled={op === APPROVE ? true: false}
               ></TypeInput>
             </div>
             <div className="mb-3 row">

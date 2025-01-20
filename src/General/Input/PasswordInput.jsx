@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PasswordInput = ({type, inputName, placeholderName, valueName, onChangeName}) => {
+const PasswordInput = ({type, inputName, placeholderName, valueName, onChangeName,isDisabled}) => {
   return (
     <div className="col-sm-8">
     <input
@@ -10,6 +10,7 @@ const PasswordInput = ({type, inputName, placeholderName, valueName, onChangeNam
       placeholder={placeholderName}
       value={valueName}
       onChange={onChangeName}
+      disabled={isDisabled}
     />
     </div>
   );
