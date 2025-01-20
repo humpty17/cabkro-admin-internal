@@ -535,7 +535,7 @@ const AddBookingPackage = () => {
     }
     startLoading()
     try{
-      const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/AddBookingPackages`,previewBookingData,{});
+      const response = await callApi("post",`${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateBookingPackages`,previewBookingData,{});
       
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {

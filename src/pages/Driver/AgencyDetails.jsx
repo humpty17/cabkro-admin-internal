@@ -5,6 +5,7 @@ import {
   AGENCYLIST,
   APICALLFAIL,
   APINULLERROR,
+  EDIT,
   EMAILREGEX,
   PHONENOREGEX
 } from "../../General/ConstStates";
@@ -172,11 +173,11 @@ const AgencyDetails = ({setEditData, editData}) => {
             <h1 className="h3 mb-3">Add Agency</h1>
 
             <div className="row">
-                <AgencyDetailsCard agencyObject={agencyAllDetails} handleAgencySubmit={handleAgencySubmit} ></AgencyDetailsCard>
-              <UploadDocuments agencyDetails={agencyAllDetails} fetchCarOwnerDetails={fetchCarOwnerDetails}  />
+                <AgencyDetailsCard agencyObject={agencyAllDetails} handleAgencySubmit={handleAgencySubmit} op={EDIT}></AgencyDetailsCard>
+              <UploadDocuments agencyDetails={agencyAllDetails} fetchCarOwnerDetails={fetchCarOwnerDetails}  op={EDIT}/>
             </div>
 
-            <AddWorkLocation agencyObject={agencyAllDetails} handleAgencySubmit={handleAgencySubmit} />
+            <AddWorkLocation agencyObject={agencyAllDetails} handleAgencySubmit={handleAgencySubmit} op={EDIT}/>
           </div>
         </main>
       </div>
