@@ -24,6 +24,7 @@ import {
   SMTP,
   UPDATEAGENCYALLDETAILS,
   USERADMINLIST,
+  VEHICLELIST,
 } from "./General/ConstStates";
 import Sidebar from "./General/SideBar/Sidebar";
 import Dashboard from "./pages/Dashboard";
@@ -52,6 +53,7 @@ import ApprovedAgency from "./pages/Driver/ApprovedAgency";
 import ApprovedVehicle from "./pages/Driver/ApprovedVehicle";
 import ApprovedDriver from "./pages/Driver/ApprovedDriver";
 import UpdateAgencyAllDetails from "./pages/Driver/Components/UpdateAgencyAllDetails";
+import VehicleList from "./pages/Driver/VehicleList";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -118,6 +120,7 @@ const Home = () => {
                   editData={editData}
                 ></AgencyList>
               )}
+              {currentPage === VEHICLELIST && <VehicleList/>}
               {currentPage === APPROVEDAGENCY && (
                 <ApprovedAgency setEditData={setEditData} editData={editData} />
               )}
