@@ -37,6 +37,7 @@ export const VEHICLELIST = "VehicleList"
 export const APPROVEDAGENCY = "ApprovedAgency"
 export const APPROVEDVEHICLE = "ApprovedVehicle"
 export const APPROVEDDRIVER = "ApprovedDriver"
+export const DRIVERLIST = "DriverList"
 
 export const UPDATEAGENCYALLDETAILS = "UpdateAgencyAllDetails"
 

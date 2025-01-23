@@ -19,7 +19,7 @@ import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { CurrentPageContext } from "../../store/pages-context";
 
-const VehicleList = ({ setEditData, editData }) => {
+const DriverList = ({ setEditData, editData }) => {
   
   const columns = [
     {
@@ -102,7 +102,7 @@ const VehicleList = ({ setEditData, editData }) => {
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
               setEditData({op:EDIT,...rowData});
-             // handlePageClick(ADDAGENCY);
+              handlePageClick(ADDAGENCY);
             }}
           />
           <AiFillEye
@@ -114,26 +114,26 @@ const VehicleList = ({ setEditData, editData }) => {
     },
   ];
 
-  const [VehicleList, setVehicleList] = useState([]);
+  const [driverList, setDriverList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const { handlePageClick } = useContext(CurrentPageContext);
 
-  const fetchVehicleList = async () => {
+  const fetchDriverList = async () => {
     startLoading();
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllVehicleListAdmin/true/false`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllDriverListAdmin/true/false`,
         {},
         {}
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setVehicleList([...response?.data?.data]);
+          setDriverList([...response?.data?.data]);
         } else {
           NotificationManager.error(response?.data?.message || APINULLERROR);
-          setVehicleList([]);
+          setDriverList([]);
         }
       } else {
         NotificationManager.error(APINULLERROR);
@@ -146,7 +146,7 @@ const VehicleList = ({ setEditData, editData }) => {
   };
 
   useEffect(() => {
-    fetchVehicleList();
+    fetchDriverList();
   }, []);
 
   const handleView = async (rowData) => {
@@ -154,14 +154,14 @@ const VehicleList = ({ setEditData, editData }) => {
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetVehicleForAdminById/${rowData.carOwnerId}`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetDriverForAdminById/${rowData.carOwnerId}`,
         {},
         {}
       );
       if (response) {
         if (response?.data?.code === 200) {
           setEditData({op:EDIT, ...response?.data?.data });
-          handlePageClick(UPDATEAGENCYALLDETAILS);
+          //handlePageClick(UPDATEAGENCYALLDETAILS);
         } else {
           NotificationManager.error("Could not view agency details");
         }
@@ -179,7 +179,7 @@ const VehicleList = ({ setEditData, editData }) => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Vehicle List</h1>
+            <h1 className="h3 mb-3">Driver List</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">
@@ -196,7 +196,7 @@ const VehicleList = ({ setEditData, editData }) => {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={VehicleList}
+                            tableData={driverList}
                             tableSearchFilters={searchFilters}
                             columns={columns}
                           />
@@ -214,4 +214,4 @@ const VehicleList = ({ setEditData, editData }) => {
   );
 };
 
-export default VehicleList;
+export default DriverList;
