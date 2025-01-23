@@ -26,7 +26,7 @@ const AgencyDetails = ({setEditData, editData}) => {
     "password": "",
     "carOwnerGender": 0,
     "carOwnerDOB": getCurrentDateTime(),
-    "isAdult": false,
+    "isAdult": true,
     "workLocation1": "",
     "workLocation2": "",
     "workLocation3": "",
@@ -69,7 +69,7 @@ const AgencyDetails = ({setEditData, editData}) => {
     "carOwnerImage": "",
     "other1": 0,
     "other2": "",
-    "acceptTermsCondition": 0,
+    "acceptTermsCondition": false,
     "isUpdate": false,
   };
 

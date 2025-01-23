@@ -30,7 +30,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
       }
     }
     if (e.target.name === "acceptTermsCondition") {
-      setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.checked ? 1 : 0 });
+      setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.checked  });
     } else {
       setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.value });
     }
@@ -142,7 +142,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
                   name={"acceptTermsCondition"}
                   className="form-check-input"
                   checked={
-                    agencyDetails.acceptTermsCondition === 1 ? true : false
+                    agencyDetails.acceptTermsCondition 
                   }
                   onChange={handleInputChange}
                   isDisabled={op === APPROVE ? true : false}
