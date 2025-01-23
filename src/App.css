@@ -277,6 +277,10 @@ input::-webkit-inner-spin-button {
   right: 0;
 }
 
+.card{
+  margin-top: 10px;
+}
+
 .card-header {
   background-color: var(--bs-card-cap-bg);
   border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);

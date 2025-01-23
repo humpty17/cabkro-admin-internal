@@ -343,7 +343,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
           <div className="main">
             <main className="content">
               <div className="container-fluid p-0">
-                <h1 className="h3 mb-3">Agency </h1>
+                <h1 className="h3 mb-3">Agency Details</h1>
 
                 <div className="row">
                   <AgencyDetailsCard

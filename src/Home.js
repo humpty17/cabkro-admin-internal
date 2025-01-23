@@ -122,7 +122,9 @@ const Home = () => {
                   editData={editData}
                 ></AgencyList>
               )}
-              {currentPage === VEHICLELIST && <VehicleList/>}
+              {currentPage === VEHICLELIST && (
+                <VehicleList setEditData={setEditData} editData={editData} />
+              )}
               {currentPage === APPROVEDAGENCY && (
                 <ApprovedAgency setEditData={setEditData} editData={editData} />
               )}
@@ -132,7 +134,9 @@ const Home = () => {
                   editData={editData}
                 />
               )}
-              {currentPage === DRIVERLIST && <DriverList/>}
+              {currentPage === DRIVERLIST && (
+                <DriverList setEditData={setEditData} editData={editData} />
+              )}
               {currentPage === APPROVEDDRIVER && (
                 <ApprovedDriver setEditData={setEditData} editData={editData} />
               )}
@@ -143,7 +147,6 @@ const Home = () => {
                   editData={editData}
                 ></UpdateAgencyAllDetails>
               )}
-              
             </div>
           </div>
         )}
