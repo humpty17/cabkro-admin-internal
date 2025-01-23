@@ -93,6 +93,7 @@ const AgencyDetails = ({setEditData, editData}) => {
   
 
   const handleAgencySubmit = async (agencyDetails) => {
+      startLoading()
       try {
         const response = agencyDetails.carOwnerId === 0 ? await callApi(
           "post",
@@ -133,7 +134,7 @@ const AgencyDetails = ({setEditData, editData}) => {
       const response = await callApi("get",`${process.env.REACT_APP_API_URL_ADMIN}Data/GetCarOwnerDetailsById/${carOwnerId}`, {},{})
       if(response){
         if(response?.data?.code === 200){
-          setAgencyAllDetails({ ...response?.data?.data?.carOwnerDetails, password: agencyAllDetails.password });
+          setAgencyAllDetails({ ...response?.data?.data?.carOwnerDetails });
           NotificationManager.success(
              "Agency Details saved successfully"
           );

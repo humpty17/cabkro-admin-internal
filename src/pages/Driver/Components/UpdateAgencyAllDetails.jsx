@@ -17,8 +17,10 @@ import DriverDetailsCard from "./DriverDetailsCard";
 import { NotificationManager } from "react-notifications";
 import { LoadingContext } from "../../../store/loading-context";
 import { CurrentPageContext } from "../../../store/pages-context";
+import { LoginContext } from "../../../store/login-context";
 
 const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
+  const {user} = useContext(LoginContext);
   const vehicleInitialObject = {
     vehicleId: 0,
     carOwnerId: 0,
@@ -36,14 +38,14 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     vehicleRegistrationExpireDate: DEFAULTDATE,
     vehiclePermit: "",
     available: true,
-    approveStatus: false,
+    approveStatus: true,
     isActive: true,
     createdDate: getCurrentDateTime(),
     modifyDate: getCurrentDateTime(),
     isDeleted: false,
     deletedReason: "",
-    approvedBy: 0,
-    approvedOn: DEFAULTDATE,
+    approvedBy: user?.userId,
+    approvedOn: getCurrentDateTime(),
     registrationCertificateImage: "",
     insuranceCardImage: "",
     vehiclePermitImage: "",
@@ -65,14 +67,14 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     panNo: "",
     policeVarification: "",
     available: true,
-    approveStatus: false,
+    approveStatus: true,
     isActive: true,
     createdDate: getCurrentDateTime(),
     modifyDate: getCurrentDateTime(),
     isDeleted: false,
     deletedReason: "",
-    approvedBy: 0,
-    approvedOn: DEFAULTDATE,
+    approvedBy: user?.userId,
+    approvedOn: getCurrentDateTime(),
     aadharImageFront: "",
     aadharImageBack: "",
     driverLicenseImage: "",
