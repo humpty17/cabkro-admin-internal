@@ -158,7 +158,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
         driverData.driverId === 0
           ? await callApi(
               "post",
-              `${process.env.REACT_APP_API_URL}api/Drivers/AddDriver`,
+              `${process.env.REACT_APP_API_URL}api/Drivers/AddDriverAdmin`,
               { ...driverData },
               { ...ApiHeaders }
             )
