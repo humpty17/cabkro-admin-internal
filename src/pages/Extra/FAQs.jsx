@@ -38,7 +38,7 @@ const FAQs = () => {
       dataKey: "created_at",
       width: 200,
       cellRenderer: ({ rowData }) => {
-        const [year, month, day] = rowData["created_at"].split("T")[0].split("-");
+        const [year, month, day] = rowData["dob"].split("T")[0].split("-");
         return `${day}/${month}/${year.slice(-2)}`;
       }
     },

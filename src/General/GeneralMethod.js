@@ -41,3 +41,6 @@ export const getCurrentDate = () => {
 
     return `${year}-${month}-${day}`; // Include seconds
 }
+
+export const convertToDDMMYYYY = (date) => {
+}

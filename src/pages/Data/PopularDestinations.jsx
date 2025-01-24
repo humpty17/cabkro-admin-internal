@@ -31,7 +31,8 @@ const PopularDestinations = () => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
-      cellRenderer: ({ rowIndex }) => rowIndex + 1
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+      
     },
     {
       label: "Name",
@@ -352,6 +353,8 @@ const PopularDestinations = () => {
     
   ];
   const { user } = useContext(LoginContext);
+
+
   const popularDataExcelHeader = {
     packageName: "",
     description: "",
