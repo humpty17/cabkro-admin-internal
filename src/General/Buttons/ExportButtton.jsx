@@ -2,7 +2,8 @@ import { Workbook } from "exceljs";
 import { saveAs } from "file-saver";
 import React from "react";
 import { FaFileExport } from "react-icons/fa";
-import { ACTION, SRNOKEY } from "../ConstStates";
+import { ACTION, DATE, SRNOKEY } from "../ConstStates";
+import { formatDateDDMMYYYY } from "../GeneralMethod";
 
 const ExportButtton = ({ columns, data, fileName }) => {
   const exportToExcel = async () => {
@@ -31,7 +32,7 @@ const ExportButtton = ({ columns, data, fileName }) => {
           rowData[col.dataKey] = index + 1;
         } else {
           // Map the rest of the row data
-          rowData[col.dataKey] = row[col.dataKey];
+          rowData[col.dataKey] = col.type === DATE ? formatDateDDMMYYYY(row[col.dataKey]) :row[col.dataKey];
         }
       });
       worksheet.addRow(rowData);

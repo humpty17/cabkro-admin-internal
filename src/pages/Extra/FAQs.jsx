@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FiEdit, FiTrash2} from "react-icons/fi";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
+import { ACTION, APICALLFAIL, APINULLERROR, DATE, DELETEDATAERROR, FETCHDATAERROR, INT, SAVEDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
 import {
   callApi,
+  formatDateDDMMYYYY,
   getCurrentDateTime
 } from "../../General/GeneralMethod";
 import TypeInput from "../../General/Input/TypeInput";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, SAVEDATAERROR, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
-import { FaTrash } from "react-icons/fa";
 
 const FAQs = () => {
 
@@ -19,28 +19,41 @@ const FAQs = () => {
 
   const columns = [
     {
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+      type: INT,
+      isShow: true
+    },
+    {
       label: "Question",
       dataKey: "question",
       width: 300,
+      type:TEXT,
+      isShow: true
     },
     {
       label: "Answer",
       dataKey: "answer",
       width: 300,
+      type:TEXT,
+      isShow: true
     },
     {
       label: "Category",
       dataKey: "category",
       width: 150,
+      type:TEXT,
+      isShow: true
     },
     {
       label: "Created Date",
       dataKey: "created_at",
       width: 200,
-      cellRenderer: ({ rowData }) => {
-        const [year, month, day] = rowData["dob"].split("T")[0].split("-");
-        return `${day}/${month}/${year.slice(-2)}`;
-      }
+      cellRenderer: ({ rowData }) => formatDateDDMMYYYY(rowData["created_at"]),
+      type: DATE,
+      isShow: true
     },
     // {
     //   label: "Update Date",
@@ -51,6 +64,7 @@ const FAQs = () => {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow: true,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit

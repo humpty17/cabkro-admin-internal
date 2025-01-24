@@ -83,4 +83,7 @@ export const ApiHeadersMultipart = {
 export const EDIT = "Edit"
 export const APPROVE = "Approve"
 
+export const INT = "Int"
+export const TEXT = "Text"
+export const DATE = "Date"
 

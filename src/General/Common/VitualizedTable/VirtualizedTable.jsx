@@ -36,7 +36,7 @@ const VirtualizedTable = ({
               index % 2 === 0 ? "virtualized-row" : "virtualized-row alternate"
             }
           >
-            {columns.map(({ dataKey, label, width: colWidth,cellRenderer,flexGrow = 1 }) => (
+            {columns.map(({ dataKey, label, width: colWidth,cellRenderer,flexGrow = 1, isShow }) => (
               <Column
                 key={dataKey}
                 className= {"virtualized-header"}
@@ -49,7 +49,7 @@ const VirtualizedTable = ({
                 headerRenderer={(props) =>
                   headerRenderer({
                     ...props,
-                    tableSearchFilters,
+                    tableSearchFilters,isShow
                     //handleFilterChange,
                   })
                 }

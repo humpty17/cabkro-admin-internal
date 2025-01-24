@@ -1,9 +1,9 @@
 import { ACTION } from "../../ConstStates";
 
-export const headerRenderer = ({ dataKey, label, tableSearchFilters, handleFilterChange }) => {
+export const headerRenderer = ({ dataKey, label, tableSearchFilters, handleFilterChange , isShow}) => {
   return (
-    <div>
-      <div className="ReactVirtualized__Table__headerTruncatedText">
+    <>
+      {isShow ? <><div className="ReactVirtualized__Table__headerTruncatedText">
         {label}
       </div>
       {label !== ACTION && dataKey !== 'srNo'? (
@@ -11,13 +11,13 @@ export const headerRenderer = ({ dataKey, label, tableSearchFilters, handleFilte
           type="text"
           placeholder={`Search`}
           className="search"
-          value={tableSearchFilters[dataKey] || ""} // Ensure no undefined value
+          value={""} // Ensure no undefined value
           //onChange={(e) => handleFilterChange(dataKey, e.target.value)}
           // style={{ width: "90%", padding: "4px", marginTop: "1px" }}
         />
       ) : (
         <div style={{ marginBottom: "28px" }}></div>
-      )}
-    </div>
+      )}</> : null}
+    </>
   );
 };

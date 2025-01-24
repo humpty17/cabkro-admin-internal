@@ -33,6 +33,7 @@ const PopularDestinations = () => {
       width: SRNOWIDTH,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
       
+      
     },
     {
       label: "Name",
