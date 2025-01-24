@@ -2,7 +2,7 @@ import React from 'react'
 
 const TypeInput = ({inputName, placeholderName, valueName, onChangeName, isDisabled = false}) => {
   return (
-    <div className="col-sm-8">
+    <div className="col-sm-12">
     <input
       type="text"
       name={inputName}

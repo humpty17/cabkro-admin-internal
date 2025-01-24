@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const EmailInput = ({inputName, placeholderName, valueName, onChangeName,isDisabled}) => {
   return (
-    <div className="col-sm-8">
+    <div className="col-sm-12">
     <input
       type="email"
       name={inputName}

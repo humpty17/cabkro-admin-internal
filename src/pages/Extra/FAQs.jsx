@@ -37,6 +37,10 @@ const FAQs = () => {
       label: "Created Date",
       dataKey: "created_at",
       width: 200,
+      cellRenderer: ({ rowData }) => {
+        const [year, month, day] = rowData["created_at"].split("T")[0].split("-");
+        return `${day}/${month}/${year.slice(-2)}`;
+      }
     },
     // {
     //   label: "Update Date",
@@ -232,7 +236,7 @@ const FAQs = () => {
                   <div className="card-body">
                     <div>
                       <div className="row">
-                        <div className="mb-3 col-md-2">
+                        <div className="mb-3 col-md-3">
                           <label className="form-label" htmlFor="inputEmail4">
                             Question
                           </label>
@@ -248,7 +252,7 @@ const FAQs = () => {
                             onChangeName={handleInputChange}
                           />
                         </div>
-                        <div className="mb-3 col-md-2">
+                        <div className="mb-3 col-md-3">
                           <label
                             className="form-label"
                             htmlFor="inputPassword4"

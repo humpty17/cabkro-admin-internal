@@ -231,6 +231,10 @@ input::-webkit-inner-spin-button {
   --bs-btn-disabled-border-color: #1cbb8c !important;
 }
 
+.btn:hover{
+  color: #fff !important;
+}
+
 .btn-info {
   --bs-btn-color: #fff !important;
   --bs-btn-bg: #17a2b8 !important;
@@ -493,7 +497,7 @@ a.list-group-item {
 }
 
 .button {
-  margin-top: 31px !important;
+  margin-top: 27px !important;
 }
 
 .ReactVirtualized__Table__headerRow {
