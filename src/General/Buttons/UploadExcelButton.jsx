@@ -52,6 +52,8 @@ const UploadExcelButton = ({setPreviewData, otherData, buttonName}) => {
             data.push(rowUpdatedData);
           }
         });
+        console.log("Data:", data);
+        
         setPreviewData(data)
         console.log("Parsed Data:", data);
       } catch (err) {

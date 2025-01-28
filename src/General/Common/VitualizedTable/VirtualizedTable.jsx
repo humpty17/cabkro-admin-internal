@@ -37,7 +37,7 @@ const VirtualizedTable = ({
             }
           >
             {columns.map(({ dataKey, label, width: colWidth,cellRenderer,flexGrow = 1, isShow }) => (
-              <Column
+              isShow ? <Column
                 key={dataKey}
                 className= {"virtualized-header"}
                 label={label}
@@ -53,7 +53,7 @@ const VirtualizedTable = ({
                     //handleFilterChange,
                   })
                 }
-              />
+              /> :null
             ))}
           </Table>
         )}

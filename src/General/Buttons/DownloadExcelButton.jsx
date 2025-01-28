@@ -10,7 +10,7 @@ const DownloadExcelButton = ({ columns, fileName }) => {
     // Step 1: Create a workbook and a worksheet
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet(fileName);
-
+    console.log(columns)
     // Step 2: Add table headers
     const headers = columns; // Assumes the first row defines the structure
     worksheet.addRow(headers);

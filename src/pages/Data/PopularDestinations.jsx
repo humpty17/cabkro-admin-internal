@@ -33,8 +33,14 @@ const PopularDestinations = () => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      isShow: true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
+    {
+          label: "packageID",
+          dataKey: "packageID",
+          isShow: false,
+        },
     {
       label: "Name",
       dataKey: "packageName",
@@ -239,6 +245,7 @@ const PopularDestinations = () => {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow: true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           <FiTrash2
@@ -251,165 +258,164 @@ const PopularDestinations = () => {
   ];
   
 
-  const excelColumns = [
-    {
-      label: SRNO,
-      dataKey: SRNOKEY,
-      width: SRNOWIDTH,
-      cellRenderer: ({ rowIndex }) => rowIndex + 1
-    },
-    {
-      label: "packageID",
-      dataKey: "packageID",
-      width: 100,
-      cellRenderer: ({ rowIndex }) => rowIndex + 1
-    },
-    {
-      label: "packageName",
-      dataKey: "packageName",
-      width: 200,
-    },
-    {
-      label: "description",
-      dataKey: "description",
-      width: 200,
-    },
-    {
-      label: "pickupCity",
-      dataKey: "pickupCity",
-      width: 200,
-    },
-    {
-      label: "destinationCity",
-      dataKey: "destinationCity",
-      width: 200,
-    },
-    {
-      label: "minDistance",
-      dataKey: "minDistance",
-      width: 200,
-    },
-    {
-      label: "maxDistance",
-      dataKey: "maxDistance",
-      width: 200,
-    },
-    {
-      label: "basePrice",
-      dataKey: "basePrice",
-      width: 200,
-    },
-    {
-      label: "discountRate",
-      dataKey: "discountRate",
-      width: 200,
-    },
-    {
-      label: "discountAmount",
-      dataKey: "discountAmount",
-      width: 200,
-    },
-    {
-      label: "vehicleType",
-      dataKey: "vehicleType",
-      width: 200,
-    },
-    {
-      label: "vehicleFuelType",
-      dataKey: "vehicleFuelType",
-      width: 200,
-    },
-    {
-      label: "vehicleModelName",
-      dataKey: "vehicleModelName",
-      width: 200,
-    },
-    {
-      label: "vehicleSeaterCount",
-      dataKey: "vehicleSeaterCount",
-      width: 200,
-    },
-    {
-      label: "pickupAddress",
-      dataKey: "pickupAddress",
-      width: 200,
-    },
-    {
-      label: "destinationAddress",
-      dataKey: "destinationAddress",
-      width: 200,
-    },
-    {
-      label: "timeDurationHours",
-      dataKey: "timeDurationHours",
-      width: 200,
-    },
-    {
-      label: "dayCount",
-      dataKey: "dayCount",
-      width: 200,
-    },
-    {
-      label: "offerPrice",
-      dataKey: "offerPrice",
-      width: 200,
-    },
-    {
-      label: "rentaldays",
-      dataKey: "rentaldays",
-      width: 200,
-    },
-    {
-      label: "plusMember",
-      dataKey: "plusMember",
-      width: 200,
-      cellRenderer: ({ rowData }) => rowData["plusMember"] ?  "Yes" : "No"
-    },
-    {
-      label: "gstRate",
-      dataKey: "gstRate",
-      width: 200,
-    },
-    {
-      label: "gstAmount",
-      dataKey: "gstAmount",
-      width: 200,
-    },
-    {
-      label: "offerDescription",
-      dataKey: "offerDescription",
-      width: 200,
-    },
-    {
-      label: "breakFast",
-      dataKey: "breakFast",
-      width: 200,
-      cellRenderer: ({ rowData }) => rowData["breakFast"] ?  "Yes" : "No"
-    },
-    {
-      label: "lunch",
-      dataKey: "lunch",
-      width: 200,
-      cellRenderer: ({ rowData }) => rowData["lunch"] ?  "Yes" : "No"
-    },
-    {
-      label: "dinner",
-      dataKey: "dinner",
-      width: 200,
-      cellRenderer: ({ rowData }) => rowData["dinner"] ?  "Yes" : "No"
-    },
-    {
-      label: "extraService",
-      dataKey: "extraService",
-      width: 200,
-    },
-    {
-      label: "other2",
-      dataKey: "other2",
-      width: 200,
-    },
+  //   {
+  //     label: SRNO,
+  //     dataKey: SRNOKEY,
+  //     width: SRNOWIDTH,
+  //     cellRenderer: ({ rowIndex }) => rowIndex + 1
+  //   },
+  //   {
+  //     label: "packageID",
+  //     dataKey: "packageID",
+  //     width: 100,
+  //     cellRenderer: ({ rowIndex }) => rowIndex + 1
+  //   },
+  //   {
+  //     label: "packageName",
+  //     dataKey: "packageName",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "description",
+  //     dataKey: "description",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "pickupCity",
+  //     dataKey: "pickupCity",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "destinationCity",
+  //     dataKey: "destinationCity",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "minDistance",
+  //     dataKey: "minDistance",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "maxDistance",
+  //     dataKey: "maxDistance",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "basePrice",
+  //     dataKey: "basePrice",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "discountRate",
+  //     dataKey: "discountRate",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "discountAmount",
+  //     dataKey: "discountAmount",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "vehicleType",
+  //     dataKey: "vehicleType",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "vehicleFuelType",
+  //     dataKey: "vehicleFuelType",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "vehicleModelName",
+  //     dataKey: "vehicleModelName",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "vehicleSeaterCount",
+  //     dataKey: "vehicleSeaterCount",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "pickupAddress",
+  //     dataKey: "pickupAddress",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "destinationAddress",
+  //     dataKey: "destinationAddress",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "timeDurationHours",
+  //     dataKey: "timeDurationHours",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "dayCount",
+  //     dataKey: "dayCount",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "offerPrice",
+  //     dataKey: "offerPrice",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "rentaldays",
+  //     dataKey: "rentaldays",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "plusMember",
+  //     dataKey: "plusMember",
+  //     width: 200,
+  //     cellRenderer: ({ rowData }) => rowData["plusMember"] ?  "Yes" : "No"
+  //   },
+  //   {
+  //     label: "gstRate",
+  //     dataKey: "gstRate",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "gstAmount",
+  //     dataKey: "gstAmount",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "offerDescription",
+  //     dataKey: "offerDescription",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "breakFast",
+  //     dataKey: "breakFast",
+  //     width: 200,
+  //     cellRenderer: ({ rowData }) => rowData["breakFast"] ?  "Yes" : "No"
+  //   },
+  //   {
+  //     label: "lunch",
+  //     dataKey: "lunch",
+  //     width: 200,
+  //     cellRenderer: ({ rowData }) => rowData["lunch"] ?  "Yes" : "No"
+  //   },
+  //   {
+  //     label: "dinner",
+  //     dataKey: "dinner",
+  //     width: 200,
+  //     cellRenderer: ({ rowData }) => rowData["dinner"] ?  "Yes" : "No"
+  //   },
+  //   {
+  //     label: "extraService",
+  //     dataKey: "extraService",
+  //     width: 200,
+  //   },
+  //   {
+  //     label: "other2",
+  //     dataKey: "other2",
+  //     width: 200,
+  //   },
     
-  ];
+  // ];
   const { user } = useContext(LoginContext);
 
 
@@ -650,7 +656,7 @@ const PopularDestinations = () => {
                         />
                       ) : null}
                       {isShowPreview === false ? <ExportButtton
-                        columns={excelColumns}
+                        columns={columns}
                         fileName={"Popular_Destinations_List"}
                         data={getDestination}
                       /> : null}

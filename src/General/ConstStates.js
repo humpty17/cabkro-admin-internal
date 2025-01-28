@@ -42,6 +42,8 @@ export const DRIVERLIST = "DriverList"
 export const UPDATEAGENCYALLDETAILS = "UpdateAgencyAllDetails"
 
 
+// global data key
+
 //REGEX CONSTANTS
 export const PHONENOREGEX = /^\d{10}$/;
 export const EMAILREGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
@@ -80,9 +82,11 @@ export const ApiHeadersMultipart = {
   "Content-Type": "application/json",
 };
 
+// edit data for driver section
 export const EDIT = "Edit"
 export const APPROVE = "Approve"
 
+// for coloumn 
 export const INT = "Int"
 export const TEXT = "Text"
 export const DATE = "Date"

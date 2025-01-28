@@ -17,7 +17,7 @@ const ExportButtton = ({ columns, data, fileName }) => {
 
     // Add headers dynamically
     const headers = filteredColumns.map((col) => ({
-      header: col.label, // Use 'label' for header text
+      header: col.dataKey, // Use 'label' for header text
       key: col.dataKey, // Use 'dataKey' to match your column keys
       width: 20, // Set a default width or customize it
     }));
