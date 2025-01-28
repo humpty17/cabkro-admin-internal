@@ -12,9 +12,11 @@ import {
   APINULLERROR,
   DELETEDATAERROR,
   FETCHDATAERROR,
+  INT,
   SRNO,
   SRNOKEY,
   SRNOWIDTH,
+  TEXT,
 } from "../../General/ConstStates";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
@@ -29,47 +31,64 @@ const AddVehicleList = () => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
-      cellRenderer: ({ rowIndex }) => rowIndex + 1
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+      type: INT,
+      isShow: true,
     },
     {
       label: "Brand",
       dataKey: "vehicleBrand",
       width: 150,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Type",
       dataKey: "vehicleType",
       width: 150,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Model Name",
       dataKey: "vehicleModelName",
       width: 150,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Fuel Type",
       dataKey: "vehicleFuelType",
       width: 150,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Seats",
       dataKey: "vehiclesSeats",
       width: 150,
+      type: INT,
+      isShow: true,
     },
     {
       label: "Looking",
       dataKey: "vehicleLooking",
       width: 150,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Colour",
       dataKey: "vehicleColour",
       width: 150,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: ACTION,
       dataKey: ACTION,
       width: 100,
+      isShow: true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           <FiTrash2
@@ -77,7 +96,7 @@ const AddVehicleList = () => {
             onClick={() => handleDeleteAction(rowData, rowIndex)}
           />
         </div>
-      ),
+      ), // Actions are not data but can be represented as text
     },
   ];
 
@@ -98,7 +117,7 @@ const AddVehicleList = () => {
     userId: user ? user.userId : 0,
     isActive: true,
     isDeleted: false,
-    other1:0
+    other1: 0,
   };
 
   const { startLoading, stopLoading } = useContext(LoadingContext);
@@ -130,8 +149,7 @@ const AddVehicleList = () => {
     } catch (error) {
       console.error("API call failed:", error);
       NotificationManager.error(APICALLFAIL, error);
-    }
-    finally{
+    } finally {
       stopLoading();
     }
   };
@@ -141,7 +159,6 @@ const AddVehicleList = () => {
 
   // Function to delete a row
   const handleDeleteAction = (rowData, rowIndex) => {
-    
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -149,22 +166,20 @@ const AddVehicleList = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then(async(result) => {
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        if(isShowPreview){
-          handleDeleteFromPreview(rowIndex)
+        if (isShowPreview) {
+          handleDeleteFromPreview(rowIndex);
+        } else {
+          handleDeleteVehicle(rowData);
         }
-        else{
-          handleDeleteVehicle(rowData)
-        }
-        
       }
     });
   };
 
   //DELETE VEHICLE FROM LIST
-  const handleDeleteVehicle = async (rowData)=>{
+  const handleDeleteVehicle = async (rowData) => {
     const { vid } = rowData;
     startLoading();
     try {
@@ -191,21 +206,19 @@ const AddVehicleList = () => {
         NotificationManager.error(APINULLERROR);
       }
     } catch (error) {
-      
       console.error(APICALLFAIL, error);
       NotificationManager.error(APICALLFAIL, error);
-    }
-    finally{
+    } finally {
       stopLoading();
     }
-  }
+  };
 
   //DELETE VEHICLE FROM PREVIEW
-  const handleDeleteFromPreview = async (rowIndex)=>{
+  const handleDeleteFromPreview = async (rowIndex) => {
     const updatedData = [...previewBookingData];
     updatedData.splice(rowIndex, 1);
     setPreviewBookingData(updatedData);
-  }
+  };
 
   const submitExcelData = async () => {
     if (previewBookingData.length === 0) {
@@ -216,7 +229,7 @@ const AddVehicleList = () => {
     // previewBookingData.forEach((data,index)=>{
     //   data.breakFast.toLowerCase() === "true" ? data.breakFast = true : data.breakFast = false
     //   data.lunch.toLowerCase() === "true" ? data.lunch = true : data.lunch = false
-    //   data.dinner.toLowerCase() === "true" ? data.dinner = true : data.dinner = false 
+    //   data.dinner.toLowerCase() === "true" ? data.dinner = true : data.dinner = false
     // })
     try {
       const response = await callApi(
@@ -263,43 +276,45 @@ const AddVehicleList = () => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Vehicle List</h1>
+            <h1 className="h3 mb-3">Add Vehicle List</h1>
 
             <div className="card">
               {/* Card Header */}
               <div className="card-header">
                 <div className="row">
-                <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
-                <div className="mb-3 text-end col-7">
-                  {isShowPreview === false ? (
-                    <UploadExcelButton
-                      setPreviewData={setPreviewData}
-                      otherData={otherData}
-                      buttonName={"Upload Vehicle List"}
-                    />
-                  ) : null}
-                  {isShowPreview === false ? (
-                    <DownloadExcelButton
-                      columns={Object.keys(initialVehicle)}
-                      fileName={"Add_Vehicle_Sample"}
-                    />
-                  ) : null}
-                  {isShowPreview === true ?  <ExportButtton
+                  <h2 className="col-5">{isShowPreview ? "Preview" : ""}</h2>
+                  <div className="mb-3 text-end col-7">
+                    {isShowPreview === false ? (
+                      <UploadExcelButton
+                        setPreviewData={setPreviewData}
+                        otherData={otherData}
+                        buttonName={"Upload_Vehicle_List"}
+                      />
+                    ) : null}
+                    {isShowPreview === false ? (
+                      <DownloadExcelButton
+                        columns={Object.keys(initialVehicle)}
+                        fileName={"Download_Vehicle_List"}
+                      />
+                    ) : null}
+                    {isShowPreview === false ? (
+                      <ExportButtton
                         columns={columns}
-                        fileName={"User_Admin_List"}
-                        data={user}
-                      />: null}
-                  {isShowPreview === true ? (
-                    <SubmitExcelButton
-                      handleSubmitClick={submitExcelData}
-                    ></SubmitExcelButton>
-                  ) : null}
-                  {isShowPreview === true ? (
-                    <CancelExcelButton
-                      handleCancelClick={handleCancelClick}
-                    ></CancelExcelButton>
-                  ) : null}
-                </div>
+                        fileName={"Export_Add_Vehicle_List"}
+                        data={AddVehicleData}
+                      />
+                    ) : null}
+                    {isShowPreview === true ? (
+                      <SubmitExcelButton
+                        handleSubmitClick={submitExcelData}
+                      ></SubmitExcelButton>
+                    ) : null}
+                    {isShowPreview === true ? (
+                      <CancelExcelButton
+                        handleCancelClick={handleCancelClick}
+                      ></CancelExcelButton>
+                    ) : null}
+                  </div>
                 </div>
               </div>
 

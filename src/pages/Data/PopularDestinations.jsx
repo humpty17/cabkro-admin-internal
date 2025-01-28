@@ -37,10 +37,10 @@ const PopularDestinations = () => {
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
-          label: "packageID",
-          dataKey: "packageID",
-          isShow: false,
-        },
+      label: "packageID",
+      dataKey: "packageID",
+      isShow: false,
+    },
     {
       label: "Name",
       dataKey: "packageName",
