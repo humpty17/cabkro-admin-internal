@@ -9,15 +9,18 @@ import {
   APICALLFAIL,
   APINULLERROR,
   EDIT,
+  INT,
   SRNO,
   SRNOKEY,
   SRNOWIDTH,
+  TEXT,
   UPDATEAGENCYALLDETAILS,
   WIDTH,
 } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { CurrentPageContext } from "../../store/pages-context";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const AgencyList = ({ setEditData, editData }) => {
   
@@ -26,82 +29,105 @@ const AgencyList = ({ setEditData, editData }) => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      type: INT,
+      isShow: true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
       label: "Agency Name",
       dataKey: "carOwnerAgencyName",
       width: 220,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Owner Name",
       dataKey: "carOwnerName",
       width: 220,
+      type: TEXT,
+      isShow: true,
     },
-
     {
       label: "Phone No",
       dataKey: "phoneNumber",
       width: 220,
+      type: TEXT, // Phone numbers are generally stored as text to preserve formatting
+      isShow: true,
     },
     {
       label: "Email",
       dataKey: "email",
       width: 220,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "PAN No",
       dataKey: "panNo",
       width: 220,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Work Location 1",
       dataKey: "workLocation1",
       width: 220,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Work Location 2",
       dataKey: "workLocation2",
       width: 220,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Work Location 3",
       dataKey: "workLocation3",
       width: 220,
+      type: TEXT,
+      isShow: true,
     },
-
     {
       label: "Adhar Front",
       dataKey: "aadharImageFront",
       width: 220,
-      cellRenderer: ({ rowData, rowIndex }) =>
+      type: TEXT, // Treated as text since it's a yes/no indicator
+      isShow: true,
+      cellRenderer: ({ rowData }) =>
         rowData["aadharImageFront"] ? "Yes" : "No",
     },
     {
       label: "Adhar Back",
       dataKey: "aadharImageBack",
       width: 220,
-      cellRenderer: ({ rowData, rowIndex }) =>
-        rowData["aadharImageFront"] ? "Yes" : "No",
+      type: TEXT, // Treated as text since it's a yes/no indicator
+      isShow: true,
+      cellRenderer: ({ rowData }) =>
+        rowData["aadharImageBack"] ? "Yes" : "No",
     },
     {
       label: "Pan Image",
       dataKey: "panImage",
       width: 220,
-      cellRenderer: ({ rowData, rowIndex }) =>
-        rowData["aadharImageFront"] ? "Yes" : "No",
+      type: TEXT, // Treated as text since it's a yes/no indicator
+      isShow: true,
+      cellRenderer: ({ rowData }) =>
+        rowData["panImage"] ? "Yes" : "No",
     },
     {
       label: ACTION,
       dataKey: ACTION,
-      width: WIDTH,
-      cellRenderer: ({ rowData, rowIndex }) => (
+      width: WIDTH, // Actions are treated as text for identification purposes
+      isShow: true,
+      cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
-              setEditData({op:EDIT,...rowData});
+              setEditData({ op: EDIT, ...rowData });
               handlePageClick(ADDAGENCY);
             }}
           />
@@ -113,6 +139,7 @@ const AgencyList = ({ setEditData, editData }) => {
       ),
     },
   ];
+  
 
   const [agencyList, setAgencyList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
@@ -188,6 +215,11 @@ const AgencyList = ({ setEditData, editData }) => {
                       <h2 className="col-5 font"></h2>
                       <div className="mb-3 text-end col-7">
                         {/* Export Excel Button */}
+                        <ExportButtton
+                            columns={columns}
+                            fileName={"Export_Agency_List"}
+                            data={agencyList}
+                          ></ExportButtton>
                       </div>
                     </div>
                   </div>

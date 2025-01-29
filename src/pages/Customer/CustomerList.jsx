@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiEdit, FiEdit2, FiTrash2 } from "react-icons/fi";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, ADDCUSTOMER, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, WIDTH } from "../../General/ConstStates";
+import { ACTION, ADDCUSTOMER, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, WIDTH } from "../../General/ConstStates";
 import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
@@ -15,32 +15,44 @@ const CustomerList = ({ editData, setEditData }) => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      type: INT,
+      isShow: true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
       label: "First Name",
       dataKey: "userFirstName",
       width: 200,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Last Name",
       dataKey: "userLastName",
       width: 200,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Phone Number",
       dataKey: "phoneNo",
       width: 200,
+      type: TEXT, // Phone numbers are generally stored as text to preserve formatting
+      isShow: true,
     },
     {
       label: "Email",
       dataKey: "userEmail",
       width: 200,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Gender",
       dataKey: "gender",
       width: 150,
+      type: INT, // Assuming gender is stored as an integer (e.g., 1 for Male, 2 for Female)
+      isShow: true,
       cellRenderer: ({ rowData }) =>
         rowData["gender"] === 2 ? "Female" : "Male",
     },
@@ -48,6 +60,8 @@ const CustomerList = ({ editData, setEditData }) => {
       label: "Date of Birth",
       dataKey: "dob",
       width: 200,
+      type: TEXT, // Dates are generally treated as text for display purposes
+      isShow: true,
       cellRenderer: ({ rowData }) => {
         const [year, month, day] = rowData["dob"].split("T")[0].split("-");
         return `${day}/${month}/${year.slice(-2)}`;
@@ -57,26 +71,35 @@ const CustomerList = ({ editData, setEditData }) => {
       label: "Location",
       dataKey: "homeLocation",
       width: 200,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Work Location",
       dataKey: "workLocation",
       width: 200,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Payment Method",
       dataKey: "paymentMethod",
       width: 200,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: "Code",
       dataKey: "referCode",
       width: 200,
+      type: TEXT,
+      isShow: true,
     },
     {
       label: ACTION,
       dataKey: ACTION,
-      width: WIDTH,
+      width: WIDTH, // Actions are treated as text for identification purposes
+      isShow: true,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit
@@ -95,6 +118,7 @@ const CustomerList = ({ editData, setEditData }) => {
       ),
     },
   ];
+  
 
   const InitialCustomer = {
     userId: 0,
@@ -297,40 +321,11 @@ const CustomerList = ({ editData, setEditData }) => {
         <div className="card-header d-flex justify-content-end">
           <ExportButtton
             columns={columns}
-            fileName={"Customer_List"}
+            fileName={"Export_Customer_List"}
             data={customerData}
           />
         </div>
         <div className="card-body">
-          {/* <table className="table table-striped">
-            <thead className="table-dark">
-              <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Age</th>
-                <th>Start Date</th>
-                <th>Salary</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCustomers.slice(0, entries).map((customer, index) => (
-                <tr key={index}>
-                  <td>{customer.name}</td>
-                  <td>{customer.position}</td>
-                  <td>{customer.office}</td>
-                  <td>{customer.age}</td>
-                  <td>{customer.startDate}</td>
-                  <td>{customer.salary}</td>
-                  <td>
-                    <FiEdit2 className="me-3 text-primary cursor-pointer" />
-                    <FiTrash2 className="text-danger cursor-pointer" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
           <div className="col-sm-12">
             <VirtualizedTable
               tableData={customerData}

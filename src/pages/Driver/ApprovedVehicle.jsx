@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ACTION, APICALLFAIL, APINULLERROR, APPROVE, SRNO, SRNOKEY, SRNOWIDTH, UPDATEAGENCYALLDETAILS, WIDTH } from '../../General/ConstStates';
+import { ACTION, APICALLFAIL, APINULLERROR, APPROVE, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEAGENCYALLDETAILS, WIDTH } from '../../General/ConstStates';
 import { FiEdit } from 'react-icons/fi';
 import { AiFillEye } from 'react-icons/ai';
 import { LoadingContext } from '../../store/loading-context';
@@ -7,6 +7,7 @@ import { callApi } from '../../General/GeneralMethod';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
 import { NotificationManager } from 'react-notifications';
 import { CurrentPageContext } from '../../store/pages-context';
+import ExportButtton from '../../General/Buttons/ExportButtton';
 
 const ApprovedVehicle = ({setEditData}) => {
   const columns = [
@@ -14,48 +15,65 @@ const ApprovedVehicle = ({setEditData}) => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      type: INT,
+      isShow: true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
       label: "Vehicle Number",
       dataKey: "vehicleNumber",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Fuel Type",
       dataKey: "vehicleFuelType",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
 
     {
       label: "Phone No",
       dataKey: "phoneNumber",
+      type: INT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Email",
       dataKey: "email",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Model Name",
       dataKey: "vehicleModelName",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Company Name",
       dataKey: "vehicleCompanyName",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Seater Count",
       dataKey: "vehicleSeaterCount",
+      type: INT,
+      isShow: true,
       width: 220,
     },
     {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow: true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           <FiEdit
@@ -155,6 +173,11 @@ const ApprovedVehicle = ({setEditData}) => {
                       <h2 className="col-5 font"></h2>
                       <div className="mb-3 text-end col-7">
                         {/* Export Excel Button */}
+                        <ExportButtton
+                          columns={columns}
+                          fileName={"Export_Approved_Vehicle_List"}
+                          data={approvedVehicleList}
+                        ></ExportButtton>
                       </div>
                     </div>
                   </div>

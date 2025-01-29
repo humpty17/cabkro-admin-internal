@@ -9,15 +9,18 @@ import {
   APICALLFAIL,
   APINULLERROR,
   EDIT,
+  INT,
   SRNO,
   SRNOKEY,
   SRNOWIDTH,
+  TEXT,
   UPDATEAGENCYALLDETAILS,
   WIDTH,
 } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { CurrentPageContext } from "../../store/pages-context";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const DriverList = ({ setEditData, editData }) => {
   
@@ -26,47 +29,65 @@ const DriverList = ({ setEditData, editData }) => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      type: INT,
+      isShow: true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
       label: "Vehicle Number",
       dataKey: "vehicleNumber",
+      type: INT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Vehicle Type",
       dataKey: "vehicleType",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
 
     {
       label: "Phone No",
       dataKey: "phoneNumber",
+      type: INT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Email",
       dataKey: "email",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Fuel Type",
       dataKey: "vehicleFuelType",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Model Name",
       dataKey: "vehicleModelName",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Company Name",
       dataKey: "vehicleCompanyName",
+      type: TEXT,
+      isShow: true,
       width: 220,
     },
     {
       label: "Seater Count",
       dataKey: "vehicleSeaterCount",
+      type: INT,
+      isShow: true,
       width: 220,
     },
 
@@ -95,6 +116,7 @@ const DriverList = ({ setEditData, editData }) => {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow: true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           <FiEdit
@@ -188,6 +210,11 @@ const DriverList = ({ setEditData, editData }) => {
                       <h2 className="col-5 font"></h2>
                       <div className="mb-3 text-end col-7">
                         {/* Export Excel Button */}
+                        <ExportButtton
+                          columns={columns}
+                          fileName={"Export_Driver_List"}
+                          data={driverList}
+                        ></ExportButtton>
                       </div>
                     </div>
                   </div>

@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { LoadingContext } from "../../store/loading-context";
-import { ACTION, APICALLFAIL, APINULLERROR, APPROVE, SRNO, SRNOKEY, SRNOWIDTH, UPDATEAGENCYALLDETAILS, WIDTH } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, APPROVE, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEAGENCYALLDETAILS, WIDTH } from "../../General/ConstStates";
 import { FiEdit } from "react-icons/fi";
 import { AiFillEye } from "react-icons/ai";
 import { NotificationManager } from "react-notifications";
 import { callApi } from "../../General/GeneralMethod";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import { CurrentPageContext } from "../../store/pages-context";
+import { type } from "@testing-library/user-event/dist/type";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const ApprovedAgency = ({setEditData}) => {
   const columns = [
@@ -14,38 +16,51 @@ const ApprovedAgency = ({setEditData}) => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      type : INT,
+      isShow : true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
       label: "Car Owner Name",
       dataKey: "carOwnerName",
       width: 220,
+      type : TEXT,
+      isShow : true
     },
     {
       label: "Car Owner Agency Name",
       dataKey: "carOwnerAgencyName",
       width: 220,
+      type : TEXT,
+      isShow : true
     },
 
     {
       label: "Phone No",
       dataKey: "phoneNumber",
       width: 220,
+      type : INT,
+      isShow : true,
     },
     {
       label: "Email",
       dataKey: "email",
       width: 220,
+      type : TEXT,
+      isShow : true,
     },
     {
       label: "PAN No",
       dataKey: "panNo",
       width: 220,
+      type: INT,
+      isShow : true
     },
     {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow : true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
           
@@ -133,6 +148,11 @@ const ApprovedAgency = ({setEditData}) => {
                       <h2 className="col-5 font"></h2>
                       <div className="mb-3 text-end col-7">
                         {/* Export Excel Button */}
+                        <ExportButtton
+                            columns={columns}
+                            fileName={"Export_Approved_Agency_List"}
+                            data={approvedAgencyList}
+                          ></ExportButtton>
                       </div>
                     </div>
                   </div>
