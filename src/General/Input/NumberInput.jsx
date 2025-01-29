@@ -3,7 +3,7 @@ import React from 'react'
 
 const NumberInput = ({inputName, placeholderName, valueName, onChangeName, isDisabled}) => {
   return (
-    <div className="col-sm-8">
+    <div className="col-sm-12">
     <input
     type="number"
     name={inputName}

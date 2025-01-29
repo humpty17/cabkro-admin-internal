@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FaFileExport } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
-import { callApi, getCurrentDateTime } from '../../General/GeneralMethod';
+import { callApi, formatDateDDMMYYYY, getCurrentDateTime } from '../../General/GeneralMethod';
 import { LoadingContext } from '../../store/loading-context';
 import ExportButtton from '../../General/Buttons/ExportButtton';
-import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, SRNO, SRNOKEY, SRNOWIDTH, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
+import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { CurrentPageContext } from '../../store/pages-context';
 
@@ -16,41 +16,52 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      type : INT,
+      isShow : true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
       label: "First Name",
       dataKey: "userFirstName",
+      type : TEXT,
+      isShow : true,
       width: 200,
     },
     {
       label: "Last Name",
       dataKey: "userLastName",
+      type : TEXT,
+      isShow : true,
       width: 200,
     },
     {
       label: "Phone No.",
       dataKey: "phoneNo",
+      type : INT,
+      isShow : true,
       width: 150,
     },
     {
       label: "Email",
       dataKey: "userEmail",
+      type : TEXT,
+      isShow : true,
       width: 250,
     },
     {
       label: "Date of Birth",
       dataKey: "dob",
+      type : INT,
+      isShow : true,
       width: 150,
-      cellRenderer: ({ rowData }) => {
-        const [year, month, day] = rowData["dob"].split("T")[0].split("-");
-        return `${day}/${month}/${year.slice(-2)}`;
-      }
+      cellRenderer: ({ rowData }) => formatDateDDMMYYYY(rowData["dob"]),
     },
     {
       label: "Gender",
       dataKey: "gender",
       width: 150,
+      type : TEXT,
+      isShow : true,
       cellRenderer: ({ rowData }) =>
         rowData["gender"] === 2 ? "Female" : "Male",
     },
@@ -58,6 +69,7 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow : true,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FiEdit, FiEdit2, FiTrash2 } from "react-icons/fi";
-import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
+import { callApi, formatDateDDMMYYYY, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { ACTION, ADDCUSTOMER, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, WIDTH } from "../../General/ConstStates";
 import { NotificationManager } from "react-notifications";
@@ -62,10 +62,7 @@ const CustomerList = ({ editData, setEditData }) => {
       width: 200,
       type: TEXT, // Dates are generally treated as text for display purposes
       isShow: true,
-      cellRenderer: ({ rowData }) => {
-        const [year, month, day] = rowData["dob"].split("T")[0].split("-");
-        return `${day}/${month}/${year.slice(-2)}`;
-      },
+      cellRenderer: ({ rowData }) => formatDateDDMMYYYY(rowData["dob"]),
     },
     {
       label: "Location",

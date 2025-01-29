@@ -4,7 +4,7 @@ import { NotificationManager } from "react-notifications";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
-import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
+import { callApi, formatDateDDMMYYYY, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import {
   ACTION,
@@ -12,10 +12,12 @@ import {
   APINULLERROR,
   DELETEDATAERROR,
   FETCHDATAERROR,
+  INT,
   SAVEDATAERROR,
   SRNO,
   SRNOKEY,
   SRNOWIDTH,
+  TEXT,
   UPDATEDATAERROR,
   WIDTH,
 } from "../../General/ConstStates";
@@ -29,27 +31,38 @@ const Coupons = () => {
       label: SRNO,
       dataKey: SRNOKEY,
       width: SRNOWIDTH,
+      type : INT,
+      isShow: true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
       label: "Coupon Code",
       dataKey: "couponCode",
+      type : INT,
+      isShow: true,
       width: 200,
     },
     {
       label: "Discount Amount",
       dataKey: "discountAmount",
+      type : TEXT,
+      isShow: true,
       width: 150,
     },
     {
       label: "Discount Percent",
       dataKey: "discountPercent",
+      type : INT,
+      isShow: true,
       width: 150,
     },
     {
       label: "Applied Date",
       dataKey: "appliedDate",
+      type : INT,
+      isShow: true,
       width: 200,
+      cellRenderer: ({ rowData }) => formatDateDDMMYYYY(rowData["appliedDate"]),
     },
     // {
     //   label: "Is Valid",
@@ -60,6 +73,7 @@ const Coupons = () => {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow: true,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit
@@ -266,7 +280,7 @@ const Coupons = () => {
                   <div className="card-body">
                     <div>
                       <div className="row">
-                        <div className="mb-3 col-md-2">
+                        <div className="mb-3 col-md-3 ">
                           <label className="form-label" htmlFor="couponCode">
                             Coupon Code
                           </label>

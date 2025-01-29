@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, INT, TEXT, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
 import { LoginContext } from "../../store/login-context";
 import { LoadingContext } from "../../store/loading-context";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
@@ -17,43 +17,59 @@ function ContactUs() {
     {
       label: "emailId",
       dataKey: "emailId",
+      type: TEXT,
+      isShow: true,
       width: 200,
     },
     {
       label: "phoneNo",
       dataKey: "phoneNo",
+      type: INT,
+      isShow: true,
       width: 200,
     },
     {
       label: "Name",
       dataKey: "senderName",
+      type: TEXT,
+      isShow: true,
       width: 200,
     },
     {
       label: "subject",
       dataKey: "subject",
+      type: TEXT,
+      isShow: true,
       width: 100,
     },
     {
       label: "message",
       dataKey: "message",
+      type: TEXT,
+      isShow: true,
       width: 200,
     },
     {
       label: "Message",
       dataKey: "replyMessage",
+      type: TEXT,
+      isShow: true,
       width: 150,
     },
     {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
+      isShow: true,
       cellRenderer: ({ rowData }) => (
         <div>
           <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
-            onClick={() => {setIsEditMode(true);setModalData(rowData)}}
+            onClick={() => {
+              setIsEditMode(true);
+              setModalData(rowData);
+            }}
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           />
@@ -220,65 +236,6 @@ function ContactUs() {
                     >
                       <div className="row dt-row">
                         <div className="col-sm-12">
-                          {/* <table
-                            id="datatables-reponsive"
-                            className="table table-striped dataTable no-footer dtr-inline"
-                            style={{ width: "100%" }}
-                          >
-                            <thead className="table-dark">
-                              <tr>
-                                <th>Sr no.</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Subject</th>
-                                <th>Comment</th>
-                                <th>Created Date</th>
-                                <th>Reply</th>
-                                <th>Reply Date</th>
-                                <th>Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr className="odd">
-                                <td>1</td>
-                                <td>Accountant</td>
-                                <td>100</td>
-                                <td></td>
-                                <td></td>
-                                <td>12-12-2024</td>
-                                <td>yes</td>
-                                <td>12-12-2024</td>
-                                <td>
-                                  <FaEdit
-                                    className="align-middle me-3"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
-                                    onClick={() => handleEdit("Subject 1", "Message 1")}
-                                  />
-                                  <FaTrashAlt className="align-middle" />
-                                </td>
-                              </tr>
-                              <tr className="even">
-                                <td>2</td>
-                                <td>Chief Executive Officer (CEO)</td>
-                                <td></td>
-                                <td>16</td>
-                                <td>16</td>
-                                <td>12-12-2024</td>
-                                <td>yes</td>
-                                <td>12-12-2024</td>
-                                <td>
-                                  <FaEdit
-                                    className="align-middle me-3"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
-                                    onClick={() => handleEdit("Subject 2", "Message 2")}
-                                  />
-                                  <FaTrashAlt className="align-middle" />
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table> */}
                           <VirtualizedTable
                             tableData={contactData}
                             tableSearchFilters={searchFilters}
