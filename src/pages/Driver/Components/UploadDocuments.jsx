@@ -1,22 +1,45 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FileInput from "../../../General/Input/FileInput";
 import FormLabel from "../../../General/Label/FormLabel";
 import axios from "axios";
 import { LoadingContext } from "../../../store/loading-context";
 import { NotificationManager } from "react-notifications";
 import { APICALLFAIL, APINULLERROR, APPROVE } from "../../../General/ConstStates";
+import DownloadImage from "../../../General/Buttons/DownloadImage";
 
 const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails ,op}) => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const disableInputFields = agencyDetails?.carOwnerId === 0 ? true : false
+
+  useEffect(()=>{
+      console.log(agencyDetails)
+  }, [agencyDetails])
+  const handleDownload = (e) => {
+    e.preventDefault()
+    if (image) {
+      const link = document.createElement("a");
+      link.href = imageUrl;
+      link.download = image.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
   
   const handleChooseFile = async (event, type) => {
     debugger
-    console.log("handle choose file")
+    event.preventDefault()
     startLoading();
     const file = event.target.files[0];
-    console.log(file)
-    console.log(type)
+    // console.log(file)
+    // console.log(type)
+    if (file) {
+      setImage(file);
+      setImageUrl(URL.createObjectURL(file));
+    }
+
     const fileFormData = new FormData();
       fileFormData.append("file", file);
       fileFormData.append("FileName", type);
@@ -66,17 +89,31 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails ,op}) => {
           <form>
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card front"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "AdharFrontImage")} isDisabled={disableInputFields || op===APPROVE ? true : false}></FileInput>
+              <FileInput
+                handleFileUpload={(e) => handleChooseFile(e, "AdharFrontImage")}
+                isDisabled={disableInputFields || op === APPROVE ? true : false}
+                image={agencyDetails?.aadharImageFront ? process.env.REACT_APP_API_URL + agencyDetails.aadharImageFront: ""}
+              ></FileInput>
+              {image ? <DownloadImage imageUrl={imageUrl} handleDownload={handleDownload}/>:null}
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card back"}></FormLabel>
-              {/* <label className="col-form-label col-sm-3 text-sm-end">Aadhar card back</label> */}
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e,"AdharBackImage")} isDisabled={disableInputFields  || op===APPROVE ? true : false} ></FileInput>
+              <FileInput
+                handleFileUpload={(e) => handleChooseFile(e, "AdharBackImage")}
+                isDisabled={disableInputFields || op === APPROVE ? true : false}
+                image={image ? image : null}
+              ></FileInput>
+              <DownloadImage imageUrl={imageUrl} handleDownload={handleDownload}/>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Pan card"}></FormLabel>
               {/* <label className="col-form-label col-sm-3 text-sm-end">Pan card</label> */}
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e,"PanImage")} isDisabled={disableInputFields  || op===APPROVE ? true : false}></FileInput>
+              <FileInput
+                handleFileUpload={(e) => handleChooseFile(e, "PanImage")}
+                isDisabled={disableInputFields || op === APPROVE ? true : false}
+                image={image ? image : null}
+              ></FileInput>
+              <DownloadImage imageUrl={imageUrl} handleDownload={handleDownload}/>
             </div>
             <div className="mb-3 row">
               <div className="col-sm-12 ms-sm-auto">
