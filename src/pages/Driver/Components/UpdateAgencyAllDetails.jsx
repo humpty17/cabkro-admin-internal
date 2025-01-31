@@ -98,11 +98,11 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
   useEffect(() => {
     console.log(editData);
     if (Object.keys(editData).length > 0) {
-      console.log("edit data", editData);
+      // console.log("edit data", editData);
       setAgencyAllDetails(editData);
     }
   }, [editData]);
-  console.log(editData.approveStatus);
+  // console.log(editData.approveStatus);
 
   const handleVehicleSubmit = async (vehicleData) => {
     console.log(vehicleData);

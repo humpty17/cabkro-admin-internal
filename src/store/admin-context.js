@@ -6,6 +6,11 @@ export const AdminContext = createContext({
   sidebarOpen:false,
   type:"password",
   icon:'',
+  image : null,
+  setImage : () => {},
+  imageUrl : '',
+  setImageUrl : () => {},
+  handleDownload : () => {},
   handleSideClick: () =>{},
   handleToggleData : () => {}
 })
@@ -14,6 +19,8 @@ const AdminContextProvider = ({children}) =>{
   const [sidebarOpen, setSidebarOpen] = useState(false);
     const [type, setType] = useState('password');
     const [icon, setIcon] = useState(<FaEyeSlash/>);
+    const [image, setImage] = useState(null);
+    const [imageUrl, setImageUrl] = useState("");
   
 
   const handleSideClick = () => {
@@ -30,17 +37,28 @@ const AdminContextProvider = ({children}) =>{
     }
   };
 
-  // const handleNotificationClick = () =>{
-  //   setSidebarOpen(sidebarOpen => !sidebarOpen);
-  // }
-
-  
+  const handleDownload = (e) => {
+    e.preventDefault()
+    if (image) {
+      const link = document.createElement("a");
+      link.href = imageUrl;
+      link.download = image.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   return(
     <AdminContext.Provider value={{
       sidebarOpen,
       type,
       icon,
+      image,
+      setImage,
+      imageUrl,
+      setImageUrl,
+      handleDownload,
       handleSideClick,
       handleToggleData
       // handleNotificationClick
