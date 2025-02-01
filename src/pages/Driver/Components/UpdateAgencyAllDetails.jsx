@@ -5,6 +5,7 @@ import AddWorkLocation from "./AddWorkLocation";
 import VehicleDetailsCard from "./VehicleDetailsCard";
 import { callApi, getCurrentDateTime } from "../../../General/GeneralMethod";
 import {
+  AGENCYLIST,
   APICALLFAIL,
   ApiHeaders,
   APINULLERROR,
@@ -18,6 +19,7 @@ import { NotificationManager } from "react-notifications";
 import { LoadingContext } from "../../../store/loading-context";
 import { CurrentPageContext } from "../../../store/pages-context";
 import { LoginContext } from "../../../store/login-context";
+import BackButton from "../../../General/Buttons/BackButton";
 
 const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
   const {user} = useContext(LoginContext);
@@ -92,7 +94,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     otp: 0,
   };
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  const { handlePageClick } = useContext(CurrentPageContext);
+  const { currcurrentPage, handlePageClick } = useContext(CurrentPageContext);
   const [agencyAllDetails, setAgencyAllDetails] = useState({});
 
   useEffect(() => {
@@ -338,6 +340,11 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     }
   };
 
+  const handleBackClick = () =>{
+    // {currentPage  }  
+      handlePageClick(AGENCYLIST)
+    }
+
   return (
     <>
       {Object.keys(agencyAllDetails).length > 0 ? (
@@ -346,7 +353,9 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
             <main className="content">
               <div className="container-fluid p-0">
                 <h1 className="h3 mb-3">Agency Details</h1>
-
+                {/* {Object.keys(editData).length > 0 ? (
+                  <BackButton handleBackClick={handleBackClick} />
+                ) : null} */}
                 <div className="row">
                   <AgencyDetailsCard
                     agencyObject={agencyAllDetails?.carOwnerDetails}

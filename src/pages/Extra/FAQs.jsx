@@ -12,6 +12,7 @@ import {
 } from "../../General/GeneralMethod";
 import TypeInput from "../../General/Input/TypeInput";
 import { LoadingContext } from "../../store/loading-context";
+import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
 
 const FAQs = () => {
 
@@ -233,6 +234,11 @@ const FAQs = () => {
     
   };
 
+  const handleCancelClick = () =>{
+    setAddFaq(initialFaq)
+    setIsEditMode(false)
+  }
+
   useEffect(() => {
     faqsList();
   }, []);
@@ -295,7 +301,16 @@ const FAQs = () => {
                           ></TypeInput>
                         </div>
                         <div className="mb-3 col-md-4 button">
-                          <SubmitButton buttonName={isEditMode ? "Update" : "Submit"} handleClick={handleEditFaq} />
+                          {isEditMode === true ? (
+                            <CancelExcelButton
+                              handleCancelClick={handleCancelClick}
+                            ></CancelExcelButton>
+                          ) : null}
+
+                          <SubmitButton
+                            buttonName={isEditMode ? "Update" : "Submit"}
+                            handleClick={handleEditFaq}
+                          />
                           <ExportButtton
                             columns={columns}
                             fileName={"FAQs_List"}

@@ -47,7 +47,6 @@ export const convertToDDMMYYYY = (date) => {
 
 
 export const formatDateDDMMYYYY = (dateString) => {
-    debugger
     if (!dateString) return "Invalid Date"; // Handle missing input
     
     const date = new Date(dateString);

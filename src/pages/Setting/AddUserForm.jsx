@@ -16,9 +16,9 @@ import SubmitButton from "../../General/Buttons/SubmitButton";
 import { AdminContext } from "../../store/admin-context";
 import { log10 } from "chart.js/helpers";
 import { CurrentPageContext } from "../../store/pages-context";
+import BackButton from "../../General/Buttons/BackButton";
 
 const AddUserForm = ({editData, setEditData}) => {
-const {handlePageClick} = useContext(CurrentPageContext)
   const InitialState = {
     userFirstName :'',
     userLastName : '',
@@ -30,10 +30,16 @@ const {handlePageClick} = useContext(CurrentPageContext)
   };
 
   useEffect(()=>{
-    if(Object.keys(editData).length > 0){
-      setAddData({...editData, dob: editData.dob.split('T')[0], gender: editData.gender.toString()})
+    if (Object.keys(editData).length > 0) {
+      setAddData({
+        ...editData,
+        dob: editData.dob.split("T")[0],
+        gender: editData.gender.toString(),
+      });
     }
-  },[editData])
+  },[editData]);
+
+  const {handlePageClick} = useContext(CurrentPageContext)
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [addData, setAddData] = useState(InitialState);
   const {icon, type, handleToggleData} = useContext(AdminContext)
@@ -50,9 +56,11 @@ const {handlePageClick} = useContext(CurrentPageContext)
     })
      //console.log(typeof e.target.value);
   }
+  console.log(addData?.gender);
+  
   const validation = () => {
     
-    if(addData.userFirstName === '' || addData.userLastName === '' || addData.dob === '' || !addData.gender  || addData.userEmail === '' || addData.password === '' || addData.phoneNo === ''){
+    if(addData?.userFirstName === '' || addData?.userLastName === '' || addData?.dob === '' || !addData?.gender  || addData?.userEmail === '' || addData?.password === '' || addData?.phoneNo === ''){
       NotificationManager.warning("Enter required fields")
       return false
     }
@@ -101,14 +109,22 @@ const {handlePageClick} = useContext(CurrentPageContext)
     setAddData({...InitialState})
     setEditData({})
   }
-  console.log(editData);
   
+  const handleBackClick = () =>{
+    handlePageClick(USERADMINLIST)
+  }
   return (
     <div className="wrapper">
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">{Object.keys(editData).length > 0 ? 'Update User' : 'Add User'}</h1>
+            <h1 className="h3 mb-3">
+              {Object.keys(editData).length > 0 ? "Update User" : "Add User"}
+            </h1>
+            {Object.keys(editData).length > 0 ? (
+              <BackButton handleBackClick={handleBackClick} />
+            ) : null}
+
             <div className="row">
               <div className="col-12">
                 <div className="card-body">
@@ -171,17 +187,16 @@ const {handlePageClick} = useContext(CurrentPageContext)
                                 type={type}
                                 inputName={"password"}
                                 placeholderName={"Password"}
-                                valueName={addData.password}    
+                                valueName={addData.password}
                                 onChangeName={handleChange}
                               />
                               <span
-                              className="input-group-text"
-                              onClick={handleToggleData}
-                            >
-                              {icon}
-                            </span>
+                                className="input-group-text"
+                                onClick={handleToggleData}
+                              >
+                                {icon}
+                              </span>
                             </div>
-                            
                           </div>
 
                           <div className="mb-3 row">
@@ -206,8 +221,13 @@ const {handlePageClick} = useContext(CurrentPageContext)
                                     type="radio"
                                     value={"1"}
                                     className="form-check-input"
-                                   // defaultChecked={addData.gender}
-                                    checked={addData.gender === "1" ? true : false}
+                                    // defaultChecked={addData.gender}
+                                    checked={
+                                      addData.gender === "1" ||
+                                      addData.gender === "0"
+                                        ? true
+                                        : false
+                                    }
                                     onChange={handleChange}
                                   />
                                   <span className="form-check-label">Male</span>
@@ -217,8 +237,10 @@ const {handlePageClick} = useContext(CurrentPageContext)
                                     name="gender"
                                     type="radio"
                                     value={"2"}
-                                   // defaultChecked={addData.gender}
-                                    checked={addData.gender === "2" ? true : false}
+                                    // defaultChecked={addData.gender}
+                                    checked={
+                                      addData.gender === "2" ? true : false
+                                    }
                                     className="form-check-input"
                                     onChange={handleChange}
                                   />
@@ -226,24 +248,14 @@ const {handlePageClick} = useContext(CurrentPageContext)
                                     Female
                                   </span>
                                 </label>
-                                {/* <label className="form-check">
-                                  <input
-                                    name="radio-3"
-                                    type="radio"
-                                    value='option3'
-                                    className="form-check-input"
-                                    disabled
-                                  />
-                                  <span className="form-check-label">Other</span>
-                                </label> */}
                               </div>
                             </div>
                           </fieldset>
 
                           <div className="mb-3 row">
                             <div className="col-sm-9 ms-sm-auto">
-                            <ResetButton onHandleClick={handleReset}/>
-                              <SubmitButton buttonName={"Submit"}/>
+                              <ResetButton onHandleClick={handleReset} />
+                              <SubmitButton buttonName={"Submit"} />
                             </div>
                           </div>
                         </form>

@@ -5,6 +5,7 @@ import {
   AGENCYLIST,
   APICALLFAIL,
   APINULLERROR,
+  APPROVEDAGENCY,
   EDIT,
   EMAILREGEX,
   PHONENOREGEX
@@ -15,6 +16,7 @@ import { CurrentPageContext } from "../../store/pages-context";
 import AddWorkLocation from "./Components/AddWorkLocation";
 import AgencyDetailsCard from "./Components/AgencyDetailsCard";
 import UploadDocuments from "./Components/UploadDocuments";
+import BackButton from "../../General/Buttons/BackButton";
 
 const AgencyDetails = ({setEditData, editData}) => {
   const agencyObject = {
@@ -165,14 +167,20 @@ const AgencyDetails = ({setEditData, editData}) => {
     }
   },[editData])
 
-  // convertToBase64(event.target.files[0])
+  const handleBackClick = () =>{
+    debugger
+    handlePageClick(APPROVEDAGENCY)
+  }
+
   return (
     <div className="wrapper">
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
             <h1 className="h3 mb-3">Add Agency</h1>
-
+            {Object.keys(editData).length > 0 ? (
+                  <BackButton handleBackClick={handleBackClick} />
+                ) : null}
             <div className="row">
                 <AgencyDetailsCard agencyObject={agencyAllDetails} handleAgencySubmit={handleAgencySubmit} op={EDIT}></AgencyDetailsCard>
               <UploadDocuments agencyDetails={agencyAllDetails} fetchCarOwnerDetails={fetchCarOwnerDetails}  op={EDIT}/>

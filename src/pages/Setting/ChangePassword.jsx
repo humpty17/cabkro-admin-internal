@@ -107,7 +107,7 @@ const ChangePassword = () => {
                     <div className="card-body">
                       <form onSubmit={submitChangePassword}>
                         <div className="mb-3 row">
-                          <label className="col-form-label col-sm-3 text-sm-end">
+                          <label className="col-form-label col-sm-3">
                             Select User
                           </label>
                           <div className="col-sm-8">
@@ -128,7 +128,7 @@ const ChangePassword = () => {
                         </div>
                         <div className="mb-3 row">
                           <FormLabel label={"New Password"} />
-                          <div className="col-sm-8 input-group_1">
+                          <div className="col-sm-8 input-group_1 text-sm-end">
                             <PasswordInput
                               type={type}
                               inputName={"password"}

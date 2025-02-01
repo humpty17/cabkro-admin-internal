@@ -10,6 +10,7 @@ import {
   ACTION,
   APICALLFAIL,
   APINULLERROR,
+  DATE,
   DELETEDATAERROR,
   FETCHDATAERROR,
   INT,
@@ -24,6 +25,7 @@ import {
 import NumberInput from "../../General/Input/NumberInput";
 import TypeInput from "../../General/Input/TypeInput";
 import { FaTrash } from "react-icons/fa";
+import CancelExcelButton from "../../General/Buttons/CancelExcelButton";
 
 const Coupons = () => {
   const columns = [
@@ -59,7 +61,7 @@ const Coupons = () => {
     {
       label: "Applied Date",
       dataKey: "appliedDate",
-      type : INT,
+      type: DATE,
       isShow: true,
       width: 200,
       cellRenderer: ({ rowData }) => formatDateDDMMYYYY(rowData["appliedDate"]),
@@ -268,6 +270,12 @@ const Coupons = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const handleCancelClick = () =>{
+    setAddCouponData(initialState)
+    setIsEditMode(false)
+  }
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -322,6 +330,11 @@ const Coupons = () => {
                           />
                         </div>
                         <div className="mb-3 col-md-5 button">
+                        {isEditMode === true ? (
+                            <CancelExcelButton
+                              handleCancelClick={handleCancelClick}
+                            ></CancelExcelButton>
+                          ) : null}
                         <SubmitButton buttonName={isEditMode ? "Update" : "Submit"} handleClick={handleEditCoupon} />
                           <ExportButtton
                             columns={columns}

@@ -56,6 +56,7 @@ const AddCustomer = ({editData, setEditData}) => {
     "userType": 0,
     "acceptTermsCondition": 0
   };
+  
 
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const {handlePageClick} =useContext(CurrentPageContext)
@@ -159,7 +160,7 @@ const AddCustomer = ({editData, setEditData}) => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Add Customer</h1>
+            <h1 className="h3 mb-3">{Object.keys(editData).length > 0 ?"Update Customer" : "Add Customer"}</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card-body">

@@ -5,7 +5,7 @@ import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTa
 import { callApi, formatDateDDMMYYYY, getCurrentDateTime } from '../../General/GeneralMethod';
 import { LoadingContext } from '../../store/loading-context';
 import ExportButtton from '../../General/Buttons/ExportButtton';
-import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DELETEDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
+import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DATE, DELETEDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { CurrentPageContext } from '../../store/pages-context';
 
@@ -51,7 +51,7 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
     {
       label: "Date of Birth",
       dataKey: "dob",
-      type : INT,
+      type : DATE,
       isShow : true,
       width: 150,
       cellRenderer: ({ rowData }) => formatDateDDMMYYYY(rowData["dob"]),
@@ -130,7 +130,6 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
   const {currentPage, handlePageClick} =useContext(CurrentPageContext)
   const [user, setUser] = useState([]);
   const [searchFilters, setSearchFilters]= useState(filterState)
-  const [addAdmin, setAddAdmin] = useState(InitialUserAdmin)
   const rowGetter = ({ index }) => user[index];
   
 
