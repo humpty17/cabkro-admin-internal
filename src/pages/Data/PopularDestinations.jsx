@@ -652,7 +652,7 @@ const PopularDestinations = () => {
                       {isShowPreview === false ? (
                         <DownloadExcelButton
                           columns={Object.keys(popularDataExcelHeader)}
-                          fileName={"Popular_Destinations_Sample"}
+                          fileName={"Popular Destinations Sample"}
                         />
                       ) : null}
                       {isShowPreview === false ? <ExportButtton

@@ -20,6 +20,7 @@ import { LoadingContext } from "../../../store/loading-context";
 import { CurrentPageContext } from "../../../store/pages-context";
 import { LoginContext } from "../../../store/login-context";
 import BackButton from "../../../General/Buttons/BackButton";
+import axios from "axios";
 
 const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
   const {user} = useContext(LoginContext);
@@ -345,6 +346,54 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
       handlePageClick(AGENCYLIST)
     }
 
+  const handleChooseFile = async (event, type, phoneNumber, Id)=>{
+    event.preventDefault();
+        startLoading();
+        const file = event.target.files[0];
+        // console.log(file)
+        // console.log(type)
+        if (file) {
+          
+        }
+    
+        const fileFormData = new FormData();
+        fileFormData.append("file", file);
+        fileFormData.append("FileName", type);
+        fileFormData.append("PhoneNo", "");
+        fileFormData.append("CarOwnerId",Id);
+    
+        try {
+          const response = await axios.post(
+            process.env.REACT_APP_API_URL + "api/Drivers/UploadFile",
+            fileFormData,
+            {
+              headers: {
+                UserType: "1",
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          if (response) {
+            console.log(response.data.code === 200);
+            if (response?.data?.code === 200) {
+              //setAgencyAllDetails({ ...agencyAllDetails, [type]: response?.data?.data });
+              // NotificationManager.success(
+              //   response?.data?.message || "File uploaded successfully"
+              // );
+              fetchCarOwnerDetails();
+            } else {
+              NotificationManager.error(response?.data?.message || APINULLERROR);
+            }
+          } else {
+            NotificationManager.error(response?.data?.message || APINULLERROR);
+          }
+        } catch (err) {
+          NotificationManager.error(APICALLFAIL);
+        } finally {
+          stopLoading();
+        }
+  }
+
   return (
     <>
       {Object.keys(agencyAllDetails).length > 0 ? (
@@ -388,6 +437,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
                       handleVehicleSubmit={handleVehicleSubmit}
                       handleApproveVehicle={handleApproveVehicle}
                       op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}
+                      handleChooseFile={handleChooseFile}
                     ></VehicleDetailsCard>
                   ))}
                 </div>

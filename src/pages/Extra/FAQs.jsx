@@ -30,14 +30,14 @@ const FAQs = () => {
     {
       label: "Question",
       dataKey: "question",
-      width: 300,
+      width: 400,
       type:TEXT,
       isShow: true
     },
     {
       label: "Answer",
       dataKey: "answer",
-      width: 300,
+      width: 400,
       type:TEXT,
       isShow: true
     },

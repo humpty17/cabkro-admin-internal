@@ -81,13 +81,13 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
                 image={image ? image : null}
               ></FileInput>
-              {agencyDetails?.aadharImageFront === null ? (
-                ""
+              {agencyDetails?.aadharImageFront  ? (
+                 <DownloadImage
+                 imageUrl={imageUrl}
+                 handleDownload={handleDownload}
+               />
               ) : (
-                <DownloadImage
-                  imageUrl={imageUrl}
-                  handleDownload={handleDownload}
-                />
+               null
               )}
             </div>
             <div className="mb-3 row">
@@ -97,13 +97,13 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
                 image={image ? image : null}
               ></FileInput>
-              {agencyDetails?.aadharImageBack === null ? (
-                ""
-              ) : (
+              {agencyDetails?.aadharImageBack  ? (
                 <DownloadImage
-                  imageUrl={imageUrl}
-                  handleDownload={handleDownload}
-                />
+                imageUrl={imageUrl}
+                handleDownload={handleDownload}
+              />
+              ) : (
+                null
               )}
             </div>
             <div className="mb-3 row">
@@ -113,13 +113,13 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
                 image={image ? image : null}
               ></FileInput>
-              {agencyDetails?.panImage === null ? (
-                ""
+              {agencyDetails?.panImage  ? (
+                 <DownloadImage
+                 imageUrl={imageUrl}
+                 handleDownload={handleDownload}
+               />
               ) : (
-                <DownloadImage
-                  imageUrl={imageUrl}
-                  handleDownload={handleDownload}
-                />
+              null
               )}
             </div>
             <div className="mb-3 row">

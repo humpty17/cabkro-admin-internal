@@ -4,7 +4,7 @@ import "react-notifications/lib/notifications.css";
 import BackButton from "../../General/Buttons/BackButton";
 import ResetButton from "../../General/Buttons/ResetButton";
 import SubmitButton from "../../General/Buttons/SubmitButton";
-import { APINULLERROR, EMAILREGEX, PHONENOREGEX, USERADMINLIST } from "../../General/ConstStates";
+import { APINULLERROR, CUSTOMERLIST, EMAILREGEX, PHONENOREGEX, USERADMINLIST } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import DateInput from "../../General/Input/DateInput";
 import EmailInput from "../../General/Input/EmailInput";
@@ -110,7 +110,7 @@ const AddUserForm = ({editData, setEditData}) => {
   }
   
   const handleBackClick = () =>{
-    handlePageClick(USERADMINLIST)
+    handlePageClick(CUSTOMERLIST)
     setAddData({...InitialState})
     setEditData({})
   }

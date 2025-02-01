@@ -83,18 +83,18 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
                 placeholderName={"Driver Name"}
                 valueName={driverDetails.approveStatus=== true ? "Approved" :  "Not Approved"}
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? true : false}
+                isDisabled={driverDetails.approveStatus=== true ? true : false}
                 
               ></TypeInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Driving License"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "DLImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "DLImage", "", driverDetails?.driverId)} isDisabled={disableInputFields}></FileInput>
             </div>
            
             <div className="mb-3 row">
               <FormLabel label={"Police verification"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "PVImage")} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "PVImage","",driverDetails?.driverId)} isDisabled={disableInputFields}></FileInput>
             </div>
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">

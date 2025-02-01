@@ -288,7 +288,7 @@ const AddVehicleList = () => {
                       <UploadExcelButton
                         setPreviewData={setPreviewData}
                         otherData={otherData}
-                        buttonName={"Upload_Vehicle_List"}
+                        buttonName={"Upload Vehicle List"}
                       />
                     ) : null}
                     {isShowPreview === false ? (

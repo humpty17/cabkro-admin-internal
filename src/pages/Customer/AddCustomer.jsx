@@ -14,6 +14,7 @@ import { LoadingContext } from "../../store/loading-context";
 import SubmitButton from "../../General/Buttons/SubmitButton";
 import ResetButton from "../../General/Buttons/ResetButton";
 import { CurrentPageContext } from "../../store/pages-context";
+import BackButton from "../../General/Buttons/BackButton";
 
 const AddCustomer = ({editData, setEditData}) => {
   const InitialState = {
@@ -154,6 +155,10 @@ const AddCustomer = ({editData, setEditData}) => {
       });
     }
   }, [editData]);
+
+  const handleBackClick = () =>{
+    
+  }
     
   return (
     <div className="wrapper">
@@ -161,6 +166,10 @@ const AddCustomer = ({editData, setEditData}) => {
         <main className="content">
           <div className="container-fluid p-0">
             <h1 className="h3 mb-3">{Object.keys(editData).length > 0 ?"Update Customer" : "Add Customer"}</h1>
+            {Object.keys(editData).length > 0 ? (
+              <BackButton handleBackClick={handleBackClick} />
+            ) : null}
+
             <div className="row">
               <div className="col-12">
                 <div className="card-body">

@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { NotificationManager } from "react-notifications";
-import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, INT, TEXT, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
+import { ACTION, APICALLFAIL, APINULLERROR, DELETEDATAERROR, FETCHDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEDATAERROR, WIDTH } from "../../General/ConstStates";
 import { LoginContext } from "../../store/login-context";
 import { LoadingContext } from "../../store/loading-context";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
@@ -15,46 +15,54 @@ import SubmitButton from "../../General/Buttons/SubmitButton";
 function ContactUs() {
   const columns = [
     {
-      label: "emailId",
+      label: SRNO,
+      dataKey: SRNOKEY,
+      width: SRNOWIDTH,
+      type : INT,
+      isShow : true,
+      cellRenderer: ({ rowIndex }) => rowIndex + 1,
+    },
+    {
+      label: "Email",
       dataKey: "emailId",
       type: TEXT,
       isShow: true,
       width: 200,
     },
     {
-      label: "phoneNo",
+      label: "Phone No",
       dataKey: "phoneNo",
       type: INT,
       isShow: true,
       width: 200,
     },
     {
-      label: "Name",
+      label: "Sender Name",
       dataKey: "senderName",
       type: TEXT,
       isShow: true,
       width: 200,
     },
     {
-      label: "subject",
+      label: "Subject",
       dataKey: "subject",
       type: TEXT,
       isShow: true,
       width: 100,
     },
     {
-      label: "message",
+      label: "Message",
       dataKey: "message",
       type: TEXT,
       isShow: true,
       width: 200,
     },
     {
-      label: "Message",
+      label: "Reply Message",
       dataKey: "replyMessage",
       type: TEXT,
       isShow: true,
-      width: 150,
+      width: 200,
     },
     {
       label: ACTION,
@@ -292,9 +300,9 @@ function ContactUs() {
                   </label>
                   <textarea
                     className="form-control"
-                    id="message"
-                    name="message"
-                    value={modalData.message}
+                    id="replyMessage"
+                    name="replyMessage"
+                    value={modalData.replyMessage}
                     onChange={handleInputChange}
                   ></textarea>
                 </div>

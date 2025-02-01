@@ -495,7 +495,7 @@ const AddBookingPackage = () => {
                           <UploadExcelButton
                             setPreviewData={setPreviewData}
                             otherData={otherData}
-                            buttonName={"Upload_Booking_Packages"}
+                            buttonName={"Upload Booking Packages"}
                           />
                         ) : null}
                         {isShowPreview === false ? (

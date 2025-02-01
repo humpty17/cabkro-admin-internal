@@ -12,12 +12,13 @@ import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 import { CiLogin } from "react-icons/ci";
 
-const Sidebar = () => {
+const Sidebar = ({setEditData}) => {
   const {sidebarOpen} = useContext(AdminContext)
   const {currentPage, handlePageClick} =useContext(CurrentPageContext)
   const [show, setShow] = useState(false)
 
   const handleItemClick = (pageName)=>{
+    setEditData({})
     handlePageClick(pageName)
   }
 

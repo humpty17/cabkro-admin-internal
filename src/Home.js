@@ -72,7 +72,7 @@ const Home = () => {
         currentPage !== REGISTERPAGE &&
         user !== null && (
           <div className="wrapper">
-            <Sidebar />
+            <Sidebar setEditData={setEditData}/>
             <div className="main">
               <Navbar />
               {currentPage === DASHBOARDPAGE && <Dashboard />}

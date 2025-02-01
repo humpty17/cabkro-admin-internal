@@ -169,7 +169,9 @@ const AgencyDetails = ({setEditData, editData}) => {
 
   const handleBackClick = () =>{
     debugger
-    handlePageClick(APPROVEDAGENCY)
+    handlePageClick(AGENCYLIST)
+    setEditData({})
+    setAgencyAllDetails({...agencyObject})
   }
 
   return (

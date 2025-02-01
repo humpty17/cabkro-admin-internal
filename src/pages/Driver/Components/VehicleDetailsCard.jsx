@@ -107,28 +107,28 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                     : "Not Approved"
                 }
                 onChangeName={handleInputChange}
-                isDisabled={op === APPROVE ? true : false}
+                isDisabled={vehicleDetails.approveStatus === true ? true : false}
               ></TypeInput>
             </div>
 
             <div className="mb-3 row">
               <FormLabel label={"Reg. Certi."}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "RCImage")}
+                handleFileUpload={(e) => handleChooseFile(e, "RCImage", "", vehicleDetails?.vehicleId)}
                 isDisabled={disableInputFields}
               ></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Insurance"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "InsuranceImage")}
+                handleFileUpload={(e) => handleChooseFile(e, "InsuranceImage", "", vehicleDetails?.vehicleId)}
                 isDisabled={disableInputFields}
               ></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Permit"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "VehiclePermit")}
+                handleFileUpload={(e) => handleChooseFile(e, "VehiclePermit", "", vehicleDetails?.vehicleId)}
                 isDisabled={disableInputFields}
               ></FileInput>
             </div>
