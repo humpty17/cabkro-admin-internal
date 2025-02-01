@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FaFileExport } from "react-icons/fa";
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { NotificationManager } from 'react-notifications';
+import ExportButtton from '../../General/Buttons/ExportButtton';
 import VirtualizedTable from '../../General/Common/VitualizedTable/VirtualizedTable';
+import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DATE, DELETEDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, WIDTH } from '../../General/ConstStates';
 import { callApi, formatDateDDMMYYYY, getCurrentDateTime } from '../../General/GeneralMethod';
 import { LoadingContext } from '../../store/loading-context';
-import ExportButtton from '../../General/Buttons/ExportButtton';
-import { ACTION, ADDUSERFORM, APICALLFAIL, APINULLERROR, DATE, DELETEDATAERROR, INT, SRNO, SRNOKEY, SRNOWIDTH, TEXT, UPDATEDATAERROR, USERADMINLIST, WIDTH } from '../../General/ConstStates';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { CurrentPageContext } from '../../store/pages-context';
 
 
@@ -151,6 +150,9 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
     } catch (error) {
       console.error("API call failed:", error);
     } 
+    finally{
+      stopLoading()
+    }
   }
 
   useEffect(() =>{
@@ -174,7 +176,7 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
         if (response !== null && response !== undefined) {
           if (response?.data?.code === 200) {
             NotificationManager.success(
-              response?.data?.message || "user admin deleted successfully"
+              response?.data?.message || "User deleted successfully"
             );
             startLoading();
             userList();
@@ -228,7 +230,7 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">UserAdminList</h1>
+            <h1 className="h3 mb-3">User Admin List</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">

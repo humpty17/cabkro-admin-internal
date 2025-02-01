@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NotificationManager } from 'react-notifications';
 import "react-notifications/lib/notifications.css";
+import BackButton from "../../General/Buttons/BackButton";
+import ResetButton from "../../General/Buttons/ResetButton";
+import SubmitButton from "../../General/Buttons/SubmitButton";
 import { APINULLERROR, EMAILREGEX, PHONENOREGEX, USERADMINLIST } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import DateInput from "../../General/Input/DateInput";
@@ -10,16 +12,13 @@ import NumberInput from "../../General/Input/NumberInput";
 import PasswordInput from "../../General/Input/PasswordInput";
 import TypeInput from "../../General/Input/TypeInput";
 import FormLabel from "../../General/Label/FormLabel";
-import { LoadingContext } from "../../store/loading-context";
-import ResetButton from "../../General/Buttons/ResetButton";
-import SubmitButton from "../../General/Buttons/SubmitButton";
 import { AdminContext } from "../../store/admin-context";
-import { log10 } from "chart.js/helpers";
+import { LoadingContext } from "../../store/loading-context";
 import { CurrentPageContext } from "../../store/pages-context";
-import BackButton from "../../General/Buttons/BackButton";
 
 const AddUserForm = ({editData, setEditData}) => {
   const InitialState = {
+    userId: 0,
     userFirstName :'',
     userLastName : '',
     userEmail: '',
@@ -82,7 +81,7 @@ const AddUserForm = ({editData, setEditData}) => {
     debugger
     try {
       
-      const response = addData.userId === 0 ? await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/RegisterAdminUser`, {...addData}, {}) : await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/UpdateAdminUser`, {...addData}, {});
+      const response = addData?.userId === 0 ? await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/RegisterAdminUser`, {...addData}, {}) : await callApi("post", `${process.env.REACT_APP_API_URL_ADMIN}Auth/UpdateAdminUser`, {...addData}, {});
       stopLoading();
 
       if (response && response.data) {  // Check for response and response.data
@@ -112,6 +111,8 @@ const AddUserForm = ({editData, setEditData}) => {
   
   const handleBackClick = () =>{
     handlePageClick(USERADMINLIST)
+    setAddData({...InitialState})
+    setEditData({})
   }
   return (
     <div className="wrapper">
@@ -164,6 +165,7 @@ const AddUserForm = ({editData, setEditData}) => {
                                 placeholderName={"8957465342"}
                                 valueName={addData.phoneNo}
                                 onChangeName={handleChange}
+                                isDisabled={Object.keys(editData).length > 0 ? true : false}
                               />
                             </div>
                           </div>
