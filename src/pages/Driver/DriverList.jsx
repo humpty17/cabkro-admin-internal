@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import {
   ACTION,
@@ -14,13 +15,11 @@ import {
   SRNOKEY,
   SRNOWIDTH,
   TEXT,
-  UPDATEAGENCYALLDETAILS,
-  WIDTH,
+  WIDTH
 } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { CurrentPageContext } from "../../store/pages-context";
-import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const DriverList = ({ setEditData, editData }) => {
   
@@ -119,14 +118,14 @@ const DriverList = ({ setEditData, editData }) => {
       isShow: true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
-          <FiEdit
+          {/* <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
               setEditData({op:EDIT,...rowData});
               handlePageClick(ADDAGENCY);
             }}
-          />
+          /> */}
           <AiFillEye
             style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleView(rowData)}

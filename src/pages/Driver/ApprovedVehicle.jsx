@@ -76,7 +76,7 @@ const ApprovedVehicle = ({setEditData}) => {
       isShow: true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
-          <FiEdit
+          {/* <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
@@ -86,7 +86,7 @@ const ApprovedVehicle = ({setEditData}) => {
               // handleRedirect(ADDUSERFORM);
               // handleUserEdit();
             }}
-          />
+          /> */}
           <AiFillEye
             style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleView(rowData)}

@@ -313,14 +313,14 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     }
   };
 
-  const handleApproveVehicle = async (agencyDetails) => {
+  const handleApproveVehicle = async (vehicleDetails) => {
     debugger
     startLoading();
     try {
       const response = await callApi(
         "put",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateVehicle/${agencyDetails?.vehicleId}`,
-        { ...agencyDetails },
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateVehicle/${vehicleDetails?.vehicleId}`,
+        { ...vehicleDetails },
         {}
       );
       if (response) {

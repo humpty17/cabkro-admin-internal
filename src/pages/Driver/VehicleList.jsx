@@ -120,14 +120,14 @@ const VehicleList = ({ setEditData, editData }) => {
       isShow: true,
       cellRenderer: ({ rowData, rowIndex }) => (
         <div>
-          <FiEdit
+          {/* <FiEdit
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
-              setEditData({op:EDIT,...rowData});
+             
              // handlePageClick(ADDAGENCY);
             }}
-          />
+          /> */}
           <AiFillEye
             style={{ cursor: "pointer", color: "red" }}
             onClick={() => handleView(rowData)}

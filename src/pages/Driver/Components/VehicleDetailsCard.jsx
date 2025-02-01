@@ -36,7 +36,8 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
     debugger
     e.preventDefault()
     if(!validate()) return
-    handleApproveVehicle(vehicleDetails)
+    
+    handleApproveVehicle({...vehicleDetails, approveStatus: true})
   }
   return (
     <div className="col-6 col-xl-6">
@@ -139,7 +140,7 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
                   <SubmitButton
                     buttonName={"Approve"}
                     handleClick={handleApprove}
-                    isDisabled={vehicleDetails.vehicleId === 0 ? true : false}
+                    isDisabled={vehicleDetails.vehicleId !== 0 && vehicleDetails.approveStatus === true ? true : false}
                   />
                 ) : (
                   <SubmitButton
