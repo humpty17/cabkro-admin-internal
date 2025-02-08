@@ -10,6 +10,7 @@ import {
   APPROVEDAGENCY,
   APPROVEDDRIVER,
   APPROVEDVEHICLE,
+  BOOKINGLIST,
   BOOKINGPACKAGELIST,
   CHANGEPASSWORD,
   CONTACTUS,
@@ -56,6 +57,7 @@ import ApprovedDriver from "./pages/Driver/ApprovedDriver";
 import UpdateAgencyAllDetails from "./pages/Driver/Components/UpdateAgencyAllDetails";
 import VehicleList from "./pages/Driver/VehicleList";
 import DriverList from "./pages/Driver/DriverList";
+import BookingList from "./pages/Bookings/BookingList";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -147,6 +149,9 @@ const Home = () => {
                   editData={editData}
                 ></UpdateAgencyAllDetails>
               )}
+
+              {/* Booking Section */}
+              {currentPage === BOOKINGLIST && (<BookingList></BookingList>)}
             </div>
           </div>
         )}

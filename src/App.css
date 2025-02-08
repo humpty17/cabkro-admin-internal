@@ -1529,3 +1529,21 @@ a {
     transform: rotate(360deg);
   }
 }
+
+.btn-primary-soft{
+  padding: 10px 20px;
+  font-weight: 700;
+  background-color: #5143d91a;
+  color: #ffa025;
+  
+  border-color: #5143d91a;    
+ border-radius: 5px;
+  text-align: center; 
+  text-decoration: none;      
+}
+
+.btn-primary-soft:active, .btn-primary-soft:focus, .btn-primary-soft:hover {
+  background-color: #ffa025;
+  border-color: #ffa025;
+  color: #fff;
+}

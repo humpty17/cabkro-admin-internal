@@ -39,6 +39,9 @@ export const APPROVEDVEHICLE = "ApprovedVehicle"
 export const APPROVEDDRIVER = "ApprovedDriver"
 export const DRIVERLIST = "DriverList"
 
+//BOOKING SECTION
+export const BOOKINGLIST = "BookingList"
+
 export const UPDATEAGENCYALLDETAILS = "UpdateAgencyAllDetails"
 
 
@@ -90,4 +93,8 @@ export const APPROVE = "Approve"
 export const INT = "Int"
 export const TEXT = "Text"
 export const DATE = "Date"
+
+//Booking types
+export const ONEWAY = "oneway"
+export const ROUNDWAY = "round"
 

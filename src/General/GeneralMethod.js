@@ -58,3 +58,18 @@ export const formatDateDDMMYYYY = (dateString) => {
 
     return `${day}-${month}-${year}`;
 };
+
+export const convertDatetoReadFormat = (dateString) => {
+    const date = new Date(dateString);
+  
+    // Format the date and time
+    const optionsDate = { day: "2-digit", month: "short", year: "numeric" };
+    const optionsTime = { hour: "numeric", minute: "2-digit", hour12: true };
+  
+    const formattedDate = date.toLocaleDateString("en-GB", optionsDate);
+    const formattedTime = date
+      .toLocaleTimeString("en-GB", optionsTime)
+      .replace(/(\d+)(:\d+)?\s?(AM|PM)/, "$1 $3");
+  
+    return `${formattedDate}, ${formattedTime}`;
+  };

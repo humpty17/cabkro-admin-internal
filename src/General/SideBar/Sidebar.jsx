@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, APPROVEDAGENCY, APPROVEDDRIVER, APPROVEDVEHICLE, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, DRIVERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST, VEHICLELIST } from "../../General/ConstStates";
+import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, APPROVEDAGENCY, APPROVEDDRIVER, APPROVEDVEHICLE, BOOKINGLIST, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, DRIVERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST, VEHICLELIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 import { CiLogin } from "react-icons/ci";
@@ -82,14 +82,14 @@ const Sidebar = ({setEditData}) => {
           </li> */}
 
           <li className="sidebar-header">Bookings</li>
-          <li className="sidebar-item">
+          {/* <li className="sidebar-item">
             <a className="sidebar-link" href="#">
               <FiPlusCircle className="align-middle" />
               <span className="align-middle">Add Booking</span>
             </a>
-          </li>
+          </li> */}
           <li className="sidebar-item">
-            <a className="sidebar-link" href="#">
+            <a className="sidebar-link" onClick={()=>handleItemClick(BOOKINGLIST)}>
               <FiList className="align-middle" />
               <span className="align-middle">Booking List</span>
             </a>
