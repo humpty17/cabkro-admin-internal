@@ -22,6 +22,7 @@ import { IoMdTime } from "react-icons/io";
 import { PiSeatbeltLight } from "react-icons/pi";
 import { GiPathDistance } from "react-icons/gi";
 import { FcRating } from "react-icons/fc";
+import { FixedSizeList as List } from "react-window";
 
 const BookingList = () => {
   const { startLoading, stopLoading } = useContext(LoadingContext);
@@ -67,64 +68,61 @@ const BookingList = () => {
     console.log(data);
     setBookingData(data);
   };
-
+  const Row = ({ index, style }) => {
+    const data = bookingList[index];
   return (
     <>
       {Object.keys(bookingData).length === 0 ? (
         <div className="m-4">
           {bookingList.map((data, index) => (
-            <div className="card border mb-4">
-              {/* Card header */}
-              <div className="card-header border-bottom d-md-flex justify-content-md-between align-items-center">
-                {/* Icon and Title */}
-                <div className="d-flex align-items-center">
-                  <div className="ms-2">
-                    <h6 className="card-title mb-0">
-                      {data.pickupLocation + " to " + data.dropOffLocation}
-                    </h6>
-                    <ul className="nav nav-divider small">
-                      <li className="nav-item">
-                        {"Booking ID: " + data.other2}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="mt-2 mt-md-0">
-                  <a
-                    className="btn-primary-soft mb-0"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleManageBooking(data)}
-                  >
-                    Manage Booking
-                  </a>
+            <div className="card border mb-4" >
+            {/* Card header */}
+            <div className="card-header border-bottom d-md-flex justify-content-md-between align-items-center">
+              {/* Icon and Title */}
+              <div className="d-flex align-items-center">
+                <div className="ms-2">
+                  <h6 className="card-title mb-0 w-75">
+                    {data.pickupLocation + " to " + data.dropOffLocation}
+                  </h6>
+                  <ul className="nav nav-divider small">
+                    <li className="nav-item">{"Booking ID: " + data.other2}</li>
+                  </ul>
                 </div>
               </div>
-              {/* Card body */}
-              <div className="card-body">
-                <div className="row g-3">
-                  <div className="col-sm-6 col-md-4">
-                    <span>Pickup Time</span>
-                    <h6 className="mb-0">
-                      {convertDatetoReadFormat(data.pickupTime)}
-                    </h6>
-                  </div>
-
-                  <div className="col-sm-6 col-md-4">
-                    <span>Drop Time</span>
-                    <h6 className="mb-0">
-                      {data.bookingType === ONEWAY
-                        ? "Not Applicable"
-                        : convertDatetoReadFormat(data.dropOffTime)}
-                    </h6>
-                  </div>
-
-                  <div className="col-md-4">
-                    <span>Booked by</span>
-                    <h6 className="mb-0">{data.userName}</h6>
-                  </div>
+              <div className="mt-2 mt-md-0 w-50">
+                <button
+                  className="btn-primary-soft mb-0 float-end"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleManageBooking(data)}
+                >
+                  Manage Booking
+                </button>
+              </div>
+            </div>
+            {/* Card body */}
+            <div className="card-body">
+              <div className="row g-3">
+                <div className="col-sm-6 col-md-4">
+                  <span>Pickup Time</span>
+                  <h6 className="mb-0">{convertDatetoReadFormat(data.pickupTime)}</h6>
+                </div>
+    
+                <div className="col-sm-6 col-md-4">
+                  <span>Drop Time</span>
+                  <h6 className="mb-0">
+                    {data.bookingType === "ONEWAY"
+                      ? "Not Applicable"
+                      : convertDatetoReadFormat(data.dropOffTime)}
+                  </h6>
+                </div>
+    
+                <div className="col-md-4">
+                  <span>Booked by</span>
+                  <h6 className="mb-0">{data.userName}</h6>
                 </div>
               </div>
             </div>
+          </div>
           ))}
         </div>
       ) : (
@@ -529,8 +527,20 @@ const BookingList = () => {
           </div>
         </div>
       )}
+      
     </>
   );
+}
+return (
+  <List
+    height={520} // Adjust height as needed
+    itemCount={bookingList.length}
+    itemSize={200} // Adjust item size based on card height
+    width={"100%"}
+  >
+    {Row}
+  </List>
+);
 };
 
 export default BookingList;
