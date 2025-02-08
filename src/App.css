@@ -291,7 +291,7 @@ input::-webkit-inner-spin-button {
   color: var(--bs-card-cap-color);
   margin-bottom: 0;
   padding: 10px !important;
-  height: 56px !important;
+  /* height: 56px !important; */
 }
 
 
@@ -1539,7 +1539,8 @@ a {
   border-color: #5143d91a;    
  border-radius: 5px;
   text-align: center; 
-  text-decoration: none;      
+  text-decoration: none;    
+  border: 0px;  
 }
 
 .btn-primary-soft:active, .btn-primary-soft:focus, .btn-primary-soft:hover {
