@@ -81,7 +81,7 @@ const BookingList = () => {
               {/* Icon and Title */}
               <div className="d-flex align-items-center">
                 <div className="ms-2">
-                  <h6 className="card-title mb-0 w-75">
+                  <h6 className="card-title mb-0 w-100">
                     {data.pickupLocation + " to " + data.dropOffLocation}
                   </h6>
                   <ul className="nav nav-divider small">
