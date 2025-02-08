@@ -1,19 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { NotificationManager } from "react-notifications";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
+import { APPROVE, EMAILREGEX, PHONENOREGEX } from "../../../General/ConstStates";
 import EmailInput from "../../../General/Input/EmailInput";
 import NumberInput from "../../../General/Input/NumberInput";
 import PasswordInput from "../../../General/Input/PasswordInput";
 import TypeInput from "../../../General/Input/TypeInput";
 import FormLabel from "../../../General/Label/FormLabel";
-import { NotificationManager } from "react-notifications";
-import { APICALLFAIL, APINULLERROR, APPROVE, EMAILREGEX, PHONENOREGEX } from "../../../General/ConstStates";
-import { LoadingContext } from "../../../store/loading-context";
-import { callApi } from "../../../General/GeneralMethod";
 
 const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAgency}) => {
 
   const [agencyDetails, setAgencyDetails] = useState({...agencyObject})
-  const { startLoading, stopLoading } = useContext(LoadingContext);
+  
  // console.log(agencyObject,agencyDetails)
 
   useEffect(()=>{

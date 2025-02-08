@@ -117,6 +117,15 @@ const AgencyList = ({ setEditData, editData }) => {
         rowData["panImage"] ? "Yes" : "No",
     },
     {
+      label: "Approve Status",
+      dataKey: "approveStatus",
+      width: 150,
+      type: TEXT, // Treated as text since it's a yes/no indicator
+      isShow: true,
+      cellRenderer: ({ rowData }) =>
+        rowData["approveStatus"] ? "Yes" : "No",
+    },
+    {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH, // Actions are treated as text for identification purposes

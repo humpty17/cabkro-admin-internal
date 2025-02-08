@@ -135,7 +135,7 @@ const BookingList = () => {
   return (
     <>
       {Object.keys(bookingData).length === 0 ? (
-        <div className="m-2" style={{ height: "473px" }}>
+        <div className="m-2" style={{ height: "500px" }}>
           <AutoSizer>
             {({ height, width }) => (
               <List

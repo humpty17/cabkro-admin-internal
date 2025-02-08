@@ -198,7 +198,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
     }
   };
 
-  const fetchCarOwnerDetails = async () => {
+  const fetchCarOwnerDetails = async (successMessage) => {
     startLoading();
     try {
       const response = await callApi(
@@ -211,6 +211,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
         if (response?.data?.code === 200) {
           console.log(response?.data?.data)
           setAgencyAllDetails({ ...response?.data?.data });
+          NotificationManager.success(successMessage)
         } else {
           NotificationManager.error("Could not view agency details");
         }
@@ -273,6 +274,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
       if (response) {
         if (response?.data?.code === 200) {
           //GET AGENCY DETAILS BY ID
+          NotificationManager.success("Agency approved successfully")
           fetchCarOwnerDetails(response?.data?.data?.carOwnerId);
         } else {
           NotificationManager.error("Could not view agency details");
@@ -360,7 +362,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
         const fileFormData = new FormData();
         fileFormData.append("file", file);
         fileFormData.append("FileName", type);
-        fileFormData.append("PhoneNo", "");
+        fileFormData.append("PhoneNo", phoneNumber);
         fileFormData.append("CarOwnerId",Id);
     
         try {
@@ -381,7 +383,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
               // NotificationManager.success(
               //   response?.data?.message || "File uploaded successfully"
               // );
-              fetchCarOwnerDetails();
+              fetchCarOwnerDetails("File uploaded successfully");
             } else {
               NotificationManager.error(response?.data?.message || APINULLERROR);
             }
@@ -412,6 +414,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
                     handleAgencySubmit={handleAgencySubmit}
                     handleApproveAgency={handleApproveAgency}
                     op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}
+                    
                   ></AgencyDetailsCard>
                   <UploadDocuments
                     agencyDetails={agencyAllDetails?.carOwnerDetails}
@@ -429,6 +432,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
                 <div className="row">
                   {[...Array(3)].map((data, index) => (
                     <VehicleDetailsCard
+                      key={index}
                       cardNo={index + 1}
                       vehicleObject={
                         agencyAllDetails?.vehicleDetails?.[index]
@@ -439,6 +443,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
                       handleApproveVehicle={handleApproveVehicle}
                       op={agencyAllDetails?.op ? agencyAllDetails?.op : EDIT}
                       handleChooseFile={handleChooseFile}
+                      carOwnerPhoneNo={agencyAllDetails?.carOwnerDetails?.phoneNumber}
                     ></VehicleDetailsCard>
                   ))}
                 </div>
@@ -446,6 +451,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
                 <div className="row">
                   {[...Array(3)].map((data, index) => (
                     <DriverDetailsCard
+                    key={index}
                       cardNo={index + 1}
                       driverObject={
                         agencyAllDetails?.driverDetails?.[index]

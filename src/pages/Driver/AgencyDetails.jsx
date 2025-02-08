@@ -5,6 +5,7 @@ import {
   AGENCYLIST,
   APICALLFAIL,
   APINULLERROR,
+  DEFAULTDATE,
   EDIT
 } from "../../General/ConstStates";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
@@ -26,7 +27,7 @@ const AgencyDetails = ({setEditData, editData}) => {
     "email": "",
     "password": "",
     "carOwnerGender": 0,
-    "carOwnerDOB": getCurrentDateTime(),
+    "carOwnerDOB": DEFAULTDATE,
     "isAdult": true,
     "workLocation1": "",
     "workLocation2": "",
@@ -44,13 +45,13 @@ const AgencyDetails = ({setEditData, editData}) => {
     "workLocation3Latitude": 0,
     "workLocation3Longitude": 0,
     "available": false,
-    "approveStatus": true,
+    "approveStatus": false,
     "isActive": true,
     "createdDate": getCurrentDateTime(),
     "modifyDate": getCurrentDateTime(),
-    "isDeleted": true,
+    "isDeleted": false,
     "deletedReason": "",
-    "approvedBy": user?.userId,
+    "approvedBy": user?.userId || 0 ,
     "approvedOn": getCurrentDateTime(),
     "aadharImageFront": "",
     "aadharImageBack": "",
@@ -86,12 +87,16 @@ const AgencyDetails = ({setEditData, editData}) => {
           `${process.env.REACT_APP_API_URL_ADMIN}Data/AddCarOwner`,
           { ...agencyDetails },
           {}
-        ) : await callApi("put", `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateCarOwner/${agencyDetails.carOwnerId}`, {...agencyDetails, modifyDate: getCurrentDateTime()}, {});
+        ) : await callApi("put", `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateCarOwner/${agencyDetails.carOwnerId}`, {...agencyDetails}, {});
   
         if (response) {
           if (response?.data?.code === 200) {
             //GET AGENCY DETAILS BY ID
-            fetchCarOwnerDetails(response?.data?.data?.carOwnerId)
+            setAgencyAllDetails({ ...response?.data?.data });
+          NotificationManager.success(
+             "Agency Details saved successfully"
+          );
+            // fetchCarOwnerDetails(response?.data?.data?.carOwnerId)
             
           }
           else{
@@ -106,7 +111,7 @@ const AgencyDetails = ({setEditData, editData}) => {
         NotificationManager.error(APICALLFAIL);
         stopLoading();
       } finally {
-        // stopLoading()
+         stopLoading()
       }
     
   

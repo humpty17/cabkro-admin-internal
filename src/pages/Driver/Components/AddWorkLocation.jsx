@@ -38,7 +38,7 @@ const AddWorkLocation = ({agencyObject,handleAgencySubmit,op}) => {
 
               <TypeInput
                 inputName={"workLocation1"}
-                placeholderName={"search location"}
+                placeholderName={"Search Location"}
                 valueName={agencyDetails.workLocation1}
                 onChangeName={handleInputChange}
                 isDisabled={disableInputFields || op===APPROVE ? true : false}
@@ -50,7 +50,7 @@ const AddWorkLocation = ({agencyObject,handleAgencySubmit,op}) => {
 
               <TypeInput
                 inputName={"workLocation2"}
-                placeholderName={"search location"}
+                placeholderName={"Search Location"}
                 valueName={agencyDetails.workLocation2}
                 onChangeName={handleInputChange}
                 isDisabled={disableInputFields  || op===APPROVE ? true : false}
@@ -62,7 +62,7 @@ const AddWorkLocation = ({agencyObject,handleAgencySubmit,op}) => {
 
               <TypeInput
                 inputName={"workLocation3"}
-                placeholderName={"search location"}
+                placeholderName={"Search Location"}
                 valueName={agencyDetails.workLocation3}
                 onChangeName={handleInputChange}
                 isDisabled={disableInputFields  || op===APPROVE ? true : false} 

@@ -14,7 +14,7 @@ import { AdminContext } from "../../../store/admin-context";
 
 const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  const { image, imageUrl, setImage, setImageUrl, handleDownload } = useContext(AdminContext);
+  // const { image, imageUrl, setImage, setImageUrl, handleDownload } = useContext(AdminContext);
   const disableInputFields = agencyDetails?.carOwnerId === 0 ? true : false;
 
   const handleChooseFile = async (event, type) => {
@@ -23,10 +23,10 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
     const file = event.target.files[0];
     // console.log(file)
     // console.log(type)
-    if (file) {
-      setImage(file);
-      setImageUrl(URL.createObjectURL(file));
-    }
+    // if (file) {
+    //   setImage(file);
+    //   setImageUrl(URL.createObjectURL(file));
+    // }
 
     const fileFormData = new FormData();
     fileFormData.append("file", file);
@@ -79,12 +79,12 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
               <FileInput
                 handleFileUpload={(e) => handleChooseFile(e, "AdharFrontImage")}
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
-                image={image ? image : null}
+                image={agencyDetails?.aadharImageFront ? agencyDetails?.aadharImageFront : null}
               ></FileInput>
               {agencyDetails?.aadharImageFront  ? (
                  <DownloadImage
-                 imageUrl={imageUrl}
-                 handleDownload={handleDownload}
+                 imageUrl={agencyDetails?.aadharImageFront}
+                //  handleDownload={handleDownload}
                />
               ) : (
                null
@@ -95,12 +95,12 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
               <FileInput
                 handleFileUpload={(e) => handleChooseFile(e, "AdharBackImage")}
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
-                image={image ? image : null}
+                image={agencyDetails?.aadharImageBack ? agencyDetails?.aadharImageBack : null}
               ></FileInput>
               {agencyDetails?.aadharImageBack  ? (
                 <DownloadImage
-                imageUrl={imageUrl}
-                handleDownload={handleDownload}
+                imageUrl={agencyDetails?.aadharImageBack}
+                // handleDownload={handleDownload}
               />
               ) : (
                 null
@@ -111,12 +111,12 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
               <FileInput
                 handleFileUpload={(e) => handleChooseFile(e, "PanImage")}
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
-                image={image ? image : null}
+                image={agencyDetails?.panImage ? agencyDetails?.panImage : null}
               ></FileInput>
               {agencyDetails?.panImage  ? (
                  <DownloadImage
-                 imageUrl={imageUrl}
-                 handleDownload={handleDownload}
+                 imageUrl={agencyDetails?.panImage}
+                //  handleDownload={handleDownload}
                />
               ) : (
               null

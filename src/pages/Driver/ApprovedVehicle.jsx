@@ -105,7 +105,7 @@ const ApprovedVehicle = ({setEditData}) => {
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllVehicleListAdmin/false/true`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllVehicleListAdmin/false/false`,
         {},
         {}
       );

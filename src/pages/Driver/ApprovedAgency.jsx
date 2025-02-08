@@ -82,7 +82,7 @@ const ApprovedAgency = ({setEditData}) => {
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllOwnersListAdmin/false/true`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllOwnersListAdmin/false/false`,
         {},
         {}
       );

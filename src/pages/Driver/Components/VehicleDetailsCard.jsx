@@ -7,13 +7,15 @@ import FormLabel from "../../../General/Label/FormLabel";
 import { NotificationManager } from "react-notifications";
 import { APPROVE } from "../../../General/ConstStates";
 
-const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleChooseFile, handleApproveVehicle, op}) => {
+const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleChooseFile, handleApproveVehicle, op, carOwnerPhoneNo}) => {
   const disableInputFields = vehicleObject.vehicleId === 0 ? true : false
 
   const [vehicleDetails, setVehicleDetails] = useState({...vehicleObject})
 
+  console.log(carOwnerPhoneNo)
   useEffect(()=>{
     setVehicleDetails({...vehicleObject})
+    
   },[vehicleObject])
   const handleInputChange = (e)=>{
     setVehicleDetails({...vehicleDetails, [e.target.name]:e.target.value})
@@ -115,21 +117,21 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
             <div className="mb-3 row">
               <FormLabel label={"Reg. Certi."}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "RCImage", "", vehicleDetails?.vehicleId)}
+                handleFileUpload={(e) => handleChooseFile(e, "RCImage", carOwnerPhoneNo, vehicleDetails?.vehicleId)}
                 isDisabled={disableInputFields}
               ></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Insurance"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "InsuranceImage", "", vehicleDetails?.vehicleId)}
+                handleFileUpload={(e) => handleChooseFile(e, "InsuranceImage", carOwnerPhoneNo, vehicleDetails?.vehicleId)}
                 isDisabled={disableInputFields}
               ></FileInput>
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Permit"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "VehiclePermit", "", vehicleDetails?.vehicleId)}
+                handleFileUpload={(e) => handleChooseFile(e, "VehiclePermit", carOwnerPhoneNo, vehicleDetails?.vehicleId)}
                 isDisabled={disableInputFields}
               ></FileInput>
             </div>

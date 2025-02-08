@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
-import { FiEdit } from "react-icons/fi";
 import { NotificationManager } from "react-notifications";
+import ExportButtton from "../../General/Buttons/ExportButtton";
 import VirtualizedTable from "../../General/Common/VitualizedTable/VirtualizedTable";
 import {
   ACTION,
-  ADDAGENCY,
   APICALLFAIL,
   APINULLERROR,
   EDIT,
@@ -15,13 +14,11 @@ import {
   SRNOWIDTH,
   TEXT,
   UPDATEAGENCYALLDETAILS,
-  WIDTH,
+  WIDTH
 } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import { CurrentPageContext } from "../../store/pages-context";
-import ExportButtton from "../../General/Buttons/ExportButtton";
-import { type } from "@testing-library/user-event/dist/type";
 
 const VehicleList = ({ setEditData, editData }) => {
   
@@ -33,6 +30,13 @@ const VehicleList = ({ setEditData, editData }) => {
       type: INT,
       isShow: true,
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
+    },
+    {
+      label: "Model Name",
+      dataKey: "vehicleModelName",
+      type: TEXT,
+      isShow: true,
+      width: 220,
     },
     {
       label: "Vehicle Number",
@@ -49,20 +53,7 @@ const VehicleList = ({ setEditData, editData }) => {
       width: 220,
     },
 
-    {
-      label: "Phone No",
-      dataKey: "phoneNumber",
-      type: INT,
-      isShow: true,
-      width: 220,
-    },
-    {
-      label: "Email",
-      dataKey: "email",
-      type: TEXT,
-      isShow: true,
-      width: 220,
-    },
+    
     {
       label: "Fuel Type",
       dataKey: "vehicleFuelType",
@@ -70,13 +61,7 @@ const VehicleList = ({ setEditData, editData }) => {
       isShow: true,
       width: 220,
     },
-    {
-      label: "Model Name",
-      dataKey: "vehicleModelName",
-      type: TEXT,
-      isShow: true,
-      width: 220,
-    },
+    
     {
       label: "Company Name",
       dataKey: "vehicleCompanyName",
@@ -90,6 +75,39 @@ const VehicleList = ({ setEditData, editData }) => {
       type: INT,
       isShow: true,
       width: 220,
+    },
+    {
+      label: "Registration Cert.",
+      dataKey: "registrationCertificateImage",
+      type: TEXT,
+      isShow: true,
+      width: 150,
+      cellRenderer : ({rowData})=> rowData["registrationCertificateImage"] ? "Yes":"No"
+    },
+    {
+      label: "Insurance",
+      dataKey: "insuranceCardImage",
+      type: TEXT,
+      isShow: true,
+      width: 100,
+      cellRenderer : ({rowData})=> rowData["insuranceCardImage"] ? "Yes":"No"
+    },
+    {
+      label: "Permit",
+      dataKey: "vehiclePermitImage",
+      type: TEXT,
+      isShow: true,
+      width: 100,
+      cellRenderer : ({rowData})=> rowData["vehiclePermitImage"] ? "Yes":"No"
+    },
+    {
+      label: "Approve Status",
+      dataKey: "approveStatus",
+      type: TEXT,
+      isShow: true,
+      width: 150,
+      cellRenderer: ({ rowData }) =>
+        rowData["approveStatus"] ? "Yes" : "No",
     },
 
     // {
@@ -177,7 +195,7 @@ const VehicleList = ({ setEditData, editData }) => {
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetVehicleForAdminById/${rowData.carOwnerId}`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetCarOwnerDetailsById/${rowData.carOwnerId}`,
         {},
         {}
       );
