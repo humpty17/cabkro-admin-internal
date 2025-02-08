@@ -209,6 +209,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
       );
       if (response) {
         if (response?.data?.code === 200) {
+          console.log(response?.data?.data)
           setAgencyAllDetails({ ...response?.data?.data });
         } else {
           NotificationManager.error("Could not view agency details");
@@ -236,7 +237,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
           : await callApi(
               "put",
               `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateCarOwner/${agencyDetails.carOwnerId}`,
-              { ...agencyDetails },
+              { ...agencyDetails,approveStatus: true, approvedBy: user?.userId, approvedOn: getCurrentDateTime(), modifyDate: getCurrentDateTime() },
               {}
             );
 
@@ -320,7 +321,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData }) => {
       const response = await callApi(
         "put",
         `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateVehicle/${vehicleDetails?.vehicleId}`,
-        { ...vehicleDetails },
+        { ...vehicleDetails  },
         {}
       );
       if (response) {

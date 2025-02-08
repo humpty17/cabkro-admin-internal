@@ -1,14 +1,11 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
+import BackButton from "../../General/Buttons/BackButton";
 import {
   AGENCYLIST,
   APICALLFAIL,
   APINULLERROR,
-  APPROVEDAGENCY,
-  EDIT,
-  EMAILREGEX,
-  PHONENOREGEX
+  EDIT
 } from "../../General/ConstStates";
 import { callApi, getCurrentDateTime } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
@@ -16,9 +13,11 @@ import { CurrentPageContext } from "../../store/pages-context";
 import AddWorkLocation from "./Components/AddWorkLocation";
 import AgencyDetailsCard from "./Components/AgencyDetailsCard";
 import UploadDocuments from "./Components/UploadDocuments";
-import BackButton from "../../General/Buttons/BackButton";
+import { LoginContext } from "../../store/login-context";
 
 const AgencyDetails = ({setEditData, editData}) => {
+  const { startLoading, stopLoading } = useContext(LoadingContext);
+  const {user} = useContext(LoginContext)
   const agencyObject = {
     "carOwnerId": 0,
     "carOwnerName": "",
@@ -45,13 +44,13 @@ const AgencyDetails = ({setEditData, editData}) => {
     "workLocation3Latitude": 0,
     "workLocation3Longitude": 0,
     "available": false,
-    "approveStatus": false,
+    "approveStatus": true,
     "isActive": true,
     "createdDate": getCurrentDateTime(),
     "modifyDate": getCurrentDateTime(),
     "isDeleted": true,
     "deletedReason": "",
-    "approvedBy": 0,
+    "approvedBy": user?.userId,
     "approvedOn": getCurrentDateTime(),
     "aadharImageFront": "",
     "aadharImageBack": "",
@@ -76,24 +75,9 @@ const AgencyDetails = ({setEditData, editData}) => {
   };
 
   const [agencyAllDetails, setAgencyAllDetails] = useState({ ...agencyObject });
-  const { startLoading, stopLoading } = useContext(LoadingContext);
-  const [isTermsChecked, setIsTermsChecked] = useState(false);
-  const {handlePageClick} = useContext(CurrentPageContext)
-  // const handleInputChange = (e) => {
-  //   if(e.target.name === "phoneNumber"){
-  //     if(e.target.value.length > 10){
-  //       return
-  //     }
-  //   }
-  //   if (e.target.name === "acceptTermsCondition") {
-  //     setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.checked ? 1 : 0 });
-  //   } else {
-  //     setAgencyDetails({ ...agencyDetails, [e.target.name]: e.target.value });
-  //   }
-  // };
-
   
-
+  const {handlePageClick} = useContext(CurrentPageContext)
+ 
   const handleAgencySubmit = async (agencyDetails) => {
       startLoading()
       try {
@@ -102,7 +86,7 @@ const AgencyDetails = ({setEditData, editData}) => {
           `${process.env.REACT_APP_API_URL_ADMIN}Data/AddCarOwner`,
           { ...agencyDetails },
           {}
-        ) : await callApi("put", `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateCarOwner/${agencyDetails.carOwnerId}`, {...agencyDetails}, {});
+        ) : await callApi("put", `${process.env.REACT_APP_API_URL_ADMIN}Data/UpdateCarOwner/${agencyDetails.carOwnerId}`, {...agencyDetails, modifyDate: getCurrentDateTime()}, {});
   
         if (response) {
           if (response?.data?.code === 200) {
@@ -164,6 +148,9 @@ const AgencyDetails = ({setEditData, editData}) => {
     if(Object.keys(editData).length > 0){
       console.log(editData)
       setAgencyAllDetails({...editData})
+    }
+    else{
+      setAgencyAllDetails({...agencyObject})
     }
   },[editData])
 
