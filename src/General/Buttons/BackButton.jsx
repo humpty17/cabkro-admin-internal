@@ -2,7 +2,7 @@ import React from 'react'
 
 const BackButton = ({handleBackClick}) => {
   return (
-    <button className="btn btn-danger" onClick={handleBackClick}>Back</button>
+    <button className="btn btn-danger mb-0" onClick={handleBackClick}>Back</button>
   );
 }
 

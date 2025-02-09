@@ -41,6 +41,9 @@ export const DRIVERLIST = "DriverList"
 
 //BOOKING SECTION
 export const BOOKINGLIST = "BookingList"
+export const CANCELBOOKINGLIST = "CancelBookingList"
+export const ASSIGNDRIVER = "Assign Driver"
+export const REASSIGNDRIVER = "Re-Assign Driver"
 
 export const UPDATEAGENCYALLDETAILS = "UpdateAgencyAllDetails"
 
@@ -77,6 +80,11 @@ export const WIDTH = 50
 
 export const ApiHeaders = {
   UserType: "1",
+  "Content-Type": "application/json",
+};
+
+export const ApiHeadersUserType = {
+  UserType: "0",
   "Content-Type": "application/json",
 };
 

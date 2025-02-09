@@ -8,11 +8,11 @@ import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import BookingCard from "./BookingCard";
 import BookingDetails from "./BookingDetails";
-import { cancelBooking, handleBackClick, handleCancelBooking } from "./BookingMethods";
+import { handleBackClick } from "./BookingMethods";
 import PagesHeading from "./PagesHeading";
 import NotFoundCard from "./NotFoundCard";
 
-const BookingList = () => 
+const CancelBookingList = () => 
   {
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const [bookingList, setBookingList] = useState([]);
@@ -29,7 +29,7 @@ const BookingList = () =>
         "post",
         `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllBookingsByStatus`,
         [
-          "Pending", "Complete"
+          "Cancel"
         ],
         {}
       );
@@ -79,16 +79,15 @@ const BookingList = () =>
   };
 
 
-
-
-
+  
+  
 
   return (
     <>
-      <PagesHeading heading={"Booking List"}></PagesHeading>
+     <PagesHeading heading={"Cancel Booking List"}></PagesHeading>
       {Object.keys(bookingData).length === 0 ? (
         <div className="m-2" style={{ height: "500px" }}>
-         {bookingList.length > 0 ?  <AutoSizer>
+          {bookingList.length > 0 ?  <AutoSizer>
             {({ height, width }) => (
               <List
                 width={width}
@@ -99,13 +98,13 @@ const BookingList = () =>
                 overscanRowCount={5}
               />
             )}
-          </AutoSizer> : <NotFoundCard></NotFoundCard>}
+          </AutoSizer>: <NotFoundCard></NotFoundCard>}
         </div>
       ) : (
-        <BookingDetails bookingData={bookingData} handleCancelBooking={()=>handleCancelBooking(bookingData, startLoading, stopLoading, setBookingData, fetchBookingList)} handleBackClick={()=>handleBackClick(setBookingData)}></BookingDetails>
+        <BookingDetails bookingData={bookingData} handleBackClick={()=>handleBackClick(setBookingData)}></BookingDetails>
       )}
     </>
   );
 };
 
-export default BookingList;
+export default CancelBookingList;

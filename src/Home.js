@@ -10,8 +10,10 @@ import {
   APPROVEDAGENCY,
   APPROVEDDRIVER,
   APPROVEDVEHICLE,
+  ASSIGNDRIVER,
   BOOKINGLIST,
   BOOKINGPACKAGELIST,
+  CANCELBOOKINGLIST,
   CHANGEPASSWORD,
   CONTACTUS,
   COUPONS,
@@ -22,6 +24,7 @@ import {
   LOGINPAGE,
   POPULARDESTINATIONPAGE,
   PROFILE,
+  REASSIGNDRIVER,
   REGISTERPAGE,
   SMTP,
   UPDATEAGENCYALLDETAILS,
@@ -58,6 +61,8 @@ import UpdateAgencyAllDetails from "./pages/Driver/Components/UpdateAgencyAllDet
 import VehicleList from "./pages/Driver/VehicleList";
 import DriverList from "./pages/Driver/DriverList";
 import BookingList from "./pages/Bookings/BookingList";
+import CancelBookingList from "./pages/Bookings/CancelBookingList";
+import AssignDriver from "./pages/Bookings/AssignDriver";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -152,6 +157,9 @@ const Home = () => {
 
               {/* Booking Section */}
               {currentPage === BOOKINGLIST && (<BookingList></BookingList>)}
+              {currentPage === CANCELBOOKINGLIST && (<CancelBookingList></CancelBookingList>)}
+              {currentPage === ASSIGNDRIVER && (<AssignDriver assignDriver={false}></AssignDriver>)}
+              {currentPage === REASSIGNDRIVER && (<AssignDriver assignDriver={true}></AssignDriver>)}
             </div>
           </div>
         )}

@@ -7,7 +7,7 @@ import {
   FiFile, FiFileText, FiInfo, FiShield, FiUser,  
 } from "react-icons/fi";
 import SidebarName from "./SidebarName";
-import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, APPROVEDAGENCY, APPROVEDDRIVER, APPROVEDVEHICLE, BOOKINGLIST, BOOKINGPACKAGELIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, DRIVERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, SMTP, USERADMINLIST, VEHICLELIST } from "../../General/ConstStates";
+import { ADDAGENCY, ADDBOOKINGPACKAGE, ADDCUSTOMER, ADDUSERFORM, ADDVEHICLELIST, AGENCYLIST, APPROVEDAGENCY, APPROVEDDRIVER, APPROVEDVEHICLE, ASSIGNDRIVER, BOOKINGLIST, BOOKINGPACKAGELIST, CANCELBOOKINGLIST, CHANGEPASSWORD, CONTACTUS, COUPONS, CUSTOMERLIST, DRIVERLIST, FAQS, POPULARDESTINATIONPAGE, PROFILE, REASSIGNDRIVER, SMTP, USERADMINLIST, VEHICLELIST } from "../../General/ConstStates";
 import { AdminContext } from '../../store/admin-context';
 import { CurrentPageContext } from "../../store/pages-context";
 import { CiLogin } from "react-icons/ci";
@@ -95,15 +95,21 @@ const Sidebar = ({setEditData}) => {
             </a>
           </li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="#">
+            <a className="sidebar-link" onClick={()=>handleItemClick(CANCELBOOKINGLIST)}>
               <FiXCircle className="align-middle" />
               <span className="align-middle">Cancel Booking</span>
             </a>
           </li>
           <li className="sidebar-item">
-            <a className="sidebar-link" href="#">
+            <a className="sidebar-link" onClick={()=>handleItemClick(ASSIGNDRIVER)}>
               <FaUserTie className="align-middle" />
               <span className="align-middle">Assign Driver</span>
+            </a>
+          </li>
+          <li className="sidebar-item">
+            <a className="sidebar-link" onClick={()=>handleItemClick(REASSIGNDRIVER)}>
+              <FaUserTie className="align-middle" />
+              <span className="align-middle">Re-Assign Driver</span>
             </a>
           </li>
           <li className="sidebar-item">
