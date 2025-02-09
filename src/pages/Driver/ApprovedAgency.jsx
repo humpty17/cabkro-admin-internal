@@ -11,6 +11,7 @@ import { type } from "@testing-library/user-event/dist/type";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const ApprovedAgency = ({setEditData}) => {
+  const {currentPage} = useContext(CurrentPageContext)
   const columns = [
     {
       label: SRNO,
@@ -119,7 +120,7 @@ const ApprovedAgency = ({setEditData}) => {
         );
         if (response) {
           if (response?.data?.code === 200) {
-            setEditData({op: APPROVE,  ...response?.data?.data });
+            setEditData({op: APPROVE,  ...response?.data?.data,pageName: currentPage });
             handlePageClick(UPDATEAGENCYALLDETAILS);
           } else {
             NotificationManager.error("Could not view agency details");

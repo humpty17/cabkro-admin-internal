@@ -1,70 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
+import DownloadImage from "../../../General/Buttons/DownloadImage";
+import {
+  APPROVE
+} from "../../../General/ConstStates";
 import FileInput from "../../../General/Input/FileInput";
 import FormLabel from "../../../General/Label/FormLabel";
-import axios from "axios";
 import { LoadingContext } from "../../../store/loading-context";
-import { NotificationManager } from "react-notifications";
-import {
-  APICALLFAIL,
-  APINULLERROR,
-  APPROVE,
-} from "../../../General/ConstStates";
-import DownloadImage from "../../../General/Buttons/DownloadImage";
-import { AdminContext } from "../../../store/admin-context";
+import { SubmitChooseFile } from "../AgencyMethods";
+import { CurrentPageContext } from "../../../store/pages-context";
 
-const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
+const UploadDocuments = ({ agencyDetails, setAgencyAllDetails, op }) => {
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  // const { image, imageUrl, setImage, setImageUrl, handleDownload } = useContext(AdminContext);
+  const {currentPage} = useContext(CurrentPageContext)
   const disableInputFields = agencyDetails?.carOwnerId === 0 ? true : false;
 
-  const handleChooseFile = async (event, type) => {
-    event.preventDefault();
-    startLoading();
-    const file = event.target.files[0];
-    // console.log(file)
-    // console.log(type)
-    // if (file) {
-    //   setImage(file);
-    //   setImageUrl(URL.createObjectURL(file));
-    // }
-
-    const fileFormData = new FormData();
-    fileFormData.append("file", file);
-    fileFormData.append("FileName", type);
-    fileFormData.append("PhoneNo", agencyDetails.phoneNumber);
-    fileFormData.append("CarOwnerId", agencyDetails.carOwnerId);
-
-    try {
-      const response = await axios.post(
-        process.env.REACT_APP_API_URL + "api/Drivers/UploadFile",
-        fileFormData,
-        {
-          headers: {
-            UserType: "1",
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response) {
-        console.log(response.data.code === 200);
-        if (response?.data?.code === 200) {
-          //setAgencyAllDetails({ ...agencyAllDetails, [type]: response?.data?.data });
-          // NotificationManager.success(
-          //   response?.data?.message || "File uploaded successfully"
-          // );
-          fetchCarOwnerDetails(agencyDetails.carOwnerId);
-        } else {
-          NotificationManager.error(response?.data?.message || APINULLERROR);
-        }
-      } else {
-        NotificationManager.error(response?.data?.message || APINULLERROR);
-      }
-    } catch (err) {
-      NotificationManager.error(APICALLFAIL);
-    } finally {
-      stopLoading();
-    }
-  };
 
   return (
     <div className="col-6 col-xl-6">
@@ -77,7 +26,7 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card front"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "AdharFrontImage")}
+                handleFileUpload={(e) => SubmitChooseFile(e, "AdharFrontImage",agencyDetails.phoneNumber, agencyDetails.carOwnerId, agencyDetails.carOwnerId,startLoading, stopLoading, setAgencyAllDetails,currentPage, "CarOwnerId")}
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
                 image={agencyDetails?.aadharImageFront ? agencyDetails?.aadharImageFront : null}
               ></FileInput>
@@ -93,7 +42,7 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
             <div className="mb-3 row">
               <FormLabel label={"Aadhar card back"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "AdharBackImage")}
+                handleFileUpload={(e) => SubmitChooseFile(e, "AdharBackImage", agencyDetails.phoneNumber, agencyDetails.carOwnerId, agencyDetails.carOwnerId,startLoading, stopLoading, setAgencyAllDetails,currentPage, "CarOwnerId")}
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
                 image={agencyDetails?.aadharImageBack ? agencyDetails?.aadharImageBack : null}
               ></FileInput>
@@ -109,7 +58,7 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
             <div className="mb-3 row">
               <FormLabel label={"Pan card"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "PanImage")}
+                handleFileUpload={(e) => SubmitChooseFile(e, "PanImage",agencyDetails.phoneNumber, agencyDetails.carOwnerId,agencyDetails.carOwnerId, startLoading, stopLoading, setAgencyAllDetails,currentPage, "CarOwnerId")}
                 isDisabled={disableInputFields || op === APPROVE ? true : false}
                 image={agencyDetails?.panImage ? agencyDetails?.panImage : null}
               ></FileInput>
@@ -122,13 +71,7 @@ const UploadDocuments = ({ agencyDetails, fetchCarOwnerDetails, op }) => {
               null
               )}
             </div>
-            <div className="mb-3 row">
-              <div className="col-sm-12 ms-sm-auto">
-                {/* <SubmitButton buttonName={"Upload Aadhar front"} isDisabled={disableInputFields}></SubmitButton>
-                <SubmitButton buttonName={"Upload Aadhar back"} isDisabled={disableInputFields}></SubmitButton>
-                <SubmitButton buttonName={"Upload Pan"} isDisabled={disableInputFields}></SubmitButton> */}
-              </div>
-            </div>
+            
           </form>
         </div>
       </div>

@@ -10,6 +10,7 @@ import { CurrentPageContext } from '../../store/pages-context';
 import ExportButtton from '../../General/Buttons/ExportButtton';
 
 const ApprovedDriver = ({setEditData}) => {
+  const {currentPage} = useContext(CurrentPageContext)
   const columns = [
     {
       label: SRNO,
@@ -132,7 +133,7 @@ const ApprovedDriver = ({setEditData}) => {
           );
           if (response) {
             if (response?.data?.code === 200) {
-              setEditData({op: APPROVE,  ...response?.data?.data });
+              setEditData({op: APPROVE,  ...response?.data?.data, pageName: currentPage });
               handlePageClick(UPDATEAGENCYALLDETAILS);
             } else {
               NotificationManager.error("Could not view agency details");

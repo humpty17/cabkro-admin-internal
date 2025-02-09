@@ -158,6 +158,7 @@ const VehicleList = ({ setEditData, editData }) => {
   const [VehicleList, setVehicleList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
   const { startLoading, stopLoading } = useContext(LoadingContext);
+  const {currentPage} = useContext(CurrentPageContext)
   const { handlePageClick } = useContext(CurrentPageContext);
 
   const fetchVehicleList = async () => {
@@ -201,7 +202,7 @@ const VehicleList = ({ setEditData, editData }) => {
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setEditData({op:EDIT, ...response?.data?.data });
+          setEditData({op:EDIT, ...response?.data?.data, pageName: currentPage });
           handlePageClick(UPDATEAGENCYALLDETAILS);
         } else {
           NotificationManager.error("Could not view agency details");

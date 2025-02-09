@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import FileInput from "../../../General/Input/FileInput";
 import NumberInput from "../../../General/Input/NumberInput";
@@ -6,8 +6,14 @@ import TypeInput from "../../../General/Input/TypeInput";
 import FormLabel from "../../../General/Label/FormLabel";
 import { NotificationManager } from "react-notifications";
 import { APPROVE, PHONENOREGEX } from "../../../General/ConstStates";
+import { SaveAgencyDetails, SaveDriverDetails, SubmitChooseFile } from "../AgencyMethods";
+import { LoadingContext } from "../../../store/loading-context";
+import { CurrentPageContext } from "../../../store/pages-context";
+import DownloadImage from "../../../General/Buttons/DownloadImage";
 
-const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChooseFile, handleApproveDriver,op}) => {
+const DriverDetailsCard = ({cardNo, driverObject,  handleChooseFile, handleApproveDriver,op,carOwnerDetails,setAgencyAllDetails}) => {
+  const {startLoading, stopLoading} = useContext(LoadingContext)
+  const {currentPage} = useContext(CurrentPageContext)
   const [driverDetails, setDriverDetails] = useState({...driverObject})
 
   const disableInputFields = driverDetails.driverId === 0 ? true : false
@@ -40,7 +46,9 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
   const handleSubmit = (e)=>{
     e.preventDefault()
     if(!validate()) return
-    handleDriverSubmit(driverDetails)
+    const obj = {...driverDetails, carOwnerId: carOwnerDetails?.carOwnerId}
+    debugger
+    SaveDriverDetails(obj,carOwnerDetails.carOwnerId, startLoading, stopLoading, setAgencyAllDetails,currentPage)
   }
 
   const handleApprove = (e) => {
@@ -89,20 +97,40 @@ const DriverDetailsCard = ({cardNo, driverObject, handleDriverSubmit, handleChoo
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Driving License"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "DLImage", "", driverDetails?.driverId)} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleFileUpload={(e)=>SubmitChooseFile(e, "DLImage", driverDetails?.phoneNumber, carOwnerDetails?.carOwnerId,driverDetails?.driverId,startLoading, stopLoading, setAgencyAllDetails,currentPage, "DriverId")} isDisabled={disableInputFields}
+               image={driverDetails?.driverLicenseImage ? driverDetails?.driverLicenseImage : null} 
+                ></FileInput>
+                {driverDetails?.driverLicenseImage  ? (
+                 <DownloadImage
+                 imageUrl={driverDetails?.driverLicenseImage}
+                //  handleDownload={handleDownload}
+               />
+              ) : (
+              null
+              )}
             </div>
            
             <div className="mb-3 row">
               <FormLabel label={"Police verification"}></FormLabel>
-              <FileInput handleFileUpload={(e)=>handleChooseFile(e, "PVImage","",driverDetails?.driverId)} isDisabled={disableInputFields}></FileInput>
+              <FileInput handleFileUpload={(e)=>SubmitChooseFile(e, "PVImage",driverDetails?.phoneNumber, carOwnerDetails?.carOwnerId,driverDetails?.driverId,startLoading, stopLoading, setAgencyAllDetails,currentPage, "DriverId")} isDisabled={disableInputFields}
+                image={driverDetails?.policeVerificationImage ? driverDetails?.policeVerificationImage : null} ></FileInput>
+                {driverDetails?.policeVerificationImage  ? (
+                 <DownloadImage
+                 imageUrl={driverDetails?.policeVerificationImage}
+                //  handleDownload={handleDownload}
+               />
+              ) : (
+              null
+              )}
             </div>
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">
                 {op === APPROVE ? (
                   <SubmitButton
-                    buttonName={"Approve"}
+                    buttonName={driverDetails.driverId === 0 && driverDetails.approveStatus === true ? "Approved"
+                      :"Approve"}
                     handleClick={handleApprove}
-                    isDisabled={driverDetails.driverId === 0 ? true : false}
+                    isDisabled={driverDetails.driverId === 0 && driverDetails.approveStatus === true ? true : false}
                   />
                 ) : (
                   <SubmitButton

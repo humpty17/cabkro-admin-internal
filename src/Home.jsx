@@ -38,12 +38,22 @@ import { CurrentPageContext } from "./store/pages-context";
 
 import Register from "./General/Register/Register";
 import Login from "./Login/Login";
+import AssignDriver from "./pages/Bookings/AssignDriver";
+import BookingList from "./pages/Bookings/BookingList";
+import CancelBookingList from "./pages/Bookings/CancelBookingList";
 import AddCustomer from "./pages/Customer/AddCustomer";
 import CustomerList from "./pages/Customer/CustomerList";
 import AddBookingPackage from "./pages/Data/AddBookingPackage";
 import AddVehicleList from "./pages/Data/AddVehicleList";
 import BookingPackageList from "./pages/Data/BookingPackageList";
-import AgencyDetails from "./pages/Driver/AgencyDetails";
+import AddAgency from "./pages/Driver/AddAgency";
+import AgencyList from "./pages/Driver/AgencyList";
+import ApprovedAgency from "./pages/Driver/ApprovedAgency";
+import ApprovedDriver from "./pages/Driver/ApprovedDriver";
+import ApprovedVehicle from "./pages/Driver/ApprovedVehicle";
+import UpdateAgencyAllDetails from "./pages/Driver/Components/UpdateAgencyAllDetails";
+import DriverList from "./pages/Driver/DriverList";
+import VehicleList from "./pages/Driver/VehicleList";
 import ContactUs from "./pages/Extra/ContactUs";
 import Coupons from "./pages/Extra/Coupons";
 import FAQs from "./pages/Extra/FAQs";
@@ -53,16 +63,6 @@ import ChangePassword from "./pages/Setting/ChangePassword";
 import UserAdminList from "./pages/Setting/UserAdminList";
 import UserProfile from "./pages/Setting/UserProfile";
 import { LoginContext } from "./store/login-context";
-import AgencyList from "./pages/Driver/AgencyList";
-import ApprovedAgency from "./pages/Driver/ApprovedAgency";
-import ApprovedVehicle from "./pages/Driver/ApprovedVehicle";
-import ApprovedDriver from "./pages/Driver/ApprovedDriver";
-import UpdateAgencyAllDetails from "./pages/Driver/Components/UpdateAgencyAllDetails";
-import VehicleList from "./pages/Driver/VehicleList";
-import DriverList from "./pages/Driver/DriverList";
-import BookingList from "./pages/Bookings/BookingList";
-import CancelBookingList from "./pages/Bookings/CancelBookingList";
-import AssignDriver from "./pages/Bookings/AssignDriver";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -118,10 +118,10 @@ const Home = () => {
 
               {/* Driver section */}
               {currentPage === ADDAGENCY && (
-                <AgencyDetails
+                <AddAgency
                   setEditData={setEditData}
                   editData={editData}
-                ></AgencyDetails>
+                ></AddAgency>
               )}
               {currentPage === AGENCYLIST && (
                 <AgencyList

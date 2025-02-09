@@ -38,6 +38,7 @@ const AdminContextProvider = ({children}) =>{
   };
 
   const handleDownload = (e) => {
+    debugger
     e.preventDefault()
     if (image) {
       const link = document.createElement("a");

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import FileInput from "../../../General/Input/FileInput";
 import NumberInput from "../../../General/Input/NumberInput";
@@ -6,13 +6,18 @@ import TypeInput from "../../../General/Input/TypeInput";
 import FormLabel from "../../../General/Label/FormLabel";
 import { NotificationManager } from "react-notifications";
 import { APPROVE } from "../../../General/ConstStates";
+import { SaveVehicleDetails, SubmitChooseFile } from "../AgencyMethods";
+import { LoadingContext } from "../../../store/loading-context";
+import { CurrentPageContext } from "../../../store/pages-context";
+import DownloadImage from "../../../General/Buttons/DownloadImage";
 
-const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleChooseFile, handleApproveVehicle, op, carOwnerPhoneNo}) => {
+const VehicleDetailsCard = ({cardNo, vehicleObject, setAgencyAllDetails,  handleApproveVehicle, op,  carOwnerDetails}) => {
   const disableInputFields = vehicleObject.vehicleId === 0 ? true : false
-
+  const {startLoading, stopLoading} = useContext(LoadingContext);
+  const {currentPage} = useContext(CurrentPageContext)
   const [vehicleDetails, setVehicleDetails] = useState({...vehicleObject})
 
-  console.log(carOwnerPhoneNo)
+  // console.log(carOwnerPhoneNo)
   useEffect(()=>{
     setVehicleDetails({...vehicleObject})
     
@@ -31,7 +36,9 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
   const handleSubmit = (e) =>{
     e.preventDefault()
     if(!validate()) return
-    handleVehicleSubmit(vehicleDetails)
+    const obj = {...vehicleDetails, carOwnerId: carOwnerDetails.carOwnerId, phoneNumber: carOwnerDetails.phoneNumber, email: carOwnerDetails.email}
+    SaveVehicleDetails(obj, carOwnerDetails.carOwnerId, startLoading, stopLoading, setAgencyAllDetails,currentPage )
+    // handleVehicleSubmit(vehicleDetails)
   }
 
   const handleApprove = (e) => {
@@ -117,30 +124,58 @@ const VehicleDetailsCard = ({cardNo, vehicleObject, handleVehicleSubmit, handleC
             <div className="mb-3 row">
               <FormLabel label={"Reg. Certi."}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "RCImage", carOwnerPhoneNo, vehicleDetails?.vehicleId)}
+              
+                handleFileUpload={(e) =>SubmitChooseFile(e, "RCImage",carOwnerDetails?.phoneNumber, carOwnerDetails?.carOwnerId,vehicleDetails?.vehicleId, startLoading, stopLoading, setAgencyAllDetails,currentPage, "VehicleId")}
                 isDisabled={disableInputFields}
+                image={vehicleDetails?.registrationCertificateImage ? vehicleDetails?.registrationCertificateImage : null}
               ></FileInput>
+              {vehicleDetails?.registrationCertificateImage  ? (
+                 <DownloadImage
+                 imageUrl={vehicleDetails?.registrationCertificateImage}
+                //  handleDownload={handleDownload}
+               />
+              ) : (
+              null
+              )}
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Insurance"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "InsuranceImage", carOwnerPhoneNo, vehicleDetails?.vehicleId)}
+                handleFileUpload={(e) => SubmitChooseFile(e, "InsuranceImage", carOwnerDetails?.phoneNumber, carOwnerDetails?.carOwnerId,vehicleDetails?.vehicleId, startLoading, stopLoading, setAgencyAllDetails,currentPage, "VehicleId")}
                 isDisabled={disableInputFields}
+                image={vehicleDetails?.insuranceCardImage ? vehicleDetails?.insuranceCardImage : null}
               ></FileInput>
+              {vehicleDetails?.insuranceCardImage  ? (
+                 <DownloadImage
+                 imageUrl={vehicleDetails?.insuranceCardImage}
+                //  handleDownload={handleDownload}
+               />
+              ) : (
+              null
+              )}
             </div>
             <div className="mb-3 row">
               <FormLabel label={"Permit"}></FormLabel>
               <FileInput
-                handleFileUpload={(e) => handleChooseFile(e, "VehiclePermit", carOwnerPhoneNo, vehicleDetails?.vehicleId)}
+                handleFileUpload={(e) => SubmitChooseFile(e, "VehiclePermit", carOwnerDetails?.phoneNumber, carOwnerDetails?.carOwnerId,vehicleDetails?.vehicleId, startLoading, stopLoading, setAgencyAllDetails,currentPage, "VehicleId")}
                 isDisabled={disableInputFields}
+                image={vehicleDetails?.vehiclePermitImage ? vehicleDetails?.vehiclePermitImage : null}
               ></FileInput>
+              {vehicleDetails?.vehiclePermitImage  ? (
+                 <DownloadImage
+                 imageUrl={vehicleDetails?.vehiclePermitImage}
+                //  handleDownload={handleDownload}
+               />
+              ) : (
+              null
+              )}
             </div>
 
             <div className="mb-3 row">
               <div className="col-sm-9 ms-sm-auto">
                 {op === APPROVE ? (
                   <SubmitButton
-                    buttonName={"Approve"}
+                    buttonName={vehicleDetails.vehicleId !== 0 && vehicleDetails.approveStatus === true ? "Approved" : "Approve"}
                     handleClick={handleApprove}
                     isDisabled={vehicleDetails.vehicleId !== 0 && vehicleDetails.approveStatus === true ? true : false}
                   />

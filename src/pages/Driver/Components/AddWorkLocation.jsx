@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FormLabel from "../../../General/Label/FormLabel";
 import TypeInput from "../../../General/Input/TypeInput";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import { APPROVE } from "../../../General/ConstStates";
+import { SaveAgencyDetails } from "../AgencyMethods";
+import { LoadingContext } from "../../../store/loading-context";
+import { CurrentPageContext } from "../../../store/pages-context";
 
-const AddWorkLocation = ({agencyObject,handleAgencySubmit,op}) => {
- 
-
+const AddWorkLocation = ({agencyObject,setAgencyAllDetails,op}) => {
+  const {startLoading , stopLoading} = useContext(LoadingContext)
+  const {currentPage} = useContext(CurrentPageContext)
   const disableInputFields = agencyObject?.carOwnerId === 0 ? true : false
 
   const [agencyDetails, setAgencyDetails] = useState({...agencyObject})
@@ -21,7 +24,8 @@ const AddWorkLocation = ({agencyObject,handleAgencySubmit,op}) => {
 
   const handleSubmit = (e)=>{
     e.preventDefault()
-    handleAgencySubmit(agencyDetails)
+    console.log(agencyDetails)
+    SaveAgencyDetails(agencyDetails, startLoading , stopLoading,setAgencyAllDetails,currentPage)
   }
 
   return (

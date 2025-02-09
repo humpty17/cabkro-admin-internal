@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import SubmitButton from "../../../General/Buttons/SubmitButton";
 import { APPROVE, EMAILREGEX, PHONENOREGEX } from "../../../General/ConstStates";
@@ -7,11 +7,14 @@ import NumberInput from "../../../General/Input/NumberInput";
 import PasswordInput from "../../../General/Input/PasswordInput";
 import TypeInput from "../../../General/Input/TypeInput";
 import FormLabel from "../../../General/Label/FormLabel";
+import { AgencySubmit, SaveAgencyDetails } from "../AgencyMethods";
+import { LoadingContext } from "../../../store/loading-context";
+import { CurrentPageContext } from "../../../store/pages-context";
 
-const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAgency}) => {
-
+const AgencyDetailsCard = ({agencyObject,setAgencyAllDetails, op, handleApproveAgency}) => {
+  const {startLoading, stopLoading} = useContext(LoadingContext)
   const [agencyDetails, setAgencyDetails] = useState({...agencyObject})
-  
+  const {currentPage} = useContext(CurrentPageContext)
  // console.log(agencyObject,agencyDetails)
 
   useEffect(()=>{
@@ -56,7 +59,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
     e.preventDefault()
     if(!validateAgencyDetails()) return
 
-    handleAgencySubmit(agencyDetails)
+    SaveAgencyDetails(agencyDetails, startLoading, stopLoading, setAgencyAllDetails,currentPage)
   }
 
   const handleApprove = (e) => {
@@ -143,7 +146,7 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
                     agencyDetails.acceptTermsCondition 
                   }
                   onChange={handleInputChange}
-                  isDisabled={op === APPROVE ? true : false}
+                  disabled={true}
                 />
                 <span className="form-check-label">
                   I have read and agree with <a href="#">terms & conditions</a>
@@ -155,8 +158,9 @@ const AgencyDetailsCard = ({agencyObject,handleAgencySubmit, op, handleApproveAg
               <div className="col-sm-9 ms-sm-auto">
                 {op === APPROVE ? (
                   <SubmitButton
-                    buttonName={"Approve"}
+                    buttonName={agencyDetails.approveStatus? "Approved" : "Approve"}
                     handleClick={handleApprove}
+                    isDisabled={agencyDetails.approveStatus}
                   ></SubmitButton>
                 ) : (
                   <SubmitButton

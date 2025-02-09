@@ -15,6 +15,7 @@ import {
   SRNOKEY,
   SRNOWIDTH,
   TEXT,
+  UPDATEAGENCYALLDETAILS,
   WIDTH
 } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
@@ -138,6 +139,7 @@ const DriverList = ({ setEditData, editData }) => {
   const [driverList, setDriverList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
   const { startLoading, stopLoading } = useContext(LoadingContext);
+  const {currentPage} = useContext(CurrentPageContext)
   const { handlePageClick } = useContext(CurrentPageContext);
 
   const fetchDriverList = async () => {
@@ -145,7 +147,7 @@ const DriverList = ({ setEditData, editData }) => {
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllDriverListAdmin/true/false`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllDriverListAdmin/true/true`,
         {},
         {}
       );
@@ -181,8 +183,8 @@ const DriverList = ({ setEditData, editData }) => {
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setEditData({op:EDIT, ...response?.data?.data });
-          //handlePageClick(UPDATEAGENCYALLDETAILS);
+          setEditData({op:EDIT, ...response?.data?.data, pageName: currentPage });
+          handlePageClick(UPDATEAGENCYALLDETAILS);
         } else {
           NotificationManager.error("Could not view agency details");
         }

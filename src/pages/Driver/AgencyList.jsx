@@ -23,7 +23,7 @@ import { CurrentPageContext } from "../../store/pages-context";
 import ExportButtton from "../../General/Buttons/ExportButtton";
 
 const AgencyList = ({ setEditData, editData }) => {
-  
+    const {currentPage} = useContext(CurrentPageContext)
   const columns = [
     {
       label: SRNO,
@@ -196,7 +196,7 @@ const AgencyList = ({ setEditData, editData }) => {
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setEditData({op:EDIT, ...response?.data?.data });
+          setEditData({op:EDIT, ...response?.data?.data, pageName: currentPage });
           handlePageClick(UPDATEAGENCYALLDETAILS);
         } else {
           NotificationManager.error("Could not view agency details");

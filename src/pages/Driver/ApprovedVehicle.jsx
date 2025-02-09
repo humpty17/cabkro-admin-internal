@@ -96,6 +96,7 @@ const ApprovedVehicle = ({setEditData}) => {
     },
   ];
   const { startLoading, stopLoading } = useContext(LoadingContext);
+  const {currentPage} = useContext(CurrentPageContext)
   const { handlePageClick } = useContext(CurrentPageContext);
   const [approvedVehicleList, setApprovedVehicleList] = useState([]);
   const [searchFilters, setSearchFilters] = useState("");
@@ -144,7 +145,7 @@ const ApprovedVehicle = ({setEditData}) => {
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setEditData({ op: APPROVE, ...response?.data?.data });
+          setEditData({ op: APPROVE, ...response?.data?.data, pageName: currentPage });
           handlePageClick(UPDATEAGENCYALLDETAILS);
         } else {
           NotificationManager.error("Could not view agency details");
