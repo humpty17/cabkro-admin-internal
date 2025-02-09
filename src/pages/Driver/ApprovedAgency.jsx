@@ -140,7 +140,7 @@ const ApprovedAgency = ({setEditData}) => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Approved Agency List</h1>
+            <h1 className="h3 mb-3">Approve Agency</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">

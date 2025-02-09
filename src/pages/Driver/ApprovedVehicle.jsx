@@ -20,6 +20,13 @@ const ApprovedVehicle = ({setEditData}) => {
       cellRenderer: ({ rowIndex }) => rowIndex + 1,
     },
     {
+      label: "Model Name",
+      dataKey: "vehicleModelName",
+      type: TEXT,
+      isShow: true,
+      width: 220,
+    },
+    {
       label: "Vehicle Number",
       dataKey: "vehicleNumber",
       type: TEXT,
@@ -27,34 +34,22 @@ const ApprovedVehicle = ({setEditData}) => {
       width: 220,
     },
     {
+      label: "Vehicle Type",
+      dataKey: "vehicleType",
+      type: TEXT,
+      isShow: true,
+      width: 220,
+    },
+
+    
+    {
       label: "Fuel Type",
       dataKey: "vehicleFuelType",
       type: TEXT,
       isShow: true,
       width: 220,
     },
-
-    {
-      label: "Phone No",
-      dataKey: "phoneNumber",
-      type: INT,
-      isShow: true,
-      width: 220,
-    },
-    {
-      label: "Email",
-      dataKey: "email",
-      type: TEXT,
-      isShow: true,
-      width: 220,
-    },
-    {
-      label: "Model Name",
-      dataKey: "vehicleModelName",
-      type: TEXT,
-      isShow: true,
-      width: 220,
-    },
+    
     {
       label: "Company Name",
       dataKey: "vehicleCompanyName",
@@ -70,6 +65,61 @@ const ApprovedVehicle = ({setEditData}) => {
       width: 220,
     },
     {
+      label: "Registration Cert.",
+      dataKey: "registrationCertificateImage",
+      type: TEXT,
+      isShow: true,
+      width: 150,
+      cellRenderer : ({rowData})=> rowData["registrationCertificateImage"] ? "Yes":"No"
+    },
+    {
+      label: "Insurance",
+      dataKey: "insuranceCardImage",
+      type: TEXT,
+      isShow: true,
+      width: 100,
+      cellRenderer : ({rowData})=> rowData["insuranceCardImage"] ? "Yes":"No"
+    },
+    {
+      label: "Permit",
+      dataKey: "vehiclePermitImage",
+      type: TEXT,
+      isShow: true,
+      width: 100,
+      cellRenderer : ({rowData})=> rowData["vehiclePermitImage"] ? "Yes":"No"
+    },
+    {
+      label: "Approve Status",
+      dataKey: "approveStatus",
+      type: TEXT,
+      isShow: true,
+      width: 150,
+      cellRenderer: ({ rowData }) =>
+        rowData["approveStatus"] ? "Yes" : "No",
+    },
+
+    // {
+    //   label: "Adhar Front",
+    //   dataKey: "aadharImageFront",
+    //   width: 220,
+    //   cellRenderer: ({ rowData, rowIndex }) =>
+    //     rowData["aadharImageFront"] ? "Yes" : "No",
+    // },
+    // {
+    //   label: "Adhar Back",
+    //   dataKey: "aadharImageBack",
+    //   width: 220,
+    //   cellRenderer: ({ rowData, rowIndex }) =>
+    //     rowData["aadharImageFront"] ? "Yes" : "No",
+    // },
+    // {
+    //   label: "Pan Image",
+    //   dataKey: "panImage",
+    //   width: 220,
+    //   cellRenderer: ({ rowData, rowIndex }) =>
+    //     rowData["aadharImageFront"] ? "Yes" : "No",
+    // },
+    {
       label: ACTION,
       dataKey: ACTION,
       width: WIDTH,
@@ -80,11 +130,8 @@ const ApprovedVehicle = ({setEditData}) => {
             className="me-3"
             style={{ cursor: "pointer", color: "blue" }}
             onClick={() => {
-              // handleEdit(rowData);
-              // setEditData(rowData);
-              // handlePageClick(ADDAGENCY);
-              // handleRedirect(ADDUSERFORM);
-              // handleUserEdit();
+             
+             // handlePageClick(ADDAGENCY);
             }}
           /> */}
           <AiFillEye
@@ -165,7 +212,7 @@ const ApprovedVehicle = ({setEditData}) => {
       <div className="main">
         <main className="content">
           <div className="container-fluid p-0">
-            <h1 className="h3 mb-3">Approved Vehicle List</h1>
+            <h1 className="h3 mb-3">Approve Vehicle</h1>
             <div className="row">
               <div className="col-12">
                 <div className="card">
