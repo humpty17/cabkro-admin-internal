@@ -1,9 +1,8 @@
 import React, { useContext, useState } from "react";
-import { FiBell, FiAlertCircle, FiHome, FiUserPlus, FiSettings, FiHelpCircle, FiPieChart, FiUser } from "react-icons/fi";
 import { AdminContext } from "../../store/admin-context";
+import { LoginContext } from "../../store/login-context";
 import { CurrentPageContext } from "../../store/pages-context";
 import { LOGINPAGE } from "../ConstStates";
-import { LoginContext } from "../../store/login-context";
 
 
 const Navbar = () => {
@@ -11,7 +10,7 @@ const Navbar = () => {
   const {currentPage, handlePageClick} =useContext(CurrentPageContext)
   const [loginOpen, setLoginOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const {logout} = useContext(LoginContext)
+  const {user,logout} = useContext(LoginContext)
   const handleLoginClick = () => {
     setLoginOpen((loginOpen) => !loginOpen);
   };
@@ -41,7 +40,7 @@ const Navbar = () => {
       <div className="navbar-collapse collapse">
         <ul className="navbar-nav navbar-align">
           {/* Notifications Dropdown */}
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <a
               className="nav-icon dropdown-toggle"
               href="#"
@@ -122,7 +121,7 @@ const Navbar = () => {
                 </a>
               </div>
             </div>
-          </li>
+          </li> */}
 
           {/* User Dropdown */}
           <li className="nav-item dropdown">
@@ -132,19 +131,19 @@ const Navbar = () => {
               onClick={handleLoginClick}
               data-bs-toggle="dropdown"
             >
-              <img
+              {/* <img
                 src="img/avatars/avatar.jpg"
                 className="avatar img-fluid rounded me-1"
                 alt="Charles Hall"
-              />
-              <span className="text-dark">Charles Hall</span>
+              /> */}
+              <span className="text-dark">{`${user?.userFirstName} ${user?.userLastName}`} </span>
             </a>
             <div
               className={`dropdown-menu dropdown-menu-end login ${
                 loginOpen ? "show" : ""
               }`}
             >
-              <a className="dropdown-item" href="#">
+              {/* <a className="dropdown-item" href="#">
                 <FiUser className="align-middle me-1" /> Profile
               </a>
               <a className="dropdown-item" href="#">
@@ -156,8 +155,8 @@ const Navbar = () => {
               </a>
               <a className="dropdown-item" href="#">
                 <FiHelpCircle className="align-middle me-1" /> Help Center
-              </a>
-              <div className="dropdown-divider"></div>
+              </a> */}
+              {/* <div className="dropdown-divider"></div> */}
               <a className="dropdown-item" onClick={handleLogout}>
                 Log out
               </a>
