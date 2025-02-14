@@ -11,9 +11,9 @@ const LoginContextProvider = ({children})=>{
     const [user, setUser] = useLocalStorage("user", null)
 
     //console.log(user);
-    const login = async (data) => {
+    const login = async (data, status) => {
         //console.log("inside here",data)
-        setUser(data);
+        setUser(data, status);
         
     };
 

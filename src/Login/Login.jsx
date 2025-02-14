@@ -53,7 +53,7 @@ const Login = () => {
       if(response.data.code === 200){
         // console.log(response.data.data)
         const result = response?.data?.data
-        login({...result, dob:result.dob.split("T")[0]})
+        login({...result, dob:result.dob.split("T")[0]}, enteredUserDetail.rememberMe)
         setCurrentPage(DASHBOARDPAGE)
       }
       else{
