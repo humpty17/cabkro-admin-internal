@@ -2,15 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import { AutoSizer, List } from "react-virtualized";
 import "react-virtualized/styles.css";
-import Swal from "sweetalert2";
-import { APICALLFAIL, ApiHeadersUserType, APINULLERROR } from "../../General/ConstStates";
+import { APICALLFAIL, APINULLERROR } from "../../General/ConstStates";
 import { callApi } from "../../General/GeneralMethod";
 import { LoadingContext } from "../../store/loading-context";
 import BookingCard from "./BookingCard";
 import BookingDetails from "./BookingDetails";
-import { cancelBooking, GetDriversList, handleBackClick, handleCancelBooking } from "./BookingMethods";
-import PagesHeading from "./PagesHeading";
+import { GetDriversList, handleBackClick, handleCancelBooking } from "./BookingMethods";
 import NotFoundCard from "./NotFoundCard";
+import PagesHeading from "./PagesHeading";
 import SearchBox from "./SearchBox";
 
 const AssignDriver = ({assignDriver}) => 
