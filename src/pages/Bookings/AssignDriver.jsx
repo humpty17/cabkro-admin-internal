@@ -11,15 +11,16 @@ import BookingDetails from "./BookingDetails";
 import { cancelBooking, GetDriversList, handleBackClick, handleCancelBooking } from "./BookingMethods";
 import PagesHeading from "./PagesHeading";
 import NotFoundCard from "./NotFoundCard";
+import SearchBox from "./SearchBox";
 
 const AssignDriver = ({assignDriver}) => 
   {
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const [bookingList, setBookingList] = useState([]);
   const [bookingData, setBookingData] = useState({});
-
+  const [searchValue, setSearchValue] = useState("")
   useEffect(() => {
-    fetchBookingList();
+    fetchBookingList("");
   }, []);
 
   const fetchBookingList = async () => {
@@ -27,7 +28,7 @@ const AssignDriver = ({assignDriver}) =>
     try {
       const response = await callApi(
         "get",
-        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllBookingsAssignStatus/${assignDriver}`,
+        `${process.env.REACT_APP_API_URL_ADMIN}Data/GetAllBookingsAssignStatus/${assignDriver}?searchText=${searchValue}`,
         {},
         {}
       );
@@ -77,7 +78,9 @@ const AssignDriver = ({assignDriver}) =>
   };
 
 
- 
+  const handleSearchChange = (e)=>{
+    setSearchValue(e.target.value)
+  }
 
  
 
@@ -85,11 +88,14 @@ const AssignDriver = ({assignDriver}) =>
 
   return (
     <>
-    <PagesHeading heading={"Assign Driver"}></PagesHeading>
+    <div className="d-flex justify-content-between m-2">
+      <PagesHeading heading={"Booking List"}></PagesHeading>
+      {Object.keys(bookingData).length === 0 ? <SearchBox handleSearchChange={handleSearchChange} searchValue={searchValue} handleButtonClick={fetchBookingList}></SearchBox> : null}
+      </div>
       
       {Object.keys(bookingData).length === 0 ? (
         
-        <div className="m-2" style={{ height: "500px" }}>
+        <div className="m-2" style={{ height: "440px" }}>
           {bookingList.length > 0 ? <AutoSizer>
             {({ height, width }) => (
               <List
