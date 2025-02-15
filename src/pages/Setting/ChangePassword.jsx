@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaUser, FaLock } from "react-icons/fa";
-import { AdminContext } from "../../store/admin-context";
-import { LoadingContext } from "../../store/loading-context";
+import { NotificationManager } from "react-notifications";
+import { APICALLFAIL, APINULLERROR, LOGINPAGE, UPDATEDATAERROR } from "../../General/ConstStates";
+import { callApi } from "../../General/GeneralMethod";
 import PasswordInput from "../../General/Input/PasswordInput";
 import FormLabel from "../../General/Label/FormLabel";
-import { callApi } from "../../General/GeneralMethod";
-import { NotificationManager } from "react-notifications";
-import { log10 } from "chart.js/helpers";
-import { APINULLERROR, UPDATEDATAERROR } from "../../General/ConstStates";
+import { AdminContext } from "../../store/admin-context";
+import { LoadingContext } from "../../store/loading-context";
+import { LoginContext } from "../../store/login-context";
+import Swal from "sweetalert2";
+import { CurrentPageContext } from "../../store/pages-context";
 
 const ChangePassword = () => {
+  const {user, logout} = useContext(LoginContext)
+  const {currentPage, handlePageClick} =useContext(CurrentPageContext)
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const { icon, type, handleToggleData } = useContext(AdminContext);
   const [newPassword, setNewPassword] = useState({
@@ -17,7 +20,7 @@ const ChangePassword = () => {
     password: "",
   });
   const [getUser, setGetUser] = useState([]);
-  console.log(getUser);
+  
 
   const handleUserList = async () => {
     startLoading();
@@ -28,8 +31,8 @@ const ChangePassword = () => {
         {},
         {}
       );
-      stopLoading();
-      if (response !== null && response !== undefined) {
+      
+      if (response) {
         if (response.data.code === 200) {
           setGetUser(response.data.data);
         } else {
@@ -37,10 +40,15 @@ const ChangePassword = () => {
         }
       } else {
         console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message);
+        NotificationManager.warning(APINULLERROR);
       }
     } catch (error) {
+
       console.error("API call failed:", error);
+      NotificationManager.error(APICALLFAIL)
+    }
+    finally{
+      stopLoading()
     }
   };
 
@@ -69,20 +77,34 @@ const ChangePassword = () => {
         {},
         {}
       );
-      stopLoading();
+      // stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-          NotificationManager.success(response?.data?.message || "Destination uploaded successfully");
+          NotificationManager.success(response?.data?.message || "Password updated successfully");
+          if(newPassword.userId === user.userId.toString()){
+            Swal.fire({
+              "icon": "info",
+              "text": "You have changed the password of current logged in user. Please login again!"
+              
+            }).then((result)=>{
+
+              logout()
+              handlePageClick(LOGINPAGE);
+            })
+          }
           setNewPassword({ userId: "", password: "" });
         } else {
            NotificationManager.error(response?.data?.message || UPDATEDATAERROR);
         }
       } else {
         console.error("API returned an invalid response:", response);
-        NotificationManager.warning(response.data.message);
+        NotificationManager.warning(APINULLERROR);
       }
     } catch (error) {
-     NotificationManager.warning(APINULLERROR);
+     NotificationManager.warning(APICALLFAIL);
+    }
+    finally{
+      stopLoading()
     }
   };
 
@@ -102,7 +124,7 @@ const ChangePassword = () => {
             <h1 className="h3 mb-3">Change Password</h1>
             <div className="row">
               <div className="col-12">
-                <div className="col-12 col-xl-6">
+                <div className="col-12 col-xl-7">
                   <div className="card">
                     <div className="card-body">
                       <form onSubmit={submitChangePassword}>
@@ -110,7 +132,7 @@ const ChangePassword = () => {
                           <label className="col-form-label col-sm-3">
                             Select User
                           </label>
-                          <div className="col-sm-8">
+                          <div className="col-sm-7">
                             <select
                               className="form-select"
                               name="userId"
@@ -128,7 +150,7 @@ const ChangePassword = () => {
                         </div>
                         <div className="mb-3 row">
                           <FormLabel label={"New Password"} />
-                          <div className="col-sm-8 input-group_1 text-sm-end">
+                          <div className="col-sm-9 input-group_1 text-sm-end">
                             <PasswordInput
                               type={type}
                               inputName={"password"}

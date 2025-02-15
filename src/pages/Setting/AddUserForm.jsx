@@ -110,7 +110,7 @@ const AddUserForm = ({editData, setEditData}) => {
   }
   
   const handleBackClick = () =>{
-    handlePageClick(CUSTOMERLIST)
+    handlePageClick(USERADMINLIST)
     setAddData({...InitialState})
     setEditData({})
   }
