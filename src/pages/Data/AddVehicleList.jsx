@@ -122,6 +122,7 @@ const AddVehicleList = () => {
 
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const [AddVehicleData, setAddVehicleData] = useState([]);
+  const [filteredVehicleData, setFilteredVehicleData] = useState([]);
   const [searchFilters, setSearchFilters] = useState(initialVehicle);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [previewBookingData, setPreviewBookingData] = useState([]);
@@ -139,7 +140,9 @@ const AddVehicleList = () => {
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           setAddVehicleData(response?.data?.data || []);
-        } else {
+          setFilteredVehicleData(response?.data?.data || []);
+        }
+         else {
           NotificationManager.error(response?.data?.message || FETCHDATAERROR);
         }
       } else {
@@ -271,6 +274,39 @@ const AddVehicleList = () => {
     VehicleList();
   };
 
+   const handleFilterChange = (value, dataKey) =>{
+      debugger
+      const obj = {...searchFilters}
+      if(value === "")
+      {
+        delete obj[dataKey]
+      }
+      else{
+        obj[dataKey] = value
+      }
+      setSearchFilters({...obj})
+      
+    }
+  
+    useEffect(()=>{
+      if(Object.keys(searchFilters).length === 0){
+        setFilteredVehicleData(AddVehicleData)
+      }
+      else{
+        const filtered = AddVehicleData.filter((data) => {
+          debugger
+          return Object.keys(searchFilters).every((key) => {
+            if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+            return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+          });
+        });
+        
+        setFilteredVehicleData(filtered);
+  
+        // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+      }
+    },[searchFilters])
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -323,10 +359,11 @@ const AddVehicleList = () => {
                 {/* Table */}
                 <VirtualizedTable
                   tableData={
-                    isShowPreview ? previewBookingData : AddVehicleData
+                    isShowPreview ? previewBookingData : filteredVehicleData
                   }
                   tableSearchFilters={searchFilters}
                   columns={columns}
+                  handleFilterChange={handleFilterChange}
                 />
               </div>
             </div>
