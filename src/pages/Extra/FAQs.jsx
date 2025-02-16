@@ -99,7 +99,8 @@ const FAQs = () => {
 
   const [addFaq, setAddFaq] = useState(initialFaq);
   const [faqList, setFaqList] = useState([]);
-  const [searchFilters, setSearchFilters] = useState(initialFaq)
+  const [filteredList, setFilteredList] = useState([])
+  const [searchFilters, setSearchFilters] = useState({})
   const [isEditMode, setIsEditMode] = useState(false)
   
 
@@ -116,6 +117,7 @@ const FAQs = () => {
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           setFaqList(response?.data?.data || []);
+          setFilteredList(response?.data?.data || [])
         } else {
           NotificationManager.error(response?.data?.message || FETCHDATAERROR);
         }
@@ -243,6 +245,41 @@ const FAQs = () => {
     faqsList();
   }, []);
 
+   const handleFilterChange = (value, dataKey) =>{
+      debugger
+      const obj = {...searchFilters}
+      if(value === "")
+      {
+        delete obj[dataKey]
+      }
+      else{
+        obj[dataKey] = value
+      }
+      setSearchFilters({...obj})
+      
+    }
+  
+    useEffect(()=>{
+      console.log(searchFilters)
+      if(Object.keys(searchFilters).length === 0){
+        setFilteredList(faqList)
+      }
+      else{
+        const filtered = faqList.filter((data) => {
+          debugger
+          return Object.keys(searchFilters).every((key) => {
+            if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+            return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+          });
+        });
+        
+        setFilteredList(filtered);
+  
+        // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+      }
+    },[searchFilters])
+  
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -327,9 +364,10 @@ const FAQs = () => {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={faqList}
-                            tableSearchFilters={searchFilters}
+                            tableData={filteredList}
+                            // tableSearchFilters={searchFilters}
                             columns={columns}
+                            handleFilterChange={handleFilterChange}
                           />
                         </div>
                       </div>

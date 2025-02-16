@@ -113,8 +113,10 @@ const Coupons = () => {
     expirationDate: getCurrentDateTime(),
   };
   const { startLoading, stopLoading } = useContext(LoadingContext);
-  const [searchFilters, setSearchFilters] = useState(initialState);
+  const [searchFilters, setSearchFilters] = useState({});
   const [couponListData, setCouponListData] = useState([]);
+ 
+   const [filteredList, setFilteredList] = useState([])
   const [addCouponData, setAddCouponData] = useState(initialState);
   const [isEditMode, setIsEditMode] = useState(false)
 
@@ -131,6 +133,7 @@ const Coupons = () => {
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
           setCouponListData(response?.data?.data || []);
+          setFilteredList(response?.data?.data || [])
         } else {
           NotificationManager.error(response?.data?.message || FETCHDATAERROR);
         }
@@ -276,6 +279,40 @@ const Coupons = () => {
     setIsEditMode(false)
   }
 
+  const handleFilterChange = (value, dataKey) =>{
+        debugger
+        const obj = {...searchFilters}
+        if(value === "")
+        {
+          delete obj[dataKey]
+        }
+        else{
+          obj[dataKey] = value
+        }
+        setSearchFilters({...obj})
+        
+      }
+    
+      useEffect(()=>{
+        console.log(searchFilters)
+        if(Object.keys(searchFilters).length === 0){
+          setFilteredList(couponListData)
+        }
+        else{
+          const filtered = couponListData.filter((data) => {
+            debugger
+            return Object.keys(searchFilters).every((key) => {
+              if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+              return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+            });
+          });
+          
+          setFilteredList(filtered);
+    
+          // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+        }
+      },[searchFilters])
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -351,9 +388,10 @@ const Coupons = () => {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={couponListData}
-                            tableSearchFilters={searchFilters}
+                            tableData={filteredList}
+                            // tableSearchFilters={searchFilters}
                             columns={columns}
+                            handleFilterChange={handleFilterChange}
                           />
                         </div>
                       </div>

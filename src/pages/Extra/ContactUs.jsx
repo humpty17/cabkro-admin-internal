@@ -115,7 +115,8 @@ function ContactUs() {
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const [modalData, setModalData] = useState(initialState);
   const [contactData, setContactData] = useState([])
-  const [searchFilters, setSearchFilters] = useState(initialState);
+  const [filteredContactData, setFilteredContactData] = useState([])
+  const [searchFilters, setSearchFilters] = useState({});
   const [isEditMode, setIsEditMode] = useState(false)
   const rowGetter = ({ index }) => contactData[index];
 
@@ -133,6 +134,7 @@ function ContactUs() {
         if (response !== null && response !== undefined) {
           if (response?.data?.code === 200) {
             setContactData(response?.data?.data || []);
+            setFilteredContactData(response?.data?.data || [])
           } else {
             NotificationManager.error(response?.data?.message || FETCHDATAERROR);
           }
@@ -227,6 +229,43 @@ function ContactUs() {
     
   };
 
+
+  
+  const handleFilterChange = (value, dataKey) =>{
+    debugger
+    const obj = {...searchFilters}
+    if(value === "")
+    {
+      delete obj[dataKey]
+    }
+    else{
+      obj[dataKey] = value
+    }
+    setSearchFilters({...obj})
+    
+  }
+
+  useEffect(()=>{
+    console.log(searchFilters)
+    if(Object.keys(searchFilters).length === 0){
+      setFilteredContactData(contactData)
+    }
+    else{
+      const filtered = contactData.filter((data) => {
+        debugger
+        return Object.keys(searchFilters).every((key) => {
+          if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+          return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+        });
+      });
+      
+      setFilteredContactData(filtered);
+
+      // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+    }
+  },[searchFilters])
+
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -245,10 +284,12 @@ function ContactUs() {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={contactData}
-                            tableSearchFilters={searchFilters}
+                            tableData={filteredContactData}
+                            // tableSearchFilters={searchFilters}
                             columns={columns}
                             rowGetter={rowGetter}
+                            handleFilterChange={handleFilterChange}
+          
                           />
                         </div>
                       </div>
