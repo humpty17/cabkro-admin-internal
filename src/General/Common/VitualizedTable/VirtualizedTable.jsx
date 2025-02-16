@@ -12,7 +12,8 @@ const VirtualizedTable = ({
   width,
   height,
   onRowClick,
-  tableSearchFilters
+  tableSearchFilters, 
+  handleFilterChange
 }) => {
   const rowGetter = ({ index }) => tableData[index];
 
@@ -49,8 +50,8 @@ const VirtualizedTable = ({
                 headerRenderer={(props) =>
                   headerRenderer({
                     ...props,
-                    tableSearchFilters,isShow
-                    //handleFilterChange,
+                    isShow,
+                    handleFilterChange,
                   })
                 }
               /> :null

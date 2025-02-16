@@ -130,11 +130,11 @@ const Sidebar = ({setEditData}) => {
               
                 if(data.parent === 0){
                   return(
-                    <div>
+                    <div key={index}>
                     <li className="sidebar-header">{data.pageName}</li>
                     <li className="sidebar-item">
                     {allPages.map((child, index)=>(
-                      child.parent === data.pageId ? <>
+                      child.parent === data.pageId ? <div key={index}>
                       <li className="sidebar-item">
                       <a className="sidebar-link" onClick={()=>handleItemClick(child.pageRoute)}>
                       <DynamicComponent 
@@ -143,7 +143,7 @@ const Sidebar = ({setEditData}) => {
                                     />
                         <SidebarName name={child.pageName}/>
                       </a>
-                    </li></>:null
+                    </li></div>:null
                     ))}
                   </li>
                     </div>

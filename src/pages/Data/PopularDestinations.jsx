@@ -471,7 +471,8 @@ const PopularDestinations = () => {
 
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const [getDestination, setGetDestination] = useState([]);
-  const [searchFilters, setSearchFilters] = useState("");
+  const [filteredDestinations, setFilteredDestinations] = useState([])
+  const [searchFilters, setSearchFilters] = useState({});
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [previewBookingData, setPreviewBookingData] = useState([]);
   const rowGetter = ({ index }) =>
@@ -489,6 +490,7 @@ const PopularDestinations = () => {
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           setGetDestination([...response?.data?.data] || []);
+          setFilteredDestinations([...response?.data?.data] || [])
         } else {
           NotificationManager.error(response?.data?.message || "No records found");
         }
@@ -629,6 +631,39 @@ const PopularDestinations = () => {
     getPopularDestination();
   };
 
+  const handleFilterChange = (value, dataKey) =>{
+    debugger
+    const obj = {...searchFilters}
+    if(value === "")
+    {
+      delete obj[dataKey]
+    }
+    else{
+      obj[dataKey] = value
+    }
+    setSearchFilters({...obj})
+    
+  }
+
+  useEffect(()=>{
+    if(Object.keys(searchFilters).length === 0){
+      setFilteredDestinations(getDestination)
+    }
+    else{
+      const filtered = getDestination.filter((data) => {
+        debugger
+        return Object.keys(searchFilters).every((key) => {
+          if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+          return data[key].toLowerCase().includes(searchFilters[key].toLowerCase());
+        });
+      });
+      
+      setFilteredDestinations(filtered);
+
+      // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+    }
+  },[searchFilters])
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -681,11 +716,12 @@ const PopularDestinations = () => {
                             tableData={
                               isShowPreview
                                 ? previewBookingData
-                                : getDestination
+                                : filteredDestinations
                             }
-                            tableSearchFilters={searchFilters}
+                            // tableSearchFilters={searchFilters}
                             columns={columns}
                             rowGetter={rowGetter}
+                            handleFilterChange={handleFilterChange}
                           />
                         </div>
                       </div>
