@@ -99,7 +99,7 @@ export const SubmitChooseFile = async(event, type, phoneNumber, carOwnerId, Id ,
           }
         );
         if (response) {
-          console.log(response.data.code === 200);
+          // console.log(response.data.code === 200);
           if (response?.data?.code === 200) {
             fetchCarOwnerDetails(carOwnerId, setAgencyAllDetails, startLoading, stopLoading,currentPage);
             NotificationManager.success(
@@ -120,7 +120,7 @@ export const SubmitChooseFile = async(event, type, phoneNumber, carOwnerId, Id ,
 
 
 export const SaveVehicleDetails = async (vehicleData, carOwnerId, startLoading, stopLoading, setAgencyAllDetails, currentPage) => {
-    console.log(vehicleData);
+    // console.log(vehicleData);
     
     startLoading();
     try {
@@ -139,7 +139,7 @@ export const SaveVehicleDetails = async (vehicleData, carOwnerId, startLoading, 
               {}
             );
 
-      console.log(response);
+      // console.log(response);
       if (response) {
         if (response?.data?.code === 200) {
           NotificationManager.success(
@@ -182,7 +182,7 @@ export const SaveVehicleDetails = async (vehicleData, carOwnerId, startLoading, 
               {}
             );
 
-      console.log(response);
+      // console.log(response);
       if (response) {
         if (response?.data?.code === 200) {
           NotificationManager.success(

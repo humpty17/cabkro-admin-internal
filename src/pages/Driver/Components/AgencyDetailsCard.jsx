@@ -21,9 +21,9 @@ const AgencyDetailsCard = ({agencyObject,setAgencyAllDetails, op, handleApproveA
     setAgencyDetails({...agencyObject})
   },[agencyObject])
 
-  useEffect(()=>{
-    console.log("op changed", op)
-  },[op])
+  // useEffect(()=>{
+  //   console.log("op changed", op)
+  // },[op])
   const handleInputChange = (e) => {
     if(e.target.name === "phoneNumber"){
       if(e.target.value.length > 10){

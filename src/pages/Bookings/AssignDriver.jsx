@@ -33,7 +33,7 @@ const AssignDriver = ({assignDriver}) =>
       );
       if (response) {
         if (response.data.code === 200) {
-          console.log(response.data.data.length);
+          // console.log(response.data.data.length);
           setBookingList([...(response?.data?.data || [])]);
         } else {
           NotificationManager.error(
@@ -55,7 +55,7 @@ const AssignDriver = ({assignDriver}) =>
   };
 
   const handleManageBooking = (data) => {
-    console.log(data);
+    // console.log(data);
     setBookingData(data);
   };
 

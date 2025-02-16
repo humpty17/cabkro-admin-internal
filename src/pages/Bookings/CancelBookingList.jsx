@@ -35,7 +35,7 @@ const CancelBookingList = () =>
       );
       if (response) {
         if (response.data.code === 200) {
-          console.log(response.data.data.length);
+          // console.log(response.data.data.length);
           setBookingList([...(response?.data?.data || [])]);
         } else {
           NotificationManager.error(
@@ -57,7 +57,7 @@ const CancelBookingList = () =>
   };
 
   const handleManageBooking = (data) => {
-    console.log(data);
+    // console.log(data);
     setBookingData(data);
   };
 

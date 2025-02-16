@@ -52,10 +52,10 @@ const UploadExcelButton = ({setPreviewData, otherData, buttonName}) => {
             data.push(rowUpdatedData);
           }
         });
-        console.log("Data:", data);
+        // console.log("Data:", data);
         
         setPreviewData(data)
-        console.log("Parsed Data:", data);
+        // console.log("Parsed Data:", data);
       } catch (err) {
         console.error("Error in file processing:", err);
         NotificationManager.error("An error occurred while processing the file.");

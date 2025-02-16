@@ -23,7 +23,7 @@ export const handleCancelBooking = (bookingData, startLoading, stopLoading,setBo
       }
     }).then(async(result) => {
       if (result.isConfirmed) {
-          console.log(result.value)
+          // console.log(result.value)
           const isCancelled = await cancelBooking(result.value, bookingData, startLoading, stopLoading)
           if(isCancelled){
             setBookingData({})
@@ -140,7 +140,7 @@ export const cancelBooking = async (cancelReason, bookingData, startLoading, sto
       cancelButtonText: 'Cancel',
       preConfirm: () => {
         const selectedDriver = document.querySelector('input[name="selectedDriver"]:checked');
-        console.log(drivers[selectedDriver.value])
+        // console.log(drivers[selectedDriver.value])
         if (!selectedDriver) {
           Swal.showValidationMessage('Please select a driver');
           return false;

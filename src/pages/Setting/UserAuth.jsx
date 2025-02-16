@@ -92,7 +92,7 @@ const UserAuth = () => {
         return;
       }
     });
-    console.log(arr);
+    // console.log(arr);
     setAllPages([...arr]);
   };
 

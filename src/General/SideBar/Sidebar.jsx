@@ -76,9 +76,9 @@ const Sidebar = ({setEditData}) => {
         stopLoading();
       }
     };
-  useEffect(()=>{
-    console.log(allPages)
-  },[allPages])
+  // useEffect(()=>{
+  //   console.log(allPages)
+  // },[allPages])
 
 
   const componentMap = {

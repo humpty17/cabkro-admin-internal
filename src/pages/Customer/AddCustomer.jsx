@@ -145,7 +145,7 @@ const AddCustomer = ({editData, setEditData}) => {
 
   useEffect(() => {
     if (Object.keys(editData).length > 0) {
-      console.log(editData)
+      // console.log(editData)
       setAddCustomer({
         ...editData,
         dob: editData.dob.split("T")[0],

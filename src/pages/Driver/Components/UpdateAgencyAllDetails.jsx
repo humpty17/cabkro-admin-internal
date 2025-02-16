@@ -99,7 +99,7 @@ const UpdateAgencyAllDetails = ({ editData, setEditData, pageName }) => {
   const [agencyAllDetails, setAgencyAllDetails] = useState({});
 
   useEffect(() => {
-    console.log(editData);
+    // console.log(editData);
     if (Object.keys(editData).length > 0) {
       // console.log("edit data", editData);
       setAgencyAllDetails(editData);

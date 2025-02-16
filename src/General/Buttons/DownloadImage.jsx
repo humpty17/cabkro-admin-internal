@@ -19,7 +19,7 @@ const DownloadImage = ({imageUrl}) => {
         link.click();
         document.body.removeChild(link);
 
-        console.log("Image saved successfully!");
+        // console.log("Image saved successfully!");
     } catch (error) {
       console.error("Error fetching image:", error);
     }

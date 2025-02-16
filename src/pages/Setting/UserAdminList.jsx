@@ -242,7 +242,7 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
       }
     
       useEffect(()=>{
-        console.log(searchFilters)
+        // console.log(searchFilters)
         if(Object.keys(searchFilters).length === 0){
           setFilteredList(user)
         }

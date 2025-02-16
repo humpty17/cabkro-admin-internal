@@ -79,7 +79,7 @@ const AddAgency = ({setEditData, editData}) => {
 
   useEffect(()=>{
     if(Object.keys(editData).length > 0){
-      console.log(editData)
+      // console.log(editData)
       setAgencyAllDetails({...editData})
     }
     else{

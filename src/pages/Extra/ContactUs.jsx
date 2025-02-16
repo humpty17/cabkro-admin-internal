@@ -225,7 +225,7 @@ function ContactUs() {
       ...modalData,
       [e.target.name] : e.target.value
     })
-    console.log(e.target.value);
+    // console.log(e.target.value);
     
   };
 
@@ -246,7 +246,7 @@ function ContactUs() {
   }
 
   useEffect(()=>{
-    console.log(searchFilters)
+    // console.log(searchFilters)
     if(Object.keys(searchFilters).length === 0){
       setFilteredContactData(contactData)
     }

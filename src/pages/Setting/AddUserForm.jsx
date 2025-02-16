@@ -55,7 +55,7 @@ const AddUserForm = ({editData, setEditData}) => {
     })
      //console.log(typeof e.target.value);
   }
-  console.log(addData?.gender);
+  // console.log(addData?.gender);
   
   const validation = () => {
     

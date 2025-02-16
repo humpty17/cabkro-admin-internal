@@ -151,7 +151,7 @@ const FAQs = () => {
         { ...rowData, isActive: false },
         {}
       );
-      console.log(response);
+      // console.log(response);
 
       stopLoading();
       if(response!==null && response!==undefined){
@@ -260,7 +260,7 @@ const FAQs = () => {
     }
   
     useEffect(()=>{
-      console.log(searchFilters)
+      // console.log(searchFilters)
       if(Object.keys(searchFilters).length === 0){
         setFilteredList(faqList)
       }

@@ -180,7 +180,7 @@ const ApprovedVehicle = ({setEditData}) => {
   }, []);
 
   const handleView = async (rowData) => {
-    console.log(rowData);
+    // console.log(rowData);
     
     startLoading();
     try {

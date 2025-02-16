@@ -368,7 +368,7 @@ const AddBookingPackage = () => {
   // Function to delete a row
     const handleDeleteAction = (rowData, rowIndex) => {
       debugger;
-      console.log(rowIndex);
+      // console.log(rowIndex);
       
       Swal.fire({
         title: "Are you sure?",
