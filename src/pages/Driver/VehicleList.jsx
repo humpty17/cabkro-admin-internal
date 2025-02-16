@@ -156,6 +156,7 @@ const VehicleList = ({ setEditData, editData }) => {
   ];
 
   const [VehicleList, setVehicleList] = useState([]);
+  const [filteredVehicleList, setFilteredVehicleList] = useState([])
   const [searchFilters, setSearchFilters] = useState("");
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const {currentPage} = useContext(CurrentPageContext)
@@ -173,6 +174,7 @@ const VehicleList = ({ setEditData, editData }) => {
       if (response) {
         if (response?.data?.code === 200) {
           setVehicleList([...response?.data?.data]);
+          setFilteredVehicleList([...response?.data?.data])
         } else {
           NotificationManager.error(response?.data?.message || APINULLERROR);
           setVehicleList([]);
@@ -216,6 +218,42 @@ const VehicleList = ({ setEditData, editData }) => {
       stopLoading();
     }
   };
+
+
+  const handleFilterChange = (value, dataKey) =>{
+    debugger
+    const obj = {...searchFilters}
+    if(value === "")
+    {
+      delete obj[dataKey]
+    }
+    else{
+      obj[dataKey] = value
+    }
+    setSearchFilters({...obj})
+    
+  }
+
+  useEffect(()=>{
+    if(Object.keys(searchFilters).length === 0){
+      setFilteredVehicleList(VehicleList)
+    }
+    else{
+      const filtered = VehicleList.filter((data) => {
+        debugger
+        return Object.keys(searchFilters).every((key) => {
+          if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+          return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+        });
+      });
+      
+      setFilteredVehicleList(filtered);
+
+      // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+    }
+  },[searchFilters])
+
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -243,9 +281,10 @@ const VehicleList = ({ setEditData, editData }) => {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={VehicleList}
-                            tableSearchFilters={searchFilters}
+                            tableData={filteredVehicleList}
+                            // tableSearchFilters={searchFilters}
                             columns={columns}
+                            handleFilterChange={handleFilterChange}
                           />
                         </div>
                       </div>

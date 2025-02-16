@@ -151,6 +151,7 @@ const AgencyList = ({ setEditData, editData }) => {
   
 
   const [agencyList, setAgencyList] = useState([]);
+  const [filteredAgencyList, setFilteredAgenctList] = useState([])
   const [searchFilters, setSearchFilters] = useState("");
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const { handlePageClick } = useContext(CurrentPageContext);
@@ -165,7 +166,8 @@ const AgencyList = ({ setEditData, editData }) => {
       );
       if (response) {
         if (response?.data?.code === 200) {
-          setAgencyList([...response?.data?.data]);
+          setAgencyList([...response?.data?.data] || []); 
+          setFilteredAgenctList([...response?.data?.data] || [])
         } else {
           NotificationManager.error(response?.data?.message || APINULLERROR);
           setAgencyList([]);
@@ -210,6 +212,41 @@ const AgencyList = ({ setEditData, editData }) => {
       stopLoading();
     }
   };
+
+
+   const handleFilterChange = (value, dataKey) =>{
+        debugger
+        const obj = {...searchFilters}
+        if(value === "")
+        {
+          delete obj[dataKey]
+        }
+        else{
+          obj[dataKey] = value
+        }
+        setSearchFilters({...obj})
+        
+      }
+    
+      useEffect(()=>{
+        if(Object.keys(searchFilters).length === 0){
+          setFilteredAgenctList(agencyList)
+        }
+        else{
+          const filtered = agencyList.filter((data) => {
+            debugger
+            return Object.keys(searchFilters).every((key) => {
+              if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+              return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+            });
+          });
+          
+          setFilteredAgenctList(filtered);
+    
+          // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+        }
+      },[searchFilters])
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -237,9 +274,10 @@ const AgencyList = ({ setEditData, editData }) => {
                       <div className="row dt-row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={agencyList}
-                            tableSearchFilters={searchFilters}
+                            tableData={filteredAgencyList}
+                            // tableSearchFilters={searchFilters}
                             columns={columns}
+                            handleFilterChange={handleFilterChange}
                           />
                         </div>
                       </div>
