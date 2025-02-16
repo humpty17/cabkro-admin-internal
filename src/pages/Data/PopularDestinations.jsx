@@ -654,7 +654,7 @@ const PopularDestinations = () => {
         debugger
         return Object.keys(searchFilters).every((key) => {
           if (!searchFilters[key]) return true; // Skip if condition value is empty/null
-          return data[key].toLowerCase().includes(searchFilters[key].toLowerCase());
+          return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
         });
       });
       

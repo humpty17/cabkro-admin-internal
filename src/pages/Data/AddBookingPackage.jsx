@@ -331,7 +331,8 @@ const AddBookingPackage = () => {
 
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const [bookingData, setBookingData] = useState([])
-  const [searchFilters, setSearchFilters] = useState(filterState)
+  const [filteredBookingData, setFilteredBookingData] = useState([])
+  const [searchFilters, setSearchFilters] = useState({});
   const [isShowPreview, setIsShowPreview] = useState(false)
   const [previewBookingData, setPreviewBookingData] = useState([])
   const rowGetter = ({ index }) => isShowPreview ? previewBookingData[index] : bookingData[index];
@@ -344,6 +345,7 @@ const AddBookingPackage = () => {
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
           setBookingData([...response?.data?.data] || [])
+          setFilteredBookingData([...response?.data?.data] || [])
         } else {
           NotificationManager.error(response.data.message);
         }
@@ -476,6 +478,40 @@ const AddBookingPackage = () => {
     setPreviewBookingData([])
     bookingList()
   }
+
+    const handleFilterChange = (value, dataKey) =>{
+      debugger
+      const obj = {...searchFilters}
+      if(value === "")
+      {
+        delete obj[dataKey]
+      }
+      else{
+        obj[dataKey] = value
+      }
+      console.log(obj)
+      setSearchFilters({...obj})
+      
+    }
+  
+    useEffect(()=>{
+      if(Object.keys(searchFilters).length === 0){
+        setFilteredBookingData(bookingData)
+      }
+      else{
+        const filtered = bookingData.filter((data) => {
+          debugger
+          return Object.keys(searchFilters).every((key) => {
+            if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+            return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+          });
+        });
+        
+        setFilteredBookingData(filtered);
+  
+        // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+      }
+    },[searchFilters])
   return (
     <div className="wrapper">
       <div className="main">
@@ -529,11 +565,12 @@ const AddBookingPackage = () => {
                       <div className="col-sm-12">
                         <VirtualizedTable
                           tableData={
-                            isShowPreview ? previewBookingData : bookingData
+                            isShowPreview ? previewBookingData : filteredBookingData
                           }
                           tableSearchFilters={searchFilters}
                           columns={columns}
                           rowGetter={rowGetter}
+                          handleFilterChange={handleFilterChange}
                         />
                       </div>
                     </div>
