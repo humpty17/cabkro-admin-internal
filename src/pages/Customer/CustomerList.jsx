@@ -149,88 +149,8 @@ const CustomerList = ({ editData, setEditData }) => {
   const { startLoading, stopLoading } = useContext(LoadingContext);
   const { handlePageClick } = useContext(CurrentPageContext)
   const [customerData, setCustomerData] = useState([]);
+  const [filteredCustomerData, setFilteredCustomerData] = useState([])
   const [searchFilters, setSearchFilters] = useState([])
-  //   {
-  //     name: "Airi Satou",
-  //     position: "Accountant",
-  //     office: "Tokyo",
-  //     age: 33,
-  //     startDate: "2018/11/28",
-  //     salary: "$162,700",
-  //   },
-  //   {
-  //     name: "Angelica Ramos",
-  //     position: "CEO",
-  //     office: "London",
-  //     age: 47,
-  //     startDate: "2019/10/09",
-  //     salary: "$1,200,000",
-  //   },
-  //   {
-  //     name: "Ashton Cox",
-  //     position: "Junior Technical Author",
-  //     office: "San Francisco",
-  //     age: 66,
-  //     startDate: "2019/01/12",
-  //     salary: "$86,000",
-  //   },
-  //   {
-  //     name: "Bradley Greer",
-  //     position: "Software Engineer",
-  //     office: "London",
-  //     age: 41,
-  //     startDate: "2022/10/13",
-  //     salary: "$132,000",
-  //   },
-  //   {
-  //     name: "Brenden Wagner",
-  //     position: "Software Engineer",
-  //     office: "San Francisco",
-  //     age: 28,
-  //     startDate: "2023/06/07",
-  //     salary: "$206,850",
-  //   },
-  //   {
-  //     name: "Brielle Williamson",
-  //     position: "Integration Specialist",
-  //     office: "New York",
-  //     age: 61,
-  //     startDate: "2022/12/02",
-  //     salary: "$372,000",
-  //   },
-  //   {
-  //     name: "Bruno Nash",
-  //     position: "Software Engineer",
-  //     office: "London",
-  //     age: 38,
-  //     startDate: "2023/05/03",
-  //     salary: "$163,500",
-  //   },
-  //   {
-  //     name: "Caesar Vance",
-  //     position: "Pre-Sales Support",
-  //     office: "New York",
-  //     age: 21,
-  //     startDate: "2023/12/12",
-  //     salary: "$106,450",
-  //   },
-  //   {
-  //     name: "Cara Stevens",
-  //     position: "Sales Assistant",
-  //     office: "New York",
-  //     age: 46,
-  //     startDate: "2023/12/06",
-  //     salary: "$145,600",
-  //   },
-  //   {
-  //     name: "Cedric Kelly",
-  //     position: "Senior Javascript Developer",
-  //     office: "Edinburgh",
-  //     age: 22,
-  //     startDate: "2022/03/29",
-  //     salary: "$433,060",
-  //   },
-  // ];
 
   const customerListData = async () => {
     startLoading();
@@ -246,6 +166,7 @@ const CustomerList = ({ editData, setEditData }) => {
       if (response !== null && response !== undefined) {
         if (response?.data?.code === 200) {
           setCustomerData(response?.data?.data || []);
+          setFilteredCustomerData(response?.data?.data || [])
         } else {
           NotificationManager.error(response?.data?.message || FETCHDATAERROR);
         }
@@ -311,6 +232,39 @@ const CustomerList = ({ editData, setEditData }) => {
     }
   }
 
+  const handleFilterChange = (value, dataKey) =>{
+      debugger
+      const obj = {...searchFilters}
+      if(value === "")
+      {
+        delete obj[dataKey]
+      }
+      else{
+        obj[dataKey] = value
+      }
+      setSearchFilters({...obj})
+      
+    }
+  
+    useEffect(()=>{
+      if(Object.keys(searchFilters).length === 0){
+        setFilteredCustomerData(customerData)
+      }
+      else{
+        const filtered = customerData.filter((data) => {
+          debugger
+          return Object.keys(searchFilters).every((key) => {
+            if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+            return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+          });
+        });
+        
+        setFilteredCustomerData(filtered);
+  
+        // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+      }
+    },[searchFilters])
+
   return (
     <div className="container mt-4">
       <h1 className="h3 mb-3">Customer List</h1>
@@ -325,9 +279,10 @@ const CustomerList = ({ editData, setEditData }) => {
         <div className="card-body">
           <div className="col-sm-12">
             <VirtualizedTable
-              tableData={customerData}
+              tableData={filteredCustomerData}
               tableSearchFilters={searchFilters}
               columns={columns}
+              handleFilterChange={handleFilterChange}
             />
           </div>
         </div>
