@@ -19,6 +19,7 @@ export const ADDUSERFORM = "AddUserForm"
 export const USERADMINLIST = "UserAdminList"
 export const PROFILE = "Profile"
 export const CHANGEPASSWORD = "ChangePassword"
+export const USERAUTH = "UserAuth"
 
 // Customer Section 
 export const ADDCUSTOMER = "AddCustomer"
@@ -42,8 +43,8 @@ export const DRIVERLIST = "DriverList"
 //BOOKING SECTION
 export const BOOKINGLIST = "BookingList"
 export const CANCELBOOKINGLIST = "CancelBookingList"
-export const ASSIGNDRIVER = "Assign Driver"
-export const REASSIGNDRIVER = "Re-Assign Driver"
+export const ASSIGNDRIVER = "AssignDriver"
+export const REASSIGNDRIVER = "Re-AssignDriver"
 
 export const UPDATEAGENCYALLDETAILS = "UpdateAgencyAllDetails"
 

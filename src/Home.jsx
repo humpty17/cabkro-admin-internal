@@ -29,6 +29,7 @@ import {
   SMTP,
   UPDATEAGENCYALLDETAILS,
   USERADMINLIST,
+  USERAUTH,
   VEHICLELIST,
 } from "./General/ConstStates";
 import Sidebar from "./General/SideBar/Sidebar";
@@ -63,6 +64,7 @@ import ChangePassword from "./pages/Setting/ChangePassword";
 import UserAdminList from "./pages/Setting/UserAdminList";
 import UserProfile from "./pages/Setting/UserProfile";
 import { LoginContext } from "./store/login-context";
+import UserAuth from "./pages/Setting/UserAuth";
 
 const Home = () => {
   const { currentPage, handlePageClick } = useContext(CurrentPageContext);
@@ -101,6 +103,7 @@ const Home = () => {
               )}
               {currentPage === PROFILE && <UserProfile />}
               {currentPage === CHANGEPASSWORD && <ChangePassword />}
+              {currentPage === USERAUTH && <UserAuth></UserAuth>}
 
               {/* customer section  */}
               {currentPage === ADDCUSTOMER && (
