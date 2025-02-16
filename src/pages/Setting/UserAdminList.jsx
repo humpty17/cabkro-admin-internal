@@ -128,7 +128,8 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
   const {startLoading, stopLoading} = useContext(LoadingContext)
   const {currentPage, handlePageClick} =useContext(CurrentPageContext)
   const [user, setUser] = useState([]);
-  const [searchFilters, setSearchFilters]= useState(filterState)
+  const [filteredList, setFilteredList] = useState([])
+  const [searchFilters, setSearchFilters]= useState({})
   const rowGetter = ({ index }) => user[index];
   
 
@@ -139,7 +140,8 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
       stopLoading();
       if (response !== null && response !== undefined) {
         if (response.data.code === 200) {
-          setUser(response.data.data)
+          setUser([...response?.data?.data] || [])
+          setFilteredList([...response?.data?.data] || [])
         } else {
           NotificationManager.error(response.data.message);
         }
@@ -225,6 +227,40 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
 //    }
 //  };
 
+  const handleFilterChange = (value, dataKey) =>{
+        debugger
+        const obj = {...searchFilters}
+        if(value === "")
+        {
+          delete obj[dataKey]
+        }
+        else{
+          obj[dataKey] = value
+        }
+        setSearchFilters({...obj})
+        
+      }
+    
+      useEffect(()=>{
+        console.log(searchFilters)
+        if(Object.keys(searchFilters).length === 0){
+          setFilteredList(user)
+        }
+        else{
+          const filtered = user.filter((data) => {
+            debugger
+            return Object.keys(searchFilters).every((key) => {
+              if (!searchFilters[key]) return true; // Skip if condition value is empty/null
+              return data[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase());
+            });
+          });
+          
+          setFilteredList(filtered);
+    
+          // setFilteredDestinations(getDestination.filter((data,index)=> data[dataKey].toLowerCase().includes(value.toLowerCase())))
+        }
+      },[searchFilters])
+
   return (
     <div className="wrapper">
       <div className="main">
@@ -248,10 +284,11 @@ const UserAdminList = ({setEditData, setIsEdit}) => {
                       <div className="row">
                         <div className="col-sm-12">
                           <VirtualizedTable
-                            tableData={user}
-                            tableSearchFilters={searchFilters}
+                            tableData={filteredList}
+                            // tableSearchFilters={searchFilters}
                             columns={columns}
                             rowGetter={rowGetter}
+                            handleFilterChange={handleFilterChange}
                           />
                         </div>
                       </div>
